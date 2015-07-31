@@ -46,6 +46,7 @@
     <Compile Include="Spiro\Core\SpiroControlPoint.cs" />
     <Compile Include="Spiro\Core\SpiroPointType.cs" />
     <Compile Include="Spiro\Core\SpiroSegment.cs" />
+    <Compile Include="Spiro\Spiro.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
