@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SpiroNet</RootNamespace>
     <AssemblyName>SpiroNet</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,13 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Spiro\Core\BandMatrix.cs" />
-    <Compile Include="Spiro\Core\IBezierContext.cs" />
-    <Compile Include="Spiro\Core\SpiroControlPoint.cs" />
-    <Compile Include="Spiro\Core\SpiroPointType.cs" />
-    <Compile Include="Spiro\Core\SpiroSegment.cs" />
-    <Compile Include="Spiro\PathBezierContext.cs" />
-    <Compile Include="Spiro\Spiro.cs" />
+    <Compile Include="BandMatrix.cs" />
+    <Compile Include="IBezierContext.cs" />
+    <Compile Include="SpiroControlPoint.cs" />
+    <Compile Include="SpiroPointType.cs" />
+    <Compile Include="SpiroSegment.cs" />
+    <Compile Include="PathBezierContext.cs" />
+    <Compile Include="Spiro.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
