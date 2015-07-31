@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spiro\Core\BandMatrix.cs" />
+    <Compile Include="Spiro\Core\IBezierContext.cs" />
     <Compile Include="Spiro\Core\SpiroControlPoint.cs" />
     <Compile Include="Spiro\Core\SpiroPointType.cs" />
     <Compile Include="Spiro\Core\SpiroSegment.cs" />
