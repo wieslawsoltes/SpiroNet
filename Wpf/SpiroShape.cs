@@ -20,6 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using SpiroNet;
 
 namespace SpiroNet.Wpf
@@ -30,5 +32,42 @@ namespace SpiroNet.Wpf
         public bool IsClosed { get; set; }
         public bool IsTagged { get; set; }
         public string Source { get; set; }
+
+        public static bool PointsToPath(SpiroShape shape)
+        {
+            var points = shape.Points.ToArray();
+            var bc = new PathBezierContext();
+
+            try
+            {
+                if (shape.IsTagged)
+                {
+                    var success = Spiro.TaggedSpiroCPsToBezier(points, bc);
+                    if (success)
+                        shape.Source = bc.ToString();
+                    else
+                        shape.Source = string.Empty;
+
+                    return success;
+                }
+                else
+                {
+                    var success = Spiro.SpiroCPsToBezier(points, points.Length, shape.IsClosed, bc);
+                    if (success)
+                        shape.Source = bc.ToString();
+                    else
+                        shape.Source = string.Empty;
+
+                    return success;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message);
+                Debug.Print(ex.StackTrace);
+            }
+
+            return false;
+        }
     }
 }
