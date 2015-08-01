@@ -143,8 +143,8 @@
                 </StackPanel>
             </GroupBox>
             <TextBlock Text="Mouse:" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
-            <TextBlock Text="Left  -> New Point" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
-            <TextBlock Text="Right -> New Shape" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="Left  -> Add Point" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="Right -> Finish Shape" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
         </StackPanel>
     </Grid>
 </UserControl>
