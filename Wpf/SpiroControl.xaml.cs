@@ -53,6 +53,7 @@ namespace SpiroNet.Wpf
             canvas.Shapes = new ObservableCollection<SpiroShape>();
             canvas.PreviewMouseLeftButtonDown += Canvas_PreviewMouseLeftButtonDown;
             canvas.PreviewMouseRightButtonDown += Canvas_PreviewMouseRightButtonDown;
+            canvas.PreviewMouseMove += Canvas_PreviewMouseMove;
         }
 
         private SpiroPointType GetSpiroPointType()
@@ -93,6 +94,15 @@ namespace SpiroNet.Wpf
             point.Y = p.Y;
             point.Type = GetSpiroPointType();
             _shape.Points.Add(point);
+        }
+
+        private void UpdateLastPoint(Point p)
+        {
+            var point = new SpiroControlPoint();
+            point.X = p.X;
+            point.Y = p.Y;
+            point.Type = GetSpiroPointType();
+            _shape.Points[_shape.Points.Count - 1] = point;
         }
 
         private static bool ConvertPointsToPath(SpiroShape shape)
@@ -139,7 +149,6 @@ namespace SpiroNet.Wpf
 
             NewPoint(e.GetPosition(canvas));
             ConvertPointsToPath(_shape);
-
             canvas.InvalidateVisual();
         }
 
@@ -147,7 +156,19 @@ namespace SpiroNet.Wpf
         {
             if (_shape != null)
             {
+                ConvertPointsToPath(_shape);
+                canvas.InvalidateVisual();
                 _shape = null;
+            }
+        }
+
+        private void Canvas_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (_shape != null && _shape.Points.Count > 1)
+            {
+                UpdateLastPoint(e.GetPosition(canvas));
+                ConvertPointsToPath(_shape);
+                canvas.InvalidateVisual();
             }
         }
     }
