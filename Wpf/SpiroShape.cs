@@ -33,30 +33,30 @@ namespace SpiroNet.Wpf
         public bool IsTagged { get; set; }
         public string Source { get; set; }
 
-        public static bool PointsToPath(SpiroShape shape)
+        public bool UpdateSource()
         {
-            var points = shape.Points.ToArray();
+            var points = this.Points.ToArray();
             var bc = new PathBezierContext();
 
             try
             {
-                if (shape.IsTagged)
+                if (this.IsTagged)
                 {
                     var success = Spiro.TaggedSpiroCPsToBezier(points, bc);
                     if (success)
-                        shape.Source = bc.ToString();
+                        this.Source = bc.ToString();
                     else
-                        shape.Source = string.Empty;
+                        this.Source = string.Empty;
 
                     return success;
                 }
                 else
                 {
-                    var success = Spiro.SpiroCPsToBezier(points, points.Length, shape.IsClosed, bc);
+                    var success = Spiro.SpiroCPsToBezier(points, points.Length, this.IsClosed, bc);
                     if (success)
-                        shape.Source = bc.ToString();
+                        this.Source = bc.ToString();
                     else
-                        shape.Source = string.Empty;
+                        this.Source = string.Empty;
 
                     return success;
                 }

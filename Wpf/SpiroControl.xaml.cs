@@ -111,7 +111,7 @@ namespace SpiroNet.Wpf
                 NewShape();
 
             NewPoint(e.GetPosition(canvas));
-            SpiroShape.PointsToPath(_shape);
+            _shape.UpdateSource();
             canvas.InvalidateVisual();
         }
 
@@ -119,7 +119,7 @@ namespace SpiroNet.Wpf
         {
             if (_shape != null)
             {
-                SpiroShape.PointsToPath(_shape);
+                _shape.UpdateSource();
                 canvas.InvalidateVisual();
                 _shape = null;
             }
@@ -130,7 +130,7 @@ namespace SpiroNet.Wpf
             if (_shape != null && _shape.Points.Count > 1)
             {
                 UpdateLastPoint(e.GetPosition(canvas));
-                SpiroShape.PointsToPath(_shape);
+                _shape.UpdateSource();
                 canvas.InvalidateVisual();
             }
         }
