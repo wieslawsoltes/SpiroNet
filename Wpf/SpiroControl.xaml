@@ -25,16 +25,22 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <local:SpiroCanvas x:Name="canvas" 
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <local:SpiroCanvas x:Name="canvas" 
                            Width="600" 
                            Height="600" 
                            Background="WhiteSmoke">
-        </local:SpiroCanvas>
+            </local:SpiroCanvas>
+        </ScrollViewer>
         <StackPanel VerticalAlignment="Center" 
                     HorizontalAlignment="Right"
                     Background="White">
             <StackPanel.Resources>
                 <Style TargetType="TextBlock">
+                    <Setter Property="FontFamily" Value="Consolas"/>
+                    <Setter Property="FontSize" Value="12"/>
+                </Style>
+                <Style TargetType="TextBox">
                     <Setter Property="FontFamily" Value="Consolas"/>
                     <Setter Property="FontSize" Value="12"/>
                 </Style>
@@ -51,6 +57,12 @@
                     <Setter Property="FontSize" Value="12"/>
                 </Style>
             </StackPanel.Resources>
+            <GroupBox Header="Canvas Size" Margin="4,2,4,2">
+                <StackPanel>
+                    <TextBox x:Name="widthTextBox" Text="{Binding ElementName=canvas, Path=Width, Mode=TwoWay}" Margin="1"/>
+                    <TextBox x:Name="heightTextBox" Text="{Binding ElementName=canvas, Path=Height, Mode=TwoWay}" Margin="1"/>
+                </StackPanel>
+            </GroupBox>
             <GroupBox Header="New Shape" Margin="4,2,4,2">
                 <StackPanel>
                     <CheckBox x:Name="isClosedCheckBox" VerticalContentAlignment="Center" Content="Is Clo_sed" Margin="1">
