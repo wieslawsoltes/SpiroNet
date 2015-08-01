@@ -105,50 +105,13 @@ namespace SpiroNet.Wpf
             _shape.Points[_shape.Points.Count - 1] = point;
         }
 
-        private static bool ConvertPointsToPath(SpiroShape shape)
-        {
-            var points = shape.Points.ToArray();
-            var bc = new PathBezierContext();
-
-            try
-            {
-                if (shape.IsTagged)
-                {
-                    var success = Spiro.TaggedSpiroCPsToBezier(points, bc);
-                    if (success)
-                        shape.Source = bc.ToString();
-                    else
-                        shape.Source = string.Empty;
-
-                    return success;
-                }
-                else
-                {
-                    var success = Spiro.SpiroCPsToBezier(points, points.Length, shape.IsClosed, bc);
-                    if (success)
-                        shape.Source = bc.ToString();
-                    else
-                        shape.Source = string.Empty;
-
-                    return success;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.Print(ex.Message);
-                Debug.Print(ex.StackTrace);
-            }
-
-            return false;
-        }
-
         private void Canvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (_shape == null)
                 NewShape();
 
             NewPoint(e.GetPosition(canvas));
-            ConvertPointsToPath(_shape);
+            SpiroShape.PointsToPath(_shape);
             canvas.InvalidateVisual();
         }
 
@@ -156,7 +119,7 @@ namespace SpiroNet.Wpf
         {
             if (_shape != null)
             {
-                ConvertPointsToPath(_shape);
+                SpiroShape.PointsToPath(_shape);
                 canvas.InvalidateVisual();
                 _shape = null;
             }
@@ -167,7 +130,7 @@ namespace SpiroNet.Wpf
             if (_shape != null && _shape.Points.Count > 1)
             {
                 UpdateLastPoint(e.GetPosition(canvas));
-                ConvertPointsToPath(_shape);
+                SpiroShape.PointsToPath(_shape);
                 canvas.InvalidateVisual();
             }
         }
