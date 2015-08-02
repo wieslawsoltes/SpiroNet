@@ -60,7 +60,6 @@
     <Compile Include="SpiroControl.xaml.cs">
       <DependentUpon>SpiroControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SpiroShape.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
