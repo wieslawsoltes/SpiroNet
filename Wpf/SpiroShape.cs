@@ -42,7 +42,7 @@ namespace SpiroNet.Wpf
             {
                 if (this.IsTagged)
                 {
-                    var success = Spiro.TaggedSpiroCPsToBezier(points, bc);
+                    var success = Spiro.TaggedSpiroCPsToBezier0(points, bc);
                     if (success)
                         this.Source = bc.ToString();
                     else
@@ -52,7 +52,7 @@ namespace SpiroNet.Wpf
                 }
                 else
                 {
-                    var success = Spiro.SpiroCPsToBezier(points, points.Length, this.IsClosed, bc);
+                    var success = Spiro.SpiroCPsToBezier0(points, points.Length, this.IsClosed, bc);
                     if (success)
                         this.Source = bc.ToString();
                     else
