@@ -756,7 +756,17 @@ namespace SpiroNet
             }
         }
 
-        public static bool SpiroCPsToBezier(SpiroControlPoint[] spiros, int n, bool isClosed, IBezierContext bc)
+        public static void SpiroCPsToBezier(SpiroControlPoint[] spiros, int n, bool isClosed, IBezierContext bc)
+        {
+            SpiroCPsToBezier0(spiros, n, isClosed, bc);
+        }
+
+        public static void TaggedSpiroCPsToBezier(SpiroControlPoint[] spiros, IBezierContext bc)
+        {
+            TaggedSpiroCPsToBezier0(spiros, bc);
+        }
+
+        public static bool SpiroCPsToBezier0(SpiroControlPoint[] spiros, int n, bool isClosed, IBezierContext bc)
         {
             SpiroSegment[] s;
 
@@ -784,7 +794,7 @@ namespace SpiroNet
             return false;
         }
 
-        public static bool TaggedSpiroCPsToBezier(SpiroControlPoint[] spiros, IBezierContext bc)
+        public static bool TaggedSpiroCPsToBezier0(SpiroControlPoint[] spiros, IBezierContext bc)
         {
             SpiroSegment[] s;
             int n;
@@ -806,6 +816,16 @@ namespace SpiroNet
             }
 
             return false;
+        }
+
+        public static void SpiroCPsToBezier1(SpiroControlPoint[] spiros, int n, bool isClosed, IBezierContext bc, out bool done)
+        {
+            done = SpiroCPsToBezier0(spiros, n, isClosed, bc);
+        }
+
+        public static void TaggedSpiroCPsToBezier1(SpiroControlPoint[] spiros, IBezierContext bc, out bool done)
+        {
+            done = TaggedSpiroCPsToBezier0(spiros, bc);
         }
     }
 }
