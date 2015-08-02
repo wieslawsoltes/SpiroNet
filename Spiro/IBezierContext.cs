@@ -23,12 +23,57 @@ using System;
 
 namespace SpiroNet
 {
+    /// <summary>
+    /// Abstract type that handles the creation of particular representation of bézier splines.
+    /// 
+    /// Spiro will convert a set of spiro control points into a set of bézier curves. 
+    /// 
+    /// As it does so it will call the appropriate routine in your bézier context with this information 
+    /// – this should allow you to create your own internal representation of those curves.
+    /// </summary>
     public interface IBezierContext
     {
+        /// <summary>
+        /// Called by spiro to start a contour.
+        /// </summary>
+        /// <param name="x">The X coordinate of the new start point.</param>
+        /// <param name="y">The Y coordinate of the new start point.</param>
+        /// <param name="isOpen">An boolean flag indicating wheter spline is open (True) or closed (False).</param>
         void MoveTo(double x, double y, bool isOpen);
+
+        /// <summary>
+        /// Called by spiro to move from the last point to the next one on a straight line.
+        /// </summary>
+        /// <param name="x">The X coordinate of the new end point.</param>
+        /// <param name="y">The Y coordinate of the new end point.</param>
         void LineTo(double x, double y);
+
+        /// <summary>
+        /// Called by spiro to move from the last point to the next along a quadratic bezier spline
+        /// (x1,y1) is the quadratic bezier control point and (x2,y2) will be the new end point.
+        /// </summary>
+        /// <param name="x1">The X coordinate of quadratic bezier bezier control point.</param>
+        /// <param name="y1">The Y coordinate of quadratic bezier bezier control point.</param>
+        /// <param name="x2">The X coordinate of the new end point.</param>
+        /// <param name="y2">The Y coordinate of the new end point.</param>
         void QuadTo(double x1, double y1, double x2, double y2);
+
+        /// <summary>
+        /// Called by spiro to move from the last point to the next along a cubic bezier spline
+        /// (x1,y1) and (x2,y2) are the two off-curve control point and (x3,y3) will be the new end point.
+        /// </summary>
+        /// <param name="x1">The X coordinate of first cubic bezier spline off-curve control point.</param>
+        /// <param name="y1">The Y coordinate of first cubic bezier spline off-curve control point.</param>
+        /// <param name="x2">The X coordinate of second cubic bezier spline off-curve control point.</param>
+        /// <param name="y2">The Y coordinate of second cubic bezier spline off-curve control point.</param>
+        /// <param name="x3">The X coordinate of the new end point.</param>
+        /// <param name="y3">The Y coordinate of the new end point.</param>
         void CurveTo(double x1, double y1, double x2, double y2, double x3, double y3);
+
+        /// <summary>
+        /// Called by spiro to mark current control point knot.
+        /// </summary>
+        /// <param name="knotIndex">The current spiros control point knot index.</param>
         void MarkKnot(int knotIndex);
     }
 }

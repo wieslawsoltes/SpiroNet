@@ -24,14 +24,40 @@ using System.Linq;
 
 namespace SpiroNet
 {
+    /// <summary>
+    /// The spiro shape used to generate Path data.
+    /// </summary>
     public class PathShape
     {
+        /// <summary>
+        /// Spiro control points array.
+        /// </summary>
         public IList<SpiroControlPoint> Points { get; set; }
-        public bool IsClosed { get; set; }
-        public bool IsTagged { get; set; }
-        public string Source { get; set; }
 
-        public bool UpdateSource()
+        /// <summary>
+        /// Is closed spiro shape.
+        /// Whether points describe a closed (True) or open (False) contour.
+        /// </summary>
+        public bool IsClosed { get; set; }
+
+        /// <summary>
+        /// Is tagged spiro shape.
+        /// This requires that spiro control points be tagged according to convention. A closed curve will have an extra control point attached to the end of it with a type of 'End'.
+        /// The location of this last point is irrelevant.
+        /// In an open contour the point types of the first and last control points are going to be ignored.
+        /// </summary>
+        public bool IsTagged { get; set; }
+
+        /// <summary>
+        /// The generated Path data.
+        /// </summary>
+        public string Data { get; set; }
+
+        /// <summary>
+        /// Generate Path shape data using path bezier context implementation.
+        /// </summary>
+        /// <returns>True when Data was generated successfully.</returns>
+        public bool UpdateData()
         {
             var points = this.Points.ToArray();
             var bc = new PathBezierContext();
@@ -40,9 +66,9 @@ namespace SpiroNet
             {
                 var success = Spiro.TaggedSpiroCPsToBezier0(points, bc);
                 if (success)
-                    this.Source = bc.ToString();
+                    this.Data = bc.ToString();
                 else
-                    this.Source = string.Empty;
+                    this.Data = string.Empty;
 
                 return success;
             }
@@ -50,9 +76,9 @@ namespace SpiroNet
             {
                 var success = Spiro.SpiroCPsToBezier0(points, points.Length, this.IsClosed, bc);
                 if (success)
-                    this.Source = bc.ToString();
+                    this.Data = bc.ToString();
                 else
-                    this.Source = string.Empty;
+                    this.Data = string.Empty;
 
                 return success;
             }

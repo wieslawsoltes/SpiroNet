@@ -23,15 +23,50 @@ using System;
 
 namespace SpiroNet
 {
+    /// <summary>
+    /// The run_spiro() uses array of information given in the spiro control point structure 
+    /// and creates an array in this structure format to use by spiro_to_bpath for building bezier curves.
+    /// </summary>
     public struct SpiroSegment
     {
+        /// <summary>
+        /// Spiro code point segment_chord startX.
+        /// </summary>
         public double X;
+
+        /// <summary>
+        /// Spiro code point segment_chord startY.
+        /// </summary>
         public double Y;
+
+        /// <summary>
+        /// Spiro code point Type.
+        /// </summary>
         public SpiroPointType Type;
+
+        /// <summary>
+        /// Bend theta between this vector and next vector.
+        /// </summary>
         public double bend_th;
-        public double[] ks; // new double[4]
+
+        /// <summary>
+        /// A double's array of size 4.
+        /// </summary>
+        public double[] ks;
+
+        /// <summary>
+        /// The segment_chord distance from xy to next spiro code point.
+        /// </summary>
         public double seg_ch;
+
+        /// <summary>
+        /// The segment_theta angle for this spiro code point.
+        /// </summary>
         public double seg_th;
+
+        /// <summary>
+        /// Unused.
+        /// </summary>
         public double l;
     }
 }

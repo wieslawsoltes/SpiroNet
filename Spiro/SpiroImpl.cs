@@ -25,15 +25,35 @@ using System;
 namespace SpiroNet
 {
     /// <summary>
-    /// Internal implementation of spiro.
+    /// C# implementation of third-order polynomial spirals.
+    /// Internal implementation of spiro using ORDER equal to 12.
     /// </summary>
     internal static class SpiroImpl
     {
+        /// <summary>
+        /// Compute hypotenuse. The function returns what would be the square root of the sum of the squares of x and y (as per the Pythagorean theorem), but without incurring in undue overflow or underflow of intermediate values.
+        /// </summary>
+        /// <param name="x">The X floating point value corresponding to the legs of a right-angled triangle for which the hypotenuse is computed.</param>
+        /// <param name="y">The Y floating point value corresponding to the legs of a right-angled triangle for which the hypotenuse is computed.</param>
+        /// <returns>Returns the hypotenuse of a right-angled triangle whose legs are x and y.</returns>
         public static double hypot(double x, double y)
         {
             return Math.Sqrt(x * x + y * y);
         }
 
+        /// <summary>
+        /// Returns whether x is a finite value.
+        /// A finite value is any floating-point value that is neither infinite nor NaN (Not-A-Number).
+        /// 
+        /// IsFinite() equivalent:
+        /// http://stackoverflow.com/questions/10030070/isfinite-equivalent
+        /// References:
+        /// http://pubs.opengroup.org/onlinepubs/009604499/functions/isfinite.html
+        /// http://msdn.microsoft.com/en-us/library/system.double.isinfinity.aspx
+        /// http://msdn.microsoft.com/en-us/library/system.double.isnan.aspx
+        /// </summary>
+        /// <param name="x">A floating-point value.</param>
+        /// <returns>A non-zero value (true) if x is finite; and zero (false) otherwise.</returns>
         public static int IsFinite(double x)
         {
             return !double.IsInfinity(x) && !double.IsNaN(x) ? 1 : 0;
@@ -41,6 +61,7 @@ namespace SpiroNet
 
         public const int N = 4;
 
+        // Integrate polynomial spiral curve over range -.5 .. .5.
         public static void integrate_spiro(double[] ks, double[] xy, int n)
         {
             double th1 = ks[0];
@@ -226,6 +247,7 @@ namespace SpiroNet
             SpiroSegment[] r;
 
 #if CHECK_INPUT_FINITENESS
+            // Verify that input values are within realistic limits
             for (i = 0; i < n; i++)
             {
                 if (IsFinite(src[i].X) == 0 || IsFinite(src[i].Y) == 0)
@@ -292,6 +314,7 @@ namespace SpiroNet
             int i, j, k, l, pivot;
             double pivot_val, pivot_scale, tmp, x;
 
+            // pack top triangle to the left.
             for (i = 0; i < 5; i++)
             {
                 for (j = 0; j < i + 6; j++)
@@ -352,6 +375,7 @@ namespace SpiroNet
             int i, k, l;
             double tmp, x;
 
+            // forward substitution
             l = 5;
 
             for (k = 0; k < n; k++)
@@ -372,6 +396,7 @@ namespace SpiroNet
                     v[i] -= m[k].al[i - k - 1] * v[k];
             }
 
+            // back substitution
             l = 1;
 
             for (i = n - 1; i >= 0; i--)
@@ -484,6 +509,7 @@ namespace SpiroNet
 
                 compute_pderivs(ref s[i], ends, derivs, jinc);
 
+                // constraints crossing left
                 if (ty0 == SpiroPointType.G4 || ty0 == SpiroPointType.G2 || ty0 == SpiroPointType.Left || ty0 == SpiroPointType.Right)
                 {
                     jthl = jj++;
@@ -498,6 +524,7 @@ namespace SpiroNet
                     }
                 }
 
+                // constraints on left
                 if ((ty0 == SpiroPointType.Left || ty0 == SpiroPointType.Corner || ty0 == SpiroPointType.OpenContour || ty0 == SpiroPointType.G2) && jinc == 4)
                 {
                     if (ty0 != SpiroPointType.G2)
@@ -506,6 +533,7 @@ namespace SpiroNet
                     jk2l = jj++;
                 }
 
+                // constraints on right
                 if ((ty1 == SpiroPointType.Right || ty1 == SpiroPointType.Corner || ty1 == SpiroPointType.EndOpenContour || ty1 == SpiroPointType.G2) && jinc == 4)
                 {
                     if (ty1 != SpiroPointType.G2)
@@ -514,6 +542,7 @@ namespace SpiroNet
                     jk2r = jj++;
                 }
 
+                // constraints crossing right
                 if (ty1 == SpiroPointType.G4 || ty1 == SpiroPointType.G2 || ty1 == SpiroPointType.Left || ty1 == SpiroPointType.Right)
                 {
                     jthr = jj;
@@ -583,6 +612,7 @@ namespace SpiroNet
 
         public static bool check_finiteness(SpiroSegment[] segs, int num_segs)
         {
+            // Check if all values are "finite", return true, else return fail=false
             int i, j;
 
             for (i = 0; i < num_segs; ++i)
@@ -605,7 +635,7 @@ namespace SpiroNet
             n_alloc = nmat;
 
             if (nmat == 0)
-                return 1;
+                return 1; // just means no convergence problems
             if (s[0].Type != SpiroPointType.OpenContour && s[0].Type != SpiroPointType.Corner)
                 n_alloc *= 3;
             if (n_alloc < 5)
@@ -621,7 +651,7 @@ namespace SpiroNet
             v = new double[n_alloc];
             perm = new int[n_alloc];
 
-            i = converged = 0;
+            i = converged = 0; // not solved (yet)
             if (m != null && v != null && perm != null)
             {
                 while (i++ < 60)
@@ -677,6 +707,7 @@ namespace SpiroNet
                 }
                 else
                 {
+                    // subdivide
                     ksub[0] = .5 * ks[0] - .125 * ks[1] + (1.0 / 64) * ks[2] - (1.0 / 768) * ks[3];
                     ksub[1] = .25 * ks[1] - (1.0 / 16) * ks[2] + (1.0 / 128) * ks[3];
                     ksub[2] = .125 * ks[2] - (1.0 / 32) * ks[3];
@@ -709,7 +740,7 @@ namespace SpiroNet
             if (s != null)
             {
                 nseg = src[0].Type == SpiroPointType.OpenContour ? n - 1 : n;
-                converged = 1;
+                converged = 1; // this value is for when nseg == 1; else actual value determined below
                 if (nseg > 1)
                     converged = solve_spiro(s, nseg);
 

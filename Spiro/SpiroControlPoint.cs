@@ -23,10 +23,24 @@ using System;
 
 namespace SpiroNet
 {
+    /// <summary>
+    /// User passes an array of spiros control points in this format for Spiro to solve.
+    /// </summary>
     public struct SpiroControlPoint
     {
+        /// <summary>
+        /// Spiro code point X location.
+        /// </summary>
         public double X;
+
+        /// <summary>
+        /// Spiro code point Y location.
+        /// </summary>
         public double Y;
+
+        /// <summary>
+        /// Spiro code point Type.
+        /// </summary>
         public SpiroPointType Type;
     }
 }
