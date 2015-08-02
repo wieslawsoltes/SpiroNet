@@ -131,7 +131,7 @@ namespace SpiroNet
         /// Mark current control point knot. Currenlty not implemented, may be usefull for marking generated curves to original spiro code points.
         /// </summary>
         /// <param name="knotIndex">The current spiros control point knot index.</param>
-        public void MarkKnot(int knot_idx)
+        public void MarkKnot(int knotIndex)
         {
         }
     }

@@ -57,7 +57,7 @@ namespace SpiroNet
         /// – this should allow you to create your own internal representation of those curves.
         /// The spiros array should indicate it's own end.
         /// Open contours must have the ty field of the first cp set to '{' and have the ty field of the last cp set to '}'.
-        /// Closed contours must have an extra cp at the end whose ty is 'z' the x&y values of this extra cp are ignored.
+        /// Closed contours must have an extra cp at the end whose ty is 'z' the x and y values of this extra cp are ignored.
         /// This function is kept for backwards compatibility for older programs. 
         /// Please use the functions that return success/failure replies when done.
         /// </summary>
@@ -135,7 +135,7 @@ namespace SpiroNet
         /// 
         /// Open contours must have the ty field of the first cp set to '{' and have the ty field of the last cp set to '}'.
         /// 
-        /// Closed contours must have an extra cp at the end whose ty is 'z' the x&y values of this extra cp are ignored.
+        /// Closed contours must have an extra cp at the end whose ty is 'z' the x and y values of this extra cp are ignored.
         /// </summary>
         /// <param name="spiros">An array of input spiros.</param>
         /// <param name="bc">A bézier results output context.</param>
@@ -220,7 +220,7 @@ namespace SpiroNet
         /// 
         /// Open contours must have the ty field of the first cp set to '{' and have the ty field of the last cp set to '}'.
         /// 
-        /// Closed contours must have an extra cp at the end whose ty is 'z' the x&y values of this extra cp are ignored.
+        /// Closed contours must have an extra cp at the end whose ty is 'z' the x and y values of this extra cp are ignored.
         /// 
         /// If you can't use TaggedSpiroCPsToBezier0() this function is enhanced version of the original function, 
         /// where spiro success/failure replies are passd back through done output parameter. 
