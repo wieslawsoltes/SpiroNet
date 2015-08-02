@@ -78,9 +78,9 @@ namespace SpiroNet.Wpf
             if (shape == null)
                 return;
 
-            if (!string.IsNullOrEmpty(shape.Source))
+            if (!string.IsNullOrEmpty(shape.Data))
             {
-                var geometry = Geometry.Parse(shape.Source);
+                var geometry = Geometry.Parse(shape.Data);
                 dc.DrawGeometry(shape.IsClosed ? _geometryBrush : null, _geometryPen, geometry);
             }
 

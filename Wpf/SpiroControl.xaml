@@ -58,7 +58,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <TextBox Text="{Binding ElementName=shapesListBox, Path=SelectedItem.Source, FallbackValue={x:Null}}"
+            <TextBox Text="{Binding ElementName=shapesListBox, Path=SelectedItem.Data, FallbackValue={x:Null}}"
                      AcceptsReturn="True"
                      AcceptsTab="True"
                      IsReadOnly="True"
