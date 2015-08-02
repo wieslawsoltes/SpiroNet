@@ -18,7 +18,7 @@ points[2].X = 100; points[2].Y = 0; points[2].Type = SpiroPointType.G4;
 points[3].X = 0; points[3].Y = -100; points[3].Type = SpiroPointType.G4;
 
 var bc = new PathBezierContext();
-var success = Spiro.SpiroCPsToBezier(points, 4, true, bc);
+var success = Spiro.SpiroCPsToBezier0(points, 4, true, bc);
 
 Console.WriteLine(bc);
 Console.WriteLine("Success: {0} ", success);
@@ -33,7 +33,7 @@ points[3].X = 0; points[3].Y = -100; points[3].Type = SpiroPointType.G4;
 points[4].X = 0; points[4].Y = 0; points[4].Type = SpiroPointType.End;
 
 var bc = new PathBezierContext();
-var success = Spiro.TaggedSpiroCPsToBezier(points, bc);
+var success = Spiro.TaggedSpiroCPsToBezier0(points, bc);
 
 Console.WriteLine(bc);
 Console.WriteLine("Success: {0} ", success);
@@ -47,7 +47,7 @@ points[2].X = 100; points[2].Y = 0; points[2].Type = SpiroPointType.G4;
 points[3].X = 0; points[3].Y = -100; points[3].Type = SpiroPointType.EndOpenContour;
 
 var bc = new PathBezierContext();
-var success = Spiro.TaggedSpiroCPsToBezier(points, bc);
+var success = Spiro.TaggedSpiroCPsToBezier0(points, bc);
 
 Console.WriteLine(bc);
 Console.WriteLine("Success: {0} ", success);
