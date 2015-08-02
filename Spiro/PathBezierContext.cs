@@ -34,7 +34,7 @@ namespace SpiroNet
             return value.ToString(CultureInfo.GetCultureInfo("en-GB"));
         }
 
-        public override string ToString()
+        public string GetData()
         {
             if (_needToClose)
             {
@@ -43,6 +43,11 @@ namespace SpiroNet
                 _needToClose = false;
             }
             return _sb.ToString();
+        }
+
+        public override string ToString()
+        {
+            return GetData();
         }
 
         public void MoveTo(double x, double y, bool isOpen)
