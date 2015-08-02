@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Wpf
+SpiroNet - bezier context implementation for Path Markup Syntax
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -20,13 +20,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using SpiroNet;
 
-namespace SpiroNet.Wpf
+namespace SpiroNet
 {
-    public class SpiroShape
+    public class PathShape
     {
         public IList<SpiroControlPoint> Points { get; set; }
         public bool IsClosed { get; set; }
@@ -38,36 +36,26 @@ namespace SpiroNet.Wpf
             var points = this.Points.ToArray();
             var bc = new PathBezierContext();
 
-            try
+            if (this.IsTagged)
             {
-                if (this.IsTagged)
-                {
-                    var success = Spiro.TaggedSpiroCPsToBezier0(points, bc);
-                    if (success)
-                        this.Source = bc.ToString();
-                    else
-                        this.Source = string.Empty;
-
-                    return success;
-                }
+                var success = Spiro.TaggedSpiroCPsToBezier0(points, bc);
+                if (success)
+                    this.Source = bc.ToString();
                 else
-                {
-                    var success = Spiro.SpiroCPsToBezier0(points, points.Length, this.IsClosed, bc);
-                    if (success)
-                        this.Source = bc.ToString();
-                    else
-                        this.Source = string.Empty;
+                    this.Source = string.Empty;
 
-                    return success;
-                }
+                return success;
             }
-            catch (Exception ex)
+            else
             {
-                Debug.Print(ex.Message);
-                Debug.Print(ex.StackTrace);
-            }
+                var success = Spiro.SpiroCPsToBezier0(points, points.Length, this.IsClosed, bc);
+                if (success)
+                    this.Source = bc.ToString();
+                else
+                    this.Source = string.Empty;
 
-            return false;
+                return success;
+            }
         }
     }
 }

@@ -40,7 +40,7 @@ namespace SpiroNet.Wpf
 {
     public partial class SpiroControl : UserControl
     {
-        private SpiroShape _shape = null;
+        private PathShape _shape = null;
 
         public SpiroControl()
         {
@@ -50,7 +50,7 @@ namespace SpiroNet.Wpf
 
         private void InitializeCanvas()
         {
-            canvas.Shapes = new ObservableCollection<SpiroShape>();
+            canvas.Shapes = new ObservableCollection<PathShape>();
             canvas.PreviewMouseLeftButtonDown += Canvas_PreviewMouseLeftButtonDown;
             canvas.PreviewMouseRightButtonDown += Canvas_PreviewMouseRightButtonDown;
             canvas.PreviewMouseMove += Canvas_PreviewMouseMove;
@@ -80,7 +80,7 @@ namespace SpiroNet.Wpf
 
         private void NewShape()
         {
-            _shape = new SpiroShape();
+            _shape = new PathShape();
             _shape.IsClosed = isClosedCheckBox.IsChecked == true;
             _shape.IsTagged = isTaggedCheckBox.IsChecked == true;
             _shape.Points = new ObservableCollection<SpiroControlPoint>();
@@ -105,13 +105,26 @@ namespace SpiroNet.Wpf
             _shape.Points[_shape.Points.Count - 1] = point;
         }
 
+        private void UpdateShape()
+        {
+            try
+            {
+                _shape.UpdateSource();
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message);
+                Debug.Print(ex.StackTrace);
+            }
+        }
+
         private void Canvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (_shape == null)
                 NewShape();
 
             NewPoint(e.GetPosition(canvas));
-            _shape.UpdateSource();
+            UpdateShape();
             canvas.InvalidateVisual();
         }
 
@@ -119,7 +132,7 @@ namespace SpiroNet.Wpf
         {
             if (_shape != null)
             {
-                _shape.UpdateSource();
+                UpdateShape();
                 canvas.InvalidateVisual();
                 _shape = null;
             }
@@ -130,7 +143,7 @@ namespace SpiroNet.Wpf
             if (_shape != null && _shape.Points.Count > 1)
             {
                 UpdateLastPoint(e.GetPosition(canvas));
-                _shape.UpdateSource();
+                UpdateShape();
                 canvas.InvalidateVisual();
             }
         }

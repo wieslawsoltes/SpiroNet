@@ -31,7 +31,7 @@ namespace SpiroNet.Wpf
 {
     public class SpiroCanvas : Canvas
     {
-        public IList<SpiroShape> Shapes { get; set; }
+        public IList<PathShape> Shapes { get; set; }
 
         private Brush _geometryBrush;
         private Brush _geometryPenBrush;
@@ -73,7 +73,7 @@ namespace SpiroNet.Wpf
             }
         }
 
-        private void DrawShape(DrawingContext dc, SpiroShape shape)
+        private void DrawShape(DrawingContext dc, PathShape shape)
         {
             if (shape == null)
                 return;
