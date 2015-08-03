@@ -53,11 +53,16 @@ namespace SpiroNet
 
         /// <summary>
         /// Convert a tagged set of spiro control points into a set of bézier curves.
+        ///
         /// As it does so it will call the appropriate routine in your bézier context with this information 
         /// – this should allow you to create your own internal representation of those curves.
+        ///
         /// The spiros array should indicate it's own end.
+        ///
         /// Open contours must have the ty field of the first cp set to '{' and have the ty field of the last cp set to '}'.
+        ///
         /// Closed contours must have an extra cp at the end whose ty is 'z' the x and y values of this extra cp are ignored.
+        ///
         /// This function is kept for backwards compatibility for older programs. 
         /// Please use the functions that return success/failure replies when done.
         /// </summary>
