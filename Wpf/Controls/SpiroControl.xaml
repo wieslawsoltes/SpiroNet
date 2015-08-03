@@ -44,15 +44,15 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Background="{x:Null}">
             <MenuItem Header="_File">
-                <MenuItem x:Name="fileNew" Header="_New"/>
+                <MenuItem x:Name="fileNew" Header="_New" InputGestureText="Ctrl+N"/>
                 <Separator/>
-                <MenuItem x:Name="fileOpen" Header="_Open..."/>
+                <MenuItem x:Name="fileOpen" Header="_Open..." InputGestureText="Ctrl+O"/>
                 <Separator/>
-                <MenuItem x:Name="fileSaveAs" Header="_Save As..."/>
+                <MenuItem x:Name="fileSaveAs" Header="_Save As..." InputGestureText="Ctrl+S"/>
                 <Separator/>
-                <MenuItem x:Name="fileExportAsSvg" Header="_Export As SVG..."/>
+                <MenuItem x:Name="fileExportAsSvg" Header="_Export As SVG..." InputGestureText="Ctrl+E"/>
                 <Separator/>
-                <MenuItem x:Name="fileExit" Header="E_xit"/>
+                <MenuItem x:Name="fileExit" Header="E_xit" InputGestureText="Alt+F4"/>
             </MenuItem>
         </Menu>
         <Grid Width="160"
@@ -103,7 +103,8 @@
                                Width="600" 
                                Height="600" 
                                Background="WhiteSmoke"
-                               Focusable="True">
+                               Focusable="True"
+                               FocusVisualStyle="{x:Null}">
             </local:SpiroCanvas>
         </ScrollViewer>
         <StackPanel VerticalAlignment="Center" 

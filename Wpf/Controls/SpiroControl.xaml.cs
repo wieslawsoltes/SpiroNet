@@ -368,6 +368,9 @@ namespace SpiroNet.Wpf
 
         private void UpdateData(PathShape shape)
         {
+            if (shape == null)
+                return;
+
             try
             {
                 if (canvas.Data.ContainsKey(shape))
@@ -438,97 +441,144 @@ namespace SpiroNet.Wpf
 
         private void SpiroControl_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (!canvas.IsFocused)
-                return;
-            
-            switch (e.Key) 
+            switch (e.Key)
             {
+                case Key.N:
+                    {
+                        if (Keyboard.Modifiers == ModifierKeys.Control)
+                        {
+                            New();
+                        }
+                    }
+                    break;
                 case Key.S:
                     {
-                        isClosedCheckBox.IsChecked = !(isClosedCheckBox.IsChecked == true);
-                        if (_shape != null)
+                        if (canvas.IsFocused && Keyboard.Modifiers == ModifierKeys.None)
                         {
-                            _shape.IsClosed = isClosedCheckBox.IsChecked == true;
-                            UpdateData(_shape);
-                            canvas.InvalidateVisual();
+                            isClosedCheckBox.IsChecked = !(isClosedCheckBox.IsChecked == true);
+                            if (_shape != null)
+                            {
+                                _shape.IsClosed = isClosedCheckBox.IsChecked == true;
+                                UpdateData(_shape);
+                                canvas.InvalidateVisual();
+                            }
+                        }
+
+                        if (Keyboard.Modifiers == ModifierKeys.Control)
+                        {
+                            SaveAs();
+                        }
+                    }
+                    break;
+                case Key.E:
+                    {
+                        if (Keyboard.Modifiers == ModifierKeys.Control)
+                        {
+                            ExportAsSvg();
                         }
                     }
                     break;
                 case Key.T:
                     {
-                        isTaggedCheckBox.IsChecked = !(isTaggedCheckBox.IsChecked == true);
-                        if (_shape != null)
+                        if (canvas.IsFocused && Keyboard.Modifiers == ModifierKeys.None)
                         {
-                            _shape.IsTagged = isTaggedCheckBox.IsChecked == true;
-                            UpdateData(_shape);
-                            canvas.InvalidateVisual();
+                            isTaggedCheckBox.IsChecked = !(isTaggedCheckBox.IsChecked == true);
+                            if (_shape != null)
+                            {
+                                _shape.IsTagged = isTaggedCheckBox.IsChecked == true;
+                                UpdateData(_shape);
+                                canvas.InvalidateVisual();
+                            } 
                         }
                     }
                     break;
                 case Key.V:
                     {
-                        cornerPointRadioButton.IsChecked = true;
-                        SetPreviousPointType(SpiroPointType.Corner);
-                        UpdateData(_shape);
-                        canvas.InvalidateVisual();
+                        if (canvas.IsFocused && Keyboard.Modifiers == ModifierKeys.None)
+                        {
+                            cornerPointRadioButton.IsChecked = true;
+                            SetPreviousPointType(SpiroPointType.Corner);
+                            UpdateData(_shape);
+                            canvas.InvalidateVisual(); 
+                        }
                     }
                     break;
                 case Key.O:
                     {
-                        g4PointRadioButton.IsChecked = true;
-                        SetPreviousPointType(SpiroPointType.G4);
-                        UpdateData(_shape);
-                        canvas.InvalidateVisual();
+                        if (canvas.IsFocused && Keyboard.Modifiers == ModifierKeys.None)
+                        {
+                            g4PointRadioButton.IsChecked = true;
+                            SetPreviousPointType(SpiroPointType.G4);
+                            UpdateData(_shape);
+                            canvas.InvalidateVisual();
+                        }
+
+                        if (Keyboard.Modifiers == ModifierKeys.Control)
+                        {
+                            Open();
+                        }
                     }
                     break;
                 case Key.C:
                     {
-                        g2PointRadioButton.IsChecked = true;
-                        SetPreviousPointType(SpiroPointType.G2);
-                        UpdateData(_shape);
-                        canvas.InvalidateVisual();
+                        if (canvas.IsFocused && Keyboard.Modifiers == ModifierKeys.None)
+                        {
+                            g2PointRadioButton.IsChecked = true;
+                            SetPreviousPointType(SpiroPointType.G2);
+                            UpdateData(_shape);
+                            canvas.InvalidateVisual(); 
+                        }
                     }
                     break;
                 case Key.OemOpenBrackets:
                     {
-                        if (Keyboard.Modifiers == ModifierKeys.Shift)
+                        if (canvas.IsFocused && Keyboard.Modifiers == ModifierKeys.None)
                         {
-                            openContourPointRadioButton.IsChecked = true;
-                            SetPreviousPointType(SpiroPointType.OpenContour);
-                        }
-                        else
-                        {
-                            leftPointRadioButton.IsChecked = true;
-                            SetPreviousPointType(SpiroPointType.Left);
-                        }
+                            if (Keyboard.Modifiers == ModifierKeys.Shift)
+                            {
+                                openContourPointRadioButton.IsChecked = true;
+                                SetPreviousPointType(SpiroPointType.OpenContour);
+                            }
+                            else
+                            {
+                                leftPointRadioButton.IsChecked = true;
+                                SetPreviousPointType(SpiroPointType.Left);
+                            }
 
-                        UpdateData(_shape);
-                        canvas.InvalidateVisual();
+                            UpdateData(_shape);
+                            canvas.InvalidateVisual(); 
+                        }
                     }
                     break;
                 case Key.OemCloseBrackets:
                     {
-                        if (Keyboard.Modifiers == ModifierKeys.Shift)
+                        if (canvas.IsFocused && Keyboard.Modifiers == ModifierKeys.None)
                         {
-                            endOpenContourPointRadioButton.IsChecked = true;
-                            SetPreviousPointType(SpiroPointType.EndOpenContour);
+                            if (Keyboard.Modifiers == ModifierKeys.Shift)
+                            {
+                                endOpenContourPointRadioButton.IsChecked = true;
+                                SetPreviousPointType(SpiroPointType.EndOpenContour);
+                            }
+                            else
+                            {
+                                rightPointRadioButton.IsChecked = true;
+                                SetPreviousPointType(SpiroPointType.Right);
+                            }
+
+                            UpdateData(_shape);
+                            canvas.InvalidateVisual(); 
                         }
-                        else
-                        {
-                            rightPointRadioButton.IsChecked = true;
-                            SetPreviousPointType(SpiroPointType.Right);
-                        }
- 
-                        UpdateData(_shape);
-                        canvas.InvalidateVisual();
                     }
                     break;
                 case Key.Z:
                     {
-                        endPointRadioButton.IsChecked = true;
-                        SetPreviousPointType(SpiroPointType.End);
-                        UpdateData(_shape);
-                        canvas.InvalidateVisual();
+                        if (canvas.IsFocused && Keyboard.Modifiers == ModifierKeys.None)
+                        {
+                            endPointRadioButton.IsChecked = true;
+                            SetPreviousPointType(SpiroPointType.End);
+                            UpdateData(_shape);
+                            canvas.InvalidateVisual(); 
+                        }
                     }
                     break;
             }
