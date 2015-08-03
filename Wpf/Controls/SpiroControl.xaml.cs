@@ -63,6 +63,15 @@ namespace SpiroNet.Wpf
             fileExit.Click += fileExit_Click;
         }
 
+        private void New()
+        {
+            canvas.Shapes = new ObservableCollection<PathShape>();
+            canvas.Data = new Dictionary<PathShape, string>();
+            canvas.InvalidateVisual();
+            BindingOperations.GetBindingExpressionBase(shapesListBox, ItemsControl.ItemsSourceProperty).UpdateTarget();
+            BindingOperations.GetBindingExpressionBase(dataTextBox, TextBox.TextProperty).UpdateTarget();
+        }
+
         private void Open(string path)
         {
             using (var f = System.IO.File.OpenText(path))
@@ -70,6 +79,18 @@ namespace SpiroNet.Wpf
                 var json = f.ReadToEnd();
                 var drawing = JsonSerializer.Deserialize<PathDrawing>(json);
                 Load(drawing);
+            }
+        }
+
+        private void Open()
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.Filter = "SPIRO Files (*.spiro)|*.spiro|All Files (*.*)|*.*";
+
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                Open(dlg.FileName);
             }
         }
 
@@ -104,7 +125,20 @@ namespace SpiroNet.Wpf
                 f.Write(json);
             }
         }
-        
+
+        private void SaveAs()
+        {
+            var dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.Filter = "SPIRO Files (*.spiro)|*.spiro|All Files (*.*)|*.*";
+            dlg.FileName = "drawing.spiro";
+
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                SaveAs(dlg.FileName);
+            }
+        }
+
         private void ExportAsSvg(string path)
         {
             using (var f = System.IO.File.CreateText(path))
@@ -130,41 +164,7 @@ namespace SpiroNet.Wpf
             }
         }
 
-        private void fileNew_Click(object sender, RoutedEventArgs e)
-        {
-            canvas.Shapes = new ObservableCollection<PathShape>();
-            canvas.Data = new Dictionary<PathShape, string>();
-            canvas.InvalidateVisual();
-            BindingOperations.GetBindingExpressionBase(shapesListBox, ItemsControl.ItemsSourceProperty).UpdateTarget();
-            BindingOperations.GetBindingExpressionBase(dataTextBox, TextBox.TextProperty).UpdateTarget();
-        }
-        
-        private void fileOpen_Click(object sender, RoutedEventArgs e)
-        {
-            var dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.Filter = "SPIRO Files (*.spiro)|*.spiro|All Files (*.*)|*.*";
-
-            var result = dlg.ShowDialog();
-            if (result == true)
-            {
-                Open(dlg.FileName);
-            }
-        }
-        
-        private void fileSaveAs_Click(object sender, RoutedEventArgs e)
-        {
-            var dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.Filter = "SPIRO Files (*.spiro)|*.spiro|All Files (*.*)|*.*";
-            dlg.FileName = "drawing.spiro";
-
-            var result = dlg.ShowDialog();
-            if (result == true)
-            {
-                SaveAs(dlg.FileName);
-            }
-        }
-        
-        private void fileExportAsSvg_Click(object sender, RoutedEventArgs e)
+        private void ExportAsSvg()
         {
             var dlg = new Microsoft.Win32.SaveFileDialog();
             dlg.Filter = "SVG Files (*.svg)|*.svg|All Files (*.*)|*.*";
@@ -176,7 +176,27 @@ namespace SpiroNet.Wpf
                 ExportAsSvg(dlg.FileName);
             }
         }
- 
+
+        private void fileNew_Click(object sender, RoutedEventArgs e)
+        {
+            New();
+        }
+
+        private void fileOpen_Click(object sender, RoutedEventArgs e)
+        {
+            Open();
+        }
+
+        private void fileSaveAs_Click(object sender, RoutedEventArgs e)
+        {
+            SaveAs();
+        }
+
+        private void fileExportAsSvg_Click(object sender, RoutedEventArgs e)
+        {
+            ExportAsSvg();
+        }
+
         private void fileExit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Windows[0].Close();
