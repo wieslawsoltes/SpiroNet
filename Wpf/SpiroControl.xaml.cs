@@ -69,23 +69,27 @@ namespace SpiroNet.Wpf
             {
                 var json = f.ReadToEnd();
                 var drawing = JsonSerializer.Deserialize<PathDrawing>(json);
-
-                canvas.Width = drawing.Width;
-                canvas.Height = drawing.Height;
-                canvas.Shapes = drawing.Shapes;
-                canvas.Data = new Dictionary<PathShape, string>();
-                
-                foreach (var shape in canvas.Shapes) 
-                {
-                    UpdateData(shape);
-                }
-                
-                canvas.InvalidateVisual();
-                BindingOperations.GetBindingExpressionBase(shapesListBox, ItemsControl.ItemsSourceProperty).UpdateTarget();
-                BindingOperations.GetBindingExpressionBase(dataTextBox, TextBox.TextProperty).UpdateTarget();
+                Load(drawing);
             }
         }
-        
+
+        private void Load(PathDrawing drawing)
+        {
+            canvas.Width = drawing.Width;
+            canvas.Height = drawing.Height;
+            canvas.Shapes = drawing.Shapes;
+            canvas.Data = new Dictionary<PathShape, string>();
+
+            foreach (var shape in canvas.Shapes)
+            {
+                UpdateData(shape);
+            }
+
+            canvas.InvalidateVisual();
+            BindingOperations.GetBindingExpressionBase(shapesListBox, ItemsControl.ItemsSourceProperty).UpdateTarget();
+            BindingOperations.GetBindingExpressionBase(dataTextBox, TextBox.TextProperty).UpdateTarget();
+        }
+
         private void SaveAs(string path)
         {
             using (var f = System.IO.File.CreateText(path))
@@ -210,56 +214,56 @@ namespace SpiroNet.Wpf
         
         private void cornerPointRadioButton_Click(object sender, RoutedEventArgs e)
         {
-            SetLastPointType(SpiroPointType.Corner);
+            SetPreviousPointType(SpiroPointType.Corner);
             UpdateData(_shape);
             canvas.InvalidateVisual();
         }
 
         private void g4PointRadioButton_Click(object sender, RoutedEventArgs e)
         {
-            SetLastPointType(SpiroPointType.G4);
+            SetPreviousPointType(SpiroPointType.G4);
             UpdateData(_shape);
             canvas.InvalidateVisual();
         }
         
         private void g2PointRadioButton_Click(object sender, RoutedEventArgs e)
         {
-            SetLastPointType(SpiroPointType.G2);
+            SetPreviousPointType(SpiroPointType.G2);
             UpdateData(_shape);
             canvas.InvalidateVisual();
         }
 
         private void leftPointRadioButton_Click(object sender, RoutedEventArgs e)
         {
-            SetLastPointType(SpiroPointType.Left);
+            SetPreviousPointType(SpiroPointType.Left);
             UpdateData(_shape);
             canvas.InvalidateVisual();
         }
 
         private void rightPointRadioButton_Click(object sender, RoutedEventArgs e)
         {
-            SetLastPointType(SpiroPointType.Right);
+            SetPreviousPointType(SpiroPointType.Right);
             UpdateData(_shape);
             canvas.InvalidateVisual();
         }
 
         private void endPointRadioButton_Click(object sender, RoutedEventArgs e)
         {
-            SetLastPointType(SpiroPointType.End);
+            SetPreviousPointType(SpiroPointType.End);
             UpdateData(_shape);
             canvas.InvalidateVisual();
         }
 
         private void openContourPointRadioButton_Click(object sender, RoutedEventArgs e)
         {
-            SetLastPointType(SpiroPointType.OpenContour);
+            SetPreviousPointType(SpiroPointType.OpenContour);
             UpdateData(_shape);
             canvas.InvalidateVisual();
         }
  
         private void endOpenContourPointRadioButton_Click(object sender, RoutedEventArgs e)
         {
-            SetLastPointType(SpiroPointType.EndOpenContour);
+            SetPreviousPointType(SpiroPointType.EndOpenContour);
             UpdateData(_shape);
             canvas.InvalidateVisual();
         }
@@ -325,17 +329,17 @@ namespace SpiroNet.Wpf
             _shape.Points[_shape.Points.Count - 1] = point;
         }
         
-        private void SetLastPointType(SpiroPointType type)
+        private void SetPreviousPointType(SpiroPointType type)
         {
-            if (_shape == null || _shape.Points.Count < 1)
+            if (_shape == null || _shape.Points.Count < 2)
                 return;
             
-            var old = _shape.Points[_shape.Points.Count - 1];
+            var old = _shape.Points[_shape.Points.Count - 2];
             var point = new SpiroControlPoint();
             point.X = old.X;
             point.Y = old.Y;
             point.Type = type;
-            _shape.Points[_shape.Points.Count - 1] = point;
+            _shape.Points[_shape.Points.Count - 2] = point;
         }
 
         private void UpdateData(PathShape shape)
@@ -440,7 +444,7 @@ namespace SpiroNet.Wpf
                 case Key.V:
                     {
                         cornerPointRadioButton.IsChecked = true;
-                        SetLastPointType(SpiroPointType.Corner);
+                        SetPreviousPointType(SpiroPointType.Corner);
                         UpdateData(_shape);
                         canvas.InvalidateVisual();
                     }
@@ -448,7 +452,7 @@ namespace SpiroNet.Wpf
                 case Key.O:
                     {
                         g4PointRadioButton.IsChecked = true;
-                        SetLastPointType(SpiroPointType.G4);
+                        SetPreviousPointType(SpiroPointType.G4);
                         UpdateData(_shape);
                         canvas.InvalidateVisual();
                     }
@@ -456,7 +460,7 @@ namespace SpiroNet.Wpf
                 case Key.C:
                     {
                         g2PointRadioButton.IsChecked = true;
-                        SetLastPointType(SpiroPointType.G2);
+                        SetPreviousPointType(SpiroPointType.G2);
                         UpdateData(_shape);
                         canvas.InvalidateVisual();
                     }
@@ -466,12 +470,12 @@ namespace SpiroNet.Wpf
                         if (Keyboard.Modifiers == ModifierKeys.Shift)
                         {
                             openContourPointRadioButton.IsChecked = true;
-                            SetLastPointType(SpiroPointType.OpenContour);
+                            SetPreviousPointType(SpiroPointType.OpenContour);
                         }
                         else
                         {
                             leftPointRadioButton.IsChecked = true;
-                            SetLastPointType(SpiroPointType.Left);
+                            SetPreviousPointType(SpiroPointType.Left);
                         }
 
                         UpdateData(_shape);
@@ -483,12 +487,12 @@ namespace SpiroNet.Wpf
                         if (Keyboard.Modifiers == ModifierKeys.Shift)
                         {
                             endOpenContourPointRadioButton.IsChecked = true;
-                            SetLastPointType(SpiroPointType.EndOpenContour);
+                            SetPreviousPointType(SpiroPointType.EndOpenContour);
                         }
                         else
                         {
                             rightPointRadioButton.IsChecked = true;
-                            SetLastPointType(SpiroPointType.Right);
+                            SetPreviousPointType(SpiroPointType.Right);
                         }
  
                         UpdateData(_shape);
@@ -498,7 +502,7 @@ namespace SpiroNet.Wpf
                 case Key.Z:
                     {
                         endPointRadioButton.IsChecked = true;
-                        SetLastPointType(SpiroPointType.End);
+                        SetPreviousPointType(SpiroPointType.End);
                         UpdateData(_shape);
                         canvas.InvalidateVisual();
                     }
