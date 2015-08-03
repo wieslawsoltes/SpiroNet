@@ -45,12 +45,229 @@ namespace SpiroNet.Wpf
         public SpiroControl()
         {
             InitializeComponent();
+            
+            InitializeMenu();
+            InitializeOptions();
             InitializeCanvas();
+            InitializeShortcuts();
+
+            Loaded += (sender, e) => canvas.Focus();
         }
 
+        private void InitializeMenu()
+        {
+            fileNew.Click += fileNew_Click;
+            fileOpen.Click += fileOpen_Click;
+            fileSaveAs.Click += fileSaveAs_Click;
+            fileExportAsSvg.Click += fileExportAsSvg_Click;
+            fileExit.Click += fileExit_Click;
+        }
+
+        private void Open(string path)
+        {
+            using (var f = System.IO.File.OpenText(path))
+            {
+                var json = f.ReadToEnd();
+                var drawing = JsonSerializer.Deserialize<PathDrawing>(json);
+
+                canvas.Width = drawing.Width;
+                canvas.Height = drawing.Height;
+                canvas.Shapes = drawing.Shapes;
+                canvas.Data = new Dictionary<PathShape, string>();
+                
+                foreach (var shape in canvas.Shapes) 
+                {
+                    UpdateData(shape);
+                }
+                
+                canvas.InvalidateVisual();
+                BindingOperations.GetBindingExpressionBase(shapesListBox, ItemsControl.ItemsSourceProperty).UpdateTarget();
+                BindingOperations.GetBindingExpressionBase(dataTextBox, TextBox.TextProperty).UpdateTarget();
+            }
+        }
+        
+        private void SaveAs(string path)
+        {
+            using (var f = System.IO.File.CreateText(path))
+            {
+                var drawing = new PathDrawing()
+                {
+                    Width = canvas.Width,
+                    Height = canvas.Height,
+                    Shapes = canvas.Shapes
+                };
+                var json = JsonSerializer.Serialize(drawing);
+                f.Write(json);
+            }
+        }
+        
+        private void ExportAsSvg(string path)
+        {
+            using (var f = System.IO.File.CreateText(path))
+            {
+                var sb = new StringBuilder();
+                var suffix = Environment.NewLine + "           ";
+
+                sb.AppendLine(string.Format("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"  width=\"{1}\" height=\"{0}\">", canvas.Width, canvas.Height));
+                foreach (var shape in canvas.Shapes)
+                {
+                    sb.AppendLine("  <path stroke=\"rgba(0,0,0,255)\"");
+                    sb.AppendLine("        stroke-width=\"2\"");
+                    sb.AppendLine(shape.IsClosed ? "        fill=\"rgba(128,128,128,128)\"" : "        fill=\"none\"");
+                    sb.AppendLine(string.Format("        d=\"{0}\"/>", canvas.Data[shape].Replace(Environment.NewLine, suffix)));
+                }
+                sb.AppendLine("</svg>");
+
+                f.Write(sb);
+            }
+        }
+
+        private void fileNew_Click(object sender, RoutedEventArgs e)
+        {
+            canvas.Shapes = new ObservableCollection<PathShape>();
+            canvas.Data = new Dictionary<PathShape, string>();
+            canvas.InvalidateVisual();
+            BindingOperations.GetBindingExpressionBase(shapesListBox, ItemsControl.ItemsSourceProperty).UpdateTarget();
+            BindingOperations.GetBindingExpressionBase(dataTextBox, TextBox.TextProperty).UpdateTarget();
+        }
+        
+        private void fileOpen_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.Filter = "SPIRO Files (*.spiro)|*.spiro|All Files (*.*)|*.*";
+
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                Open(dlg.FileName);
+            }
+        }
+        
+        private void fileSaveAs_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.Filter = "SPIRO Files (*.spiro)|*.spiro|All Files (*.*)|*.*";
+            dlg.FileName = "drawing.spiro";
+
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                SaveAs(dlg.FileName);
+            }
+        }
+        
+        private void fileExportAsSvg_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.Filter = "SVG Files (*.svg)|*.svg|All Files (*.*)|*.*";
+            dlg.FileName = "drawing.svg";
+
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                ExportAsSvg(dlg.FileName);
+            }
+        }
+ 
+        private void fileExit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Windows[0].Close();
+        }
+
+        private void InitializeOptions()
+        {
+            isClosedCheckBox.Click += isClosedCheckBox_Click;
+            isTaggedCheckBox.Click += isTaggedCheckBox_Click;
+            cornerPointRadioButton.Click += cornerPointRadioButton_Click;
+            g4PointRadioButton.Click += g4PointRadioButton_Click;
+            g2PointRadioButton.Click += g2PointRadioButton_Click;
+            leftPointRadioButton.Click += leftPointRadioButton_Click;
+            rightPointRadioButton.Click += rightPointRadioButton_Click;
+            endPointRadioButton.Click += endPointRadioButton_Click;
+            openContourPointRadioButton.Click += openContourPointRadioButton_Click;
+            endOpenContourPointRadioButton.Click += endOpenContourPointRadioButton_Click;
+        }
+ 
+        private void isClosedCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if (_shape != null)
+            {
+                _shape.IsClosed = isClosedCheckBox.IsChecked == true;
+                UpdateData(_shape);
+                canvas.InvalidateVisual();
+            }
+        }
+
+        private void isTaggedCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if (_shape != null)
+            {
+                _shape.IsTagged = isTaggedCheckBox.IsChecked == true;
+                UpdateData(_shape);
+                canvas.InvalidateVisual();
+            }
+        }
+        
+        private void cornerPointRadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            SetLastPointType(SpiroPointType.Corner);
+            UpdateData(_shape);
+            canvas.InvalidateVisual();
+        }
+
+        private void g4PointRadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            SetLastPointType(SpiroPointType.G4);
+            UpdateData(_shape);
+            canvas.InvalidateVisual();
+        }
+        
+        private void g2PointRadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            SetLastPointType(SpiroPointType.G2);
+            UpdateData(_shape);
+            canvas.InvalidateVisual();
+        }
+
+        private void leftPointRadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            SetLastPointType(SpiroPointType.Left);
+            UpdateData(_shape);
+            canvas.InvalidateVisual();
+        }
+
+        private void rightPointRadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            SetLastPointType(SpiroPointType.Right);
+            UpdateData(_shape);
+            canvas.InvalidateVisual();
+        }
+
+        private void endPointRadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            SetLastPointType(SpiroPointType.End);
+            UpdateData(_shape);
+            canvas.InvalidateVisual();
+        }
+
+        private void openContourPointRadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            SetLastPointType(SpiroPointType.OpenContour);
+            UpdateData(_shape);
+            canvas.InvalidateVisual();
+        }
+ 
+        private void endOpenContourPointRadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            SetLastPointType(SpiroPointType.EndOpenContour);
+            UpdateData(_shape);
+            canvas.InvalidateVisual();
+        }
+        
         private void InitializeCanvas()
         {
             canvas.Shapes = new ObservableCollection<PathShape>();
+            canvas.Data = new Dictionary<PathShape, string>();
             canvas.PreviewMouseLeftButtonDown += Canvas_PreviewMouseLeftButtonDown;
             canvas.PreviewMouseRightButtonDown += Canvas_PreviewMouseRightButtonDown;
             canvas.PreviewMouseMove += Canvas_PreviewMouseMove;
@@ -96,20 +313,55 @@ namespace SpiroNet.Wpf
             _shape.Points.Add(point);
         }
 
-        private void UpdateLastPoint(Point p)
+        private void SetLastPointPosition(Point p)
         {
+            if (_shape == null || _shape.Points.Count < 1)
+                return;
+            
             var point = new SpiroControlPoint();
             point.X = p.X;
             point.Y = p.Y;
             point.Type = GetSpiroPointType();
             _shape.Points[_shape.Points.Count - 1] = point;
         }
+        
+        private void SetLastPointType(SpiroPointType type)
+        {
+            if (_shape == null || _shape.Points.Count < 1)
+                return;
+            
+            var old = _shape.Points[_shape.Points.Count - 1];
+            var point = new SpiroControlPoint();
+            point.X = old.X;
+            point.Y = old.Y;
+            point.Type = type;
+            _shape.Points[_shape.Points.Count - 1] = point;
+        }
 
-        private void UpdateData()
+        private void UpdateData(PathShape shape)
         {
             try
             {
-                _shape.UpdateData();
+                if (canvas.Data.ContainsKey(shape))
+                {
+                    string data;
+                    if (shape.TryGetData(out data))
+                    {
+                        canvas.Data[shape] = data;
+                    }
+                    else
+                    {
+                        canvas.Data[shape] = null;
+                    }
+                }
+                else
+                {
+                    string data;
+                    if (shape.TryGetData(out data))
+                    {
+                        canvas.Data.Add(shape, data);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -120,19 +372,21 @@ namespace SpiroNet.Wpf
 
         private void Canvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            canvas.Focus();
             if (_shape == null)
                 NewShape();
 
             NewPoint(e.GetPosition(canvas));
-            UpdateData();
+            UpdateData(_shape);
             canvas.InvalidateVisual();
         }
 
         private void Canvas_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            canvas.Focus();
             if (_shape != null)
             {
-                UpdateData();
+                UpdateData(_shape);
                 canvas.InvalidateVisual();
                 _shape = null;
             }
@@ -140,11 +394,115 @@ namespace SpiroNet.Wpf
 
         private void Canvas_PreviewMouseMove(object sender, MouseEventArgs e)
         {
+            canvas.Focus();
             if (_shape != null && _shape.Points.Count > 1)
             {
-                UpdateLastPoint(e.GetPosition(canvas));
-                UpdateData();
+                SetLastPointPosition(e.GetPosition(canvas));
+                UpdateData(_shape);
                 canvas.InvalidateVisual();
+            }
+        }
+        
+        private void InitializeShortcuts()
+        {
+            PreviewKeyDown += SpiroControl_PreviewKeyDown;;
+        }
+
+        private void SpiroControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!canvas.IsFocused)
+                return;
+            
+            switch (e.Key) 
+            {
+                case Key.S:
+                    {
+                        isClosedCheckBox.IsChecked = !(isClosedCheckBox.IsChecked == true);
+                        if (_shape != null)
+                        {
+                            _shape.IsClosed = isClosedCheckBox.IsChecked == true;
+                            UpdateData(_shape);
+                            canvas.InvalidateVisual();
+                        }
+                    }
+                    break;
+                case Key.T:
+                    {
+                        isTaggedCheckBox.IsChecked = !(isTaggedCheckBox.IsChecked == true);
+                        if (_shape != null)
+                        {
+                            _shape.IsTagged = isTaggedCheckBox.IsChecked == true;
+                            UpdateData(_shape);
+                            canvas.InvalidateVisual();
+                        }
+                    }
+                    break;
+                case Key.V:
+                    {
+                        cornerPointRadioButton.IsChecked = true;
+                        SetLastPointType(SpiroPointType.Corner);
+                        UpdateData(_shape);
+                        canvas.InvalidateVisual();
+                    }
+                    break;
+                case Key.O:
+                    {
+                        g4PointRadioButton.IsChecked = true;
+                        SetLastPointType(SpiroPointType.G4);
+                        UpdateData(_shape);
+                        canvas.InvalidateVisual();
+                    }
+                    break;
+                case Key.C:
+                    {
+                        g2PointRadioButton.IsChecked = true;
+                        SetLastPointType(SpiroPointType.G2);
+                        UpdateData(_shape);
+                        canvas.InvalidateVisual();
+                    }
+                    break;
+                case Key.OemOpenBrackets:
+                    {
+                        if (Keyboard.Modifiers == ModifierKeys.Shift)
+                        {
+                            openContourPointRadioButton.IsChecked = true;
+                            SetLastPointType(SpiroPointType.OpenContour);
+                        }
+                        else
+                        {
+                            leftPointRadioButton.IsChecked = true;
+                            SetLastPointType(SpiroPointType.Left);
+                        }
+
+                        UpdateData(_shape);
+                        canvas.InvalidateVisual();
+                    }
+                    break;
+                case Key.OemCloseBrackets:
+                    {
+                        if (Keyboard.Modifiers == ModifierKeys.Shift)
+                        {
+                            endOpenContourPointRadioButton.IsChecked = true;
+                            SetLastPointType(SpiroPointType.EndOpenContour);
+                        }
+                        else
+                        {
+                            rightPointRadioButton.IsChecked = true;
+                            SetLastPointType(SpiroPointType.Right);
+                        }
+ 
+                        UpdateData(_shape);
+                        canvas.InvalidateVisual();
+                    }
+                    break;
+                case Key.Z:
+                    {
+                        endPointRadioButton.IsChecked = true;
+                        SetLastPointType(SpiroPointType.End);
+                        UpdateData(_shape);
+                        canvas.InvalidateVisual();
+                    }
+                    break;
             }
         }
     }
