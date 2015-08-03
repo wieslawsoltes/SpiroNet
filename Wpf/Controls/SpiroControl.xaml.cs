@@ -206,14 +206,14 @@ namespace SpiroNet.Wpf
         {
             isClosedCheckBox.Click += isClosedCheckBox_Click;
             isTaggedCheckBox.Click += isTaggedCheckBox_Click;
-            cornerPointRadioButton.Click += cornerPointRadioButton_Click;
-            g4PointRadioButton.Click += g4PointRadioButton_Click;
-            g2PointRadioButton.Click += g2PointRadioButton_Click;
-            leftPointRadioButton.Click += leftPointRadioButton_Click;
-            rightPointRadioButton.Click += rightPointRadioButton_Click;
-            endPointRadioButton.Click += endPointRadioButton_Click;
-            openContourPointRadioButton.Click += openContourPointRadioButton_Click;
-            endOpenContourPointRadioButton.Click += endOpenContourPointRadioButton_Click;
+            //cornerPointRadioButton.Click += cornerPointRadioButton_Click;
+            //g4PointRadioButton.Click += g4PointRadioButton_Click;
+            //g2PointRadioButton.Click += g2PointRadioButton_Click;
+            //leftPointRadioButton.Click += leftPointRadioButton_Click;
+            //rightPointRadioButton.Click += rightPointRadioButton_Click;
+            //endPointRadioButton.Click += endPointRadioButton_Click;
+            //openContourPointRadioButton.Click += openContourPointRadioButton_Click;
+            //endOpenContourPointRadioButton.Click += endOpenContourPointRadioButton_Click;
         }
  
         private void isClosedCheckBox_Click(object sender, RoutedEventArgs e)
@@ -497,9 +497,9 @@ namespace SpiroNet.Wpf
                         if (canvas.IsFocused && Keyboard.Modifiers == ModifierKeys.None)
                         {
                             cornerPointRadioButton.IsChecked = true;
-                            SetPreviousPointType(SpiroPointType.Corner);
-                            UpdateData(_shape);
-                            canvas.InvalidateVisual(); 
+                            //SetPreviousPointType(SpiroPointType.Corner);
+                            //UpdateData(_shape);
+                            //canvas.InvalidateVisual(); 
                         }
                     }
                     break;
@@ -508,9 +508,9 @@ namespace SpiroNet.Wpf
                         if (canvas.IsFocused && Keyboard.Modifiers == ModifierKeys.None)
                         {
                             g4PointRadioButton.IsChecked = true;
-                            SetPreviousPointType(SpiroPointType.G4);
-                            UpdateData(_shape);
-                            canvas.InvalidateVisual();
+                            //SetPreviousPointType(SpiroPointType.G4);
+                            //UpdateData(_shape);
+                            //canvas.InvalidateVisual();
                         }
 
                         if (Keyboard.Modifiers == ModifierKeys.Control)
@@ -524,9 +524,9 @@ namespace SpiroNet.Wpf
                         if (canvas.IsFocused && Keyboard.Modifiers == ModifierKeys.None)
                         {
                             g2PointRadioButton.IsChecked = true;
-                            SetPreviousPointType(SpiroPointType.G2);
-                            UpdateData(_shape);
-                            canvas.InvalidateVisual(); 
+                            //SetPreviousPointType(SpiroPointType.G2);
+                            //UpdateData(_shape);
+                            //canvas.InvalidateVisual(); 
                         }
                     }
                     break;
@@ -537,16 +537,16 @@ namespace SpiroNet.Wpf
                             if (Keyboard.Modifiers == ModifierKeys.Shift)
                             {
                                 openContourPointRadioButton.IsChecked = true;
-                                SetPreviousPointType(SpiroPointType.OpenContour);
+                                //SetPreviousPointType(SpiroPointType.OpenContour);
                             }
                             else
                             {
                                 leftPointRadioButton.IsChecked = true;
-                                SetPreviousPointType(SpiroPointType.Left);
+                                //SetPreviousPointType(SpiroPointType.Left);
                             }
 
-                            UpdateData(_shape);
-                            canvas.InvalidateVisual(); 
+                            //UpdateData(_shape);
+                            //canvas.InvalidateVisual(); 
                         }
                     }
                     break;
@@ -557,16 +557,16 @@ namespace SpiroNet.Wpf
                             if (Keyboard.Modifiers == ModifierKeys.Shift)
                             {
                                 endOpenContourPointRadioButton.IsChecked = true;
-                                SetPreviousPointType(SpiroPointType.EndOpenContour);
+                                //SetPreviousPointType(SpiroPointType.EndOpenContour);
                             }
                             else
                             {
                                 rightPointRadioButton.IsChecked = true;
-                                SetPreviousPointType(SpiroPointType.Right);
+                                //SetPreviousPointType(SpiroPointType.Right);
                             }
 
-                            UpdateData(_shape);
-                            canvas.InvalidateVisual(); 
+                            //UpdateData(_shape);
+                            //canvas.InvalidateVisual(); 
                         }
                     }
                     break;
@@ -575,9 +575,9 @@ namespace SpiroNet.Wpf
                         if (canvas.IsFocused && Keyboard.Modifiers == ModifierKeys.None)
                         {
                             endPointRadioButton.IsChecked = true;
-                            SetPreviousPointType(SpiroPointType.End);
-                            UpdateData(_shape);
-                            canvas.InvalidateVisual(); 
+                            //SetPreviousPointType(SpiroPointType.End);
+                            //UpdateData(_shape);
+                            //canvas.InvalidateVisual(); 
                         }
                     }
                     break;
