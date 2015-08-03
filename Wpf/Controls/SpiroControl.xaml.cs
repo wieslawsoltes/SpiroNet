@@ -112,14 +112,18 @@ namespace SpiroNet.Wpf
                 var sb = new StringBuilder();
                 var suffix = Environment.NewLine + "           ";
 
-                sb.AppendLine(string.Format("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"  width=\"{1}\" height=\"{0}\">", canvas.Width, canvas.Height));
+                sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
+                sb.AppendLine(string.Format("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"{1}\" height=\"{0}\">", canvas.Width, canvas.Height));
+
                 foreach (var shape in canvas.Shapes)
                 {
-                    sb.AppendLine("  <path stroke=\"rgba(0,0,0,255)\"");
-                    sb.AppendLine("        stroke-width=\"2\"");
-                    sb.AppendLine(shape.IsClosed ? "        fill=\"rgba(128,128,128,128)\"" : "        fill=\"none\"");
+                    sb.AppendLine(string.Format("  <path {0}", 
+                        shape.IsClosed ?
+                        "style=\"fill-rule:nonzero;stroke:#000000;stroke-opacity:1;stroke-width:2;fill:#808080;fill-opacity:0.5\"" :
+                        "style=\"fill-rule:nonzero;stroke:#000000;stroke-opacity:1;stroke-width:2;fill:none\""));
                     sb.AppendLine(string.Format("        d=\"{0}\"/>", canvas.Data[shape].Replace(Environment.NewLine, suffix)));
                 }
+
                 sb.AppendLine("</svg>");
 
                 f.Write(sb);
