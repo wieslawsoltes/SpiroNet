@@ -32,6 +32,7 @@ namespace SpiroNet.Wpf
     public class SpiroCanvas : Canvas
     {
         public IList<PathShape> Shapes { get; set; }
+        public IDictionary<PathShape, string> Data { get; set; }
 
         private Brush _geometryBrush;
         private Brush _geometryPenBrush;
@@ -78,18 +79,19 @@ namespace SpiroNet.Wpf
             if (shape == null)
                 return;
 
-            if (!string.IsNullOrEmpty(shape.Data))
+            string data;
+            if (Data.TryGetValue(shape, out data) && !string.IsNullOrEmpty(data))
             {
-                var geometry = Geometry.Parse(shape.Data);
+                var geometry = Geometry.Parse(data);
                 dc.DrawGeometry(shape.IsClosed ? _geometryBrush : null, _geometryPen, geometry);
             }
 
-            if (shape.Points == null)
-                return;
-
-            foreach (var point in shape.Points)
+            if (shape.Points != null)
             {
-                dc.DrawEllipse(_pointBrush, null, new Point(point.X, point.Y), 4.0, 4.0);
+                foreach (var point in shape.Points)
+                {
+                    dc.DrawEllipse(_pointBrush, null, new Point(point.X, point.Y), 4.0, 4.0);
+                }
             }
         }
     }

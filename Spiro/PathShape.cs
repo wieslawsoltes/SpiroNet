@@ -49,15 +49,10 @@ namespace SpiroNet
         public bool IsTagged { get; set; }
 
         /// <summary>
-        /// The generated Path data.
+        /// Try to generate Path shape data from Points using path bezier context implementation.
         /// </summary>
-        public string Data { get; set; }
-
-        /// <summary>
-        /// Generate Path shape data using path bezier context implementation.
-        /// </summary>
-        /// <returns>True when Data was generated successfully.</returns>
-        public bool UpdateData()
+        /// <returns>True when output data was generated successfully.</returns>
+        public bool TryGetData(out string data)
         {
             var points = this.Points.ToArray();
             var bc = new PathBezierContext();
@@ -66,9 +61,9 @@ namespace SpiroNet
             {
                 var success = Spiro.TaggedSpiroCPsToBezier0(points, bc);
                 if (success)
-                    this.Data = bc.ToString();
+                    data = bc.ToString();
                 else
-                    this.Data = string.Empty;
+                    data = null;
 
                 return success;
             }
@@ -76,9 +71,9 @@ namespace SpiroNet
             {
                 var success = Spiro.SpiroCPsToBezier0(points, points.Length, this.IsClosed, bc);
                 if (success)
-                    this.Data = bc.ToString();
+                    data = bc.ToString();
                 else
-                    this.Data = string.Empty;
+                    data = null;
 
                 return success;
             }
