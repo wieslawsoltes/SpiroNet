@@ -31,13 +31,23 @@ namespace SpiroNet.Wpf
 {
     public class SpiroCanvas : Canvas
     {
-        public IList<PathShape> Shapes { get; set; }
-        public IDictionary<PathShape, string> Data { get; set; }
-
         private Brush _geometryBrush;
         private Brush _geometryPenBrush;
         private Pen _geometryPen;
         private Brush _pointBrush;
+
+        public SpiroContext Context
+        {
+            get { return (SpiroContext)GetValue(ContextProperty); }
+            set { SetValue(ContextProperty, value); }
+        }
+
+        public static readonly DependencyProperty ContextProperty =
+            DependencyProperty.Register(
+                "Context", 
+                typeof(SpiroContext), 
+                typeof(SpiroCanvas), 
+                new PropertyMetadata(null));
 
         public SpiroCanvas()
         {
@@ -65,10 +75,10 @@ namespace SpiroNet.Wpf
 
         private void DrawShapes(DrawingContext dc)
         {
-            if (Shapes == null)
+            if (Context == null || Context.Shapes == null)
                 return;
 
-            foreach (var shape in Shapes)
+            foreach (var shape in Context.Shapes)
             {
                 DrawShape(dc, shape);
             }
@@ -76,11 +86,11 @@ namespace SpiroNet.Wpf
 
         private void DrawShape(DrawingContext dc, PathShape shape)
         {
-            if (shape == null)
+            if (shape == null || Context == null || Context.Data == null)
                 return;
 
             string data;
-            if (Data.TryGetValue(shape, out data) && !string.IsNullOrEmpty(data))
+            if (Context.Data.TryGetValue(shape, out data) && !string.IsNullOrEmpty(data))
             {
                 var geometry = Geometry.Parse(data);
                 dc.DrawGeometry(shape.IsClosed ? _geometryBrush : null, _geometryPen, geometry);
