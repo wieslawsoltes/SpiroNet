@@ -35,6 +35,7 @@ namespace SpiroNet.Wpf
         private Brush _geometryPenBrush;
         private Pen _geometryPen;
         private Brush _pointBrush;
+        private Brush _hitPointBrush;
 
         public SpiroContext Context
         {
@@ -64,6 +65,8 @@ namespace SpiroNet.Wpf
             _geometryPen.Freeze();
             _pointBrush = new SolidColorBrush(Color.FromArgb(128, 255, 0, 0));
             _pointBrush.Freeze();
+            _hitPointBrush = new SolidColorBrush(Color.FromArgb(128, 255, 255, 0));
+            _hitPointBrush.Freeze();
         }
 
         protected override void OnRender(DrawingContext dc)
@@ -98,9 +101,16 @@ namespace SpiroNet.Wpf
 
             if (shape.Points != null)
             {
-                foreach (var point in shape.Points)
+                var hitShape = Context.HitShape;
+                var hitShapePointIndex = Context.HitShapePointIndex;
+
+                for (int i = 0; i < shape.Points.Count; i++)
                 {
-                    dc.DrawEllipse(_pointBrush, null, new Point(point.X, point.Y), 4.0, 4.0);
+                    var point = shape.Points[i];
+                    if (shape == hitShape && i == hitShapePointIndex)
+                        dc.DrawEllipse(_hitPointBrush, null, new Point(point.X, point.Y), 4.0, 4.0);
+                    else
+                        dc.DrawEllipse(_pointBrush, null, new Point(point.X, point.Y), 4.0, 4.0);
                 }
             }
         }

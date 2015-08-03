@@ -27,16 +27,52 @@ using System.Windows.Input;
 
 namespace SpiroNet.Wpf
 {
+    public enum Mode { None, Create, Move, Selected }
+
     public class SpiroContext : ObservableObject
     {
+        private Mode _mode = Mode.Create;
         private PathShape _shape = null;
-        private double _width;
-        private double _height;
-        private bool _isClosed;
-        private bool _isTagged;
-        private SpiroPointType _pointType;
-        private IList<PathShape> _shapes;
-        private IDictionary<PathShape, string> _data;
+        private double _hitTresholdSquared = 49;
+        private PathShape _hitShape = null;
+        private int _hitShapePointIndex = -1;
+        private double _width = 600;
+        private double _height = 600;
+        private bool _isClosed = false;
+        private bool _isTagged = false;
+        private SpiroPointType _pointType = SpiroPointType.G4;
+        private IList<PathShape> _shapes = null;
+        private IDictionary<PathShape, string> _data = null;
+
+        public Mode Mode
+        {
+            get { return _mode; }
+            set { Update(ref _mode, value); }
+        }
+
+        public PathShape Shape
+        {
+            get { return _shape; }
+            set { Update(ref _shape, value); }
+        }
+
+        public double HitTresholdSquared
+        {
+            get { return _hitTresholdSquared; }
+            set { Update(ref _hitTresholdSquared, value); }
+        }
+
+        public PathShape HitShape
+        {
+            get { return _hitShape; }
+            set { Update(ref _hitShape, value); }
+        }
+
+        public int HitShapePointIndex
+        {
+            get { return _hitShapePointIndex; }
+            set { Update(ref _hitShapePointIndex, value); }
+        }
 
         public double Width
         {
@@ -152,11 +188,16 @@ namespace SpiroNet.Wpf
             if (_shape == null || _shape.Points.Count < 1)
                 return;
 
+            SetPointPosition(_shape, _shape.Points.Count - 1, x, y);
+        }
+
+        private void SetPointPosition(PathShape shape, int index, double x, double y)
+        {
             var point = new SpiroControlPoint();
             point.X = x;
             point.Y = y;
             point.Type = PointType;
-            _shape.Points[_shape.Points.Count - 1] = point;
+            shape.Points[index] = point;
         }
 
         private void SetLastPointType(SpiroPointType type)
@@ -207,17 +248,56 @@ namespace SpiroNet.Wpf
             }
         }
 
-        public void Left(double x, double y)
+        public void LeftDown(double x, double y)
         {
             if (_shape == null)
-                NewShape();
+            {
+                PathShape hitShape;
+                int hitShapePointIndex;
+                var result = HitTest(x, y, out hitShape, out hitShapePointIndex);
+                if (result)
+                {
+                    _hitShape = hitShape;
+                    _hitShapePointIndex = hitShapePointIndex;
+                    _mode = Mode.Move;
+                    Invalidate();
+                    return;
+                }
+                else
+                {
+                    if (_hitShape != null)
+                    {
+                        _hitShape = null;
+                        _hitShapePointIndex = -1;
+                        _mode = Mode.Create;
+                        Invalidate();
+                        return;
+                    }
+                }
+            }
 
-            NewPoint(x, y);
-            UpdateData(_shape);
-            Invalidate();
+            if (_mode == Mode.Create)
+            {
+                if (_shape == null)
+                {
+                    NewShape();
+                }
+
+                NewPoint(x, y);
+                UpdateData(_shape);
+                Invalidate();
+            }
         }
 
-        public void Right(double x, double y)
+        public void LeftUp(double x, double y)
+        {
+            if (_mode == Mode.Move)
+            {
+                _mode = Mode.Selected;
+            }
+        }
+
+        public void RightDown(double x, double y)
         {
             if (_shape != null)
             {
@@ -225,15 +305,83 @@ namespace SpiroNet.Wpf
                 Invalidate();
                 _shape = null;
             }
+            else
+            {
+                if (_hitShape != null)
+                {
+                    _hitShape = null;
+                    _hitShapePointIndex = -1;
+                    _mode = Mode.Create;
+                    Invalidate();
+                }
+            }
+        }
+
+        private double DistanceSquared(double x0, double y0, double x1, double y1)
+        {
+            double dx = x0 - x1;
+            double dy = y0 - y1;
+            return dx * dx + dy * dy;
+        }
+
+        private bool HitTest(double x, double y, out PathShape hitShape, out int hitShapePointIndex)
+        {
+            foreach (var shape in _shapes)
+            {
+                for (int i = 0; i < shape.Points.Count; i++)
+                {
+                    var point = shape.Points[i];
+                    var distance = DistanceSquared(x, y, point.X, point.Y);
+                    if (distance < _hitTresholdSquared)
+                    {
+                        hitShape = shape;
+                        hitShapePointIndex = i;
+                        return true;
+                    }
+                }
+            }
+            hitShape = null;
+            hitShapePointIndex = -1;
+            return false;
         }
 
         public void Move(double x, double y)
         {
-            if (_shape != null && _shape.Points.Count > 1)
+            if (_shape != null)
             {
-                SetLastPointPosition(x, y);
-                UpdateData(_shape);
-                Invalidate();
+                if (_shape.Points.Count > 1)
+                {
+                    SetLastPointPosition(x, y);
+                    UpdateData(_shape);
+                    Invalidate();
+                }
+            }
+            else
+            {
+                if (_mode == Mode.Move)
+                {
+                    SetPointPosition(_hitShape, _hitShapePointIndex, x, y);
+                    UpdateData(_hitShape);
+                    Invalidate();
+                }
+                else if (_mode == Mode.Create)
+                {
+                    PathShape hitShape;
+                    int hitShapePointIndex;
+                    var result = HitTest(x, y, out hitShape, out hitShapePointIndex);
+                    if (result)
+                    {
+                        _hitShape = hitShape;
+                        _hitShapePointIndex = hitShapePointIndex;
+                        Invalidate();
+                    }
+                    else
+                    {
+                        _hitShape = null;
+                        _hitShapePointIndex = -1;
+                        Invalidate();
+                    }
+                }
             }
         }
 

@@ -46,6 +46,7 @@ namespace SpiroNet.Wpf
             InitializeComponent();
 
             canvas.PreviewMouseLeftButtonDown += Canvas_PreviewMouseLeftButtonDown;
+            canvas.PreviewMouseLeftButtonUp += Canvas_PreviewMouseLeftButtonUp;
             canvas.PreviewMouseRightButtonDown += Canvas_PreviewMouseRightButtonDown;
             canvas.PreviewMouseMove += Canvas_PreviewMouseMove;
 
@@ -85,14 +86,20 @@ namespace SpiroNet.Wpf
         {
             canvas.Focus();
             var point = e.GetPosition(canvas);
-            _context.Left(point.X, point.Y);
+            _context.LeftDown(point.X, point.Y);
+        }
+
+        private void Canvas_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var point = e.GetPosition(canvas);
+            _context.LeftUp(point.X, point.Y);
         }
 
         private void Canvas_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             canvas.Focus();
             var point = e.GetPosition(canvas);
-            _context.Right(point.X, point.Y);
+            _context.RightDown(point.X, point.Y);
         }
 
         private void Canvas_PreviewMouseMove(object sender, MouseEventArgs e)
