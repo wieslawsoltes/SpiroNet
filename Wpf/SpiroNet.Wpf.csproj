@@ -59,8 +59,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="JsonSerializer.cs" />
-    <Compile Include="ObservableCollectionContractResolver.cs" />
+    <Compile Include="Json\JsonSerializer.cs" />
+    <Compile Include="Json\ObservableCollectionContractResolver.cs" />
     <Compile Include="ShapeToDataConverter.cs" />
     <Compile Include="SpiroCanvas.cs" />
     <Compile Include="SpiroControl.xaml.cs">
