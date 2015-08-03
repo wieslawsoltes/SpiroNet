@@ -61,7 +61,7 @@
     </ApplicationDefinition>
     <Compile Include="Json\JsonSerializer.cs" />
     <Compile Include="Json\ObservableCollectionContractResolver.cs" />
-    <Compile Include="ShapeToDataConverter.cs" />
+    <Compile Include="Converters\ShapeToDataConverter.cs" />
     <Compile Include="Controls\SpiroCanvas.cs" />
     <Compile Include="Controls\SpiroControl.xaml.cs">
       <DependentUpon>SpiroControl.xaml</DependentUpon>
