@@ -59,6 +59,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Contexts\SpiroContext.cs" />
+    <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Json\JsonSerializer.cs" />
     <Compile Include="Json\ObservableCollectionContractResolver.cs" />
     <Compile Include="Converters\ShapeToDataConverter.cs" />
@@ -66,6 +68,11 @@
     <Compile Include="Controls\SpiroControl.xaml.cs">
       <DependentUpon>SpiroControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Path\PathBezierContext.cs" />
+    <Compile Include="Path\PathDrawing.cs" />
+    <Compile Include="Path\PathShape.cs" />
+    <Compile Include="Util\Command.cs" />
+    <Compile Include="Util\ObservableObject.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
