@@ -45,9 +45,9 @@
   <ItemGroup>
     <Compile Include="BandMatrix.cs" />
     <Compile Include="IBezierContext.cs" />
-    <Compile Include="PathBezierContext.cs" />
-    <Compile Include="PathDrawing.cs" />
-    <Compile Include="PathShape.cs" />
+    <Compile Include="Path\PathBezierContext.cs" />
+    <Compile Include="Path\PathDrawing.cs" />
+    <Compile Include="Path\PathShape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spiro.cs" />
     <Compile Include="SpiroControlPoint.cs" />
