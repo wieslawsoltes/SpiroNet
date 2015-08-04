@@ -96,7 +96,10 @@ namespace SpiroNet.Wpf
             if (Context.Data.TryGetValue(shape, out data) && !string.IsNullOrEmpty(data))
             {
                 var geometry = Geometry.Parse(data);
-                dc.DrawGeometry(shape.IsClosed ? _geometryBrush : null, _geometryPen, geometry);
+                dc.DrawGeometry(
+                    shape.IsFilled ? _geometryBrush : null, 
+                    shape.IsStroked ? _geometryPen : null, 
+                    geometry);
             }
 
             if (shape.Points != null)

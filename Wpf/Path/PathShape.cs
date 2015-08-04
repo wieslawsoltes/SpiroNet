@@ -29,9 +29,29 @@ namespace SpiroNet.Wpf
     /// </summary>
     public class PathShape : ObservableObject
     {
+        private bool _isStroked;
+        private bool _isFilled;
         private bool _isClosed;
         private bool _isTagged;
         private IList<SpiroControlPoint> _points;
+
+        /// <summary>
+        /// Is stroked path shape.
+        /// </summary>
+        public bool IsStroked
+        {
+            get { return _isStroked; }
+            set { Update(ref _isStroked, value); }
+        }
+
+        /// <summary>
+        /// Is filled path shape.
+        /// </summary>
+        public bool IsFilled
+        {
+            get { return _isFilled; }
+            set { Update(ref _isFilled, value); }
+        }
 
         /// <summary>
         /// Is closed spiro shape.

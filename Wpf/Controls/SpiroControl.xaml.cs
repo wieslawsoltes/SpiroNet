@@ -63,6 +63,8 @@ namespace SpiroNet.Wpf
             {
                 Width = 600,
                 Height = 600,
+                IsStroked = true,
+                IsFilled = false,
                 IsClosed = false,
                 IsTagged = false,
                 PointType = SpiroPointType.G4,
@@ -77,6 +79,8 @@ namespace SpiroNet.Wpf
             _context.SaveAsCommand = Command.Create(SaveAs);
             _context.ExportAsSvgCommand = Command.Create(ExportAsSvg);
             _context.ExitCommand = Command.Create(Exit);
+            _context.IsStrokedCommand = Command.Create(_context.ToggleIsStroked);
+            _context.IsFilledCommand = Command.Create(_context.ToggleIsFilled);
             _context.IsClosedCommand = Command.Create(_context.ToggleIsClosed);
             _context.IsTaggedCommand = Command.Create(_context.ToggleIsTagged);
             _context.PointTypeCommand = Command<string>.Create(_context.TogglePointType);
@@ -118,25 +122,47 @@ namespace SpiroNet.Wpf
         private void Open()
         {
             var dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.Filter = "Spiro Files (*.spiro)|*.spiro|All Files (*.*)|*.*";
+            dlg.Filter = "Spiro Files (*.spiro)|*.spiro|Plate Files (*.plate)|*.plate|All Files (*.*)|*.*";
 
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                _context.Open(dlg.FileName);
+                switch (dlg.FilterIndex)
+                {
+                    case 1:
+                        _context.OpenDrawing(dlg.FileName);
+                        break;
+                    case 2:
+                        _context.OpenPlate(dlg.FileName);
+                        break;
+                    default:
+                        _context.OpenDrawing(dlg.FileName);
+                        break;
+                }
             }
         }
 
         private void SaveAs()
         {
             var dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.Filter = "Spiro Files (*.spiro)|*.spiro|All Files (*.*)|*.*";
+            dlg.Filter = "Spiro Files (*.spiro)|*.spiro|Plate Files (*.plate)|*.plate|All Files (*.*)|*.*";
             dlg.FileName = "drawing.spiro";
 
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                _context.SaveAs(dlg.FileName);
+                switch (dlg.FilterIndex)
+                {
+                    case 1:
+                        _context.SaveAsDrawing(dlg.FileName);
+                        break;
+                    case 2:
+                        _context.SaveAsPlate(dlg.FileName);
+                        break;
+                    default:
+                        _context.SaveAsDrawing(dlg.FileName);
+                        break;
+                }
             }
         }
 

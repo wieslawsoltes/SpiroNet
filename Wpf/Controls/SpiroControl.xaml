@@ -116,7 +116,9 @@
                                Focusable="True"
                                FocusVisualStyle="{x:Null}">
                 <local:SpiroCanvas.InputBindings>
-                    <KeyBinding Command="{Binding IsClosedCommand}" Key="S" Modifiers=""/>
+                    <KeyBinding Command="{Binding IsStrokedCommand}" Key="K" Modifiers=""/>
+                    <KeyBinding Command="{Binding IsFilledCommand}" Key="F" Modifiers=""/>
+                    <KeyBinding Command="{Binding IsClosedCommand}" Key="D" Modifiers=""/>
                     <KeyBinding Command="{Binding IsTaggedCommand}" Key="T" Modifiers=""/>
                     <KeyBinding Command="{Binding PointTypeCommand}" CommandParameter="Corner" Key="V" Modifiers=""/>
                     <KeyBinding Command="{Binding PointTypeCommand}" CommandParameter="G4" Key="O" Modifiers=""/>
@@ -141,7 +143,30 @@
             </GroupBox>
             <GroupBox Header="New Shape" Margin="4,2,4,2">
                 <StackPanel>
-                    <CheckBox IsChecked="{Binding IsClosed}" VerticalContentAlignment="Center" Content="Is Closed  's'" Margin="1">
+                    <CheckBox IsChecked="{Binding IsStroked}" 
+                              VerticalContentAlignment="Center" 
+                              Content="Is Stroked      k" 
+                              Margin="1">
+                        <CheckBox.ToolTip>
+                            <StackPanel>
+                                <TextBlock Text="Is stroked path shape" FontWeight="Bold"/>
+                            </StackPanel>
+                        </CheckBox.ToolTip>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding IsFilled}" 
+                              VerticalContentAlignment="Center" 
+                              Content="Is Filled       f" 
+                              Margin="1">
+                        <CheckBox.ToolTip>
+                            <StackPanel>
+                                <TextBlock Text="Is filled path shape" FontWeight="Bold"/>
+                            </StackPanel>
+                        </CheckBox.ToolTip>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding IsClosed}" 
+                              VerticalContentAlignment="Center" 
+                              Content="Is Closed       d" 
+                              Margin="1">
                         <CheckBox.ToolTip>
                             <StackPanel>
                                 <TextBlock Text="Is closed spiro shape" FontWeight="Bold"/>
@@ -149,7 +174,10 @@
                             </StackPanel>
                         </CheckBox.ToolTip>
                     </CheckBox>
-                    <CheckBox IsChecked="{Binding IsTagged}" VerticalContentAlignment="Center" Content="Is Tagged  't'" Margin="1">
+                    <CheckBox IsChecked="{Binding IsTagged}" 
+                              VerticalContentAlignment="Center"
+                              Content="Is Tagged       t" 
+                              Margin="1">
                         <CheckBox.ToolTip>
                             <StackPanel>
                                 <TextBlock Text="Is tagged spiro shape" FontWeight="Bold"/>
@@ -165,7 +193,7 @@
                 <StackPanel>
                     <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.Corner}}"
                                  VerticalContentAlignment="Center" 
-                                 Content="Corner          'v'" 
+                                 Content="Corner          v" 
                                  Margin="1">
                         <RadioButton.ToolTip>
                             <StackPanel>
@@ -176,7 +204,7 @@
                     </RadioButton>
                     <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.G4}}"
                                  VerticalContentAlignment="Center" 
-                                 Content="G4              'o'" 
+                                 Content="G4              o" 
                                  Margin="1">
                         <RadioButton.ToolTip>
                             <StackPanel>
@@ -187,7 +215,7 @@
                     </RadioButton>
                     <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.G2}}"
                                  VerticalContentAlignment="Center" 
-                                 Content="G2              'c'" 
+                                 Content="G2              c" 
                                  Margin="1">
                         <RadioButton.ToolTip>
                             <StackPanel>
@@ -198,7 +226,7 @@
                     </RadioButton>
                     <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.Left}}"
                                  VerticalContentAlignment="Center" 
-                                 Content="Left            '['" 
+                                 Content="Left            [" 
                                  Margin="1">
                         <RadioButton.ToolTip>
                             <StackPanel>
@@ -209,7 +237,7 @@
                     </RadioButton>
                     <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.Right}}"
                                  VerticalContentAlignment="Center" 
-                                 Content="Right           ']'" 
+                                 Content="Right           ]" 
                                  Margin="1">
                         <RadioButton.ToolTip>
                             <StackPanel>
@@ -221,7 +249,7 @@
                     </RadioButton>
                     <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.End}}"
                                  VerticalContentAlignment="Center" 
-                                 Content="End             'z'" 
+                                 Content="End             z" 
                                  Margin="1">
                         <RadioButton.ToolTip>
                             <StackPanel>
@@ -232,7 +260,7 @@
                     </RadioButton>
                     <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.OpenContour}}" 
                                  VerticalContentAlignment="Center" 
-                                 Content="OpenContour     '{'" 
+                                 Content="OpenContour     {" 
                                  Margin="1">
                         <RadioButton.ToolTip>
                             <StackPanel>
@@ -243,7 +271,7 @@
                     </RadioButton>
                     <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.EndOpenContour}}"
                                  VerticalContentAlignment="Center" 
-                                 Content="EndOpenContour  '}'" 
+                                 Content="EndOpenContour  }" 
                                  Margin="1">
                         <RadioButton.ToolTip>
                             <StackPanel>
@@ -257,17 +285,20 @@
             <TextBlock Text="Mouse:" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
             <TextBlock Text="Left  -> Add Point" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
             <TextBlock Text="Right -> Finish Shape" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
-            <TextBlock Text="Script:" TextAlignment="Left" Foreground="Black" Margin="4,4,4,0"/>
+            <TextBlock Text="Script/plate:" TextAlignment="Left" Foreground="Black" Margin="4,4,4,0"/>
             <TextBox x:Name="scriptTextBox"
                      AcceptsReturn="True"
                      AcceptsTab="True"
                      IsReadOnly="False"
-                     Height="240"
+                     Height="180"
                      VerticalScrollBarVisibility="Auto"
                      HorizontalScrollBarVisibility="Auto"
                      Margin="4,0,4,0">
             </TextBox>
-            <Button Content="Run" Command="{Binding ExecuteScriptCommand}" CommandParameter="{Binding ElementName=scriptTextBox, Path=Text}" Margin="4,4,4,0"/>
+            <Button Content="Run" Command="{Binding ExecuteScriptCommand}" 
+                    CommandParameter="{Binding ElementName=scriptTextBox, Path=Text}" 
+                    Margin="4,4,4,0">
+            </Button>
         </StackPanel>
     </Grid>
 </UserControl>
