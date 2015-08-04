@@ -22,6 +22,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
@@ -132,6 +134,8 @@ namespace SpiroNet.Wpf
 
         public ICommand PointTypeCommand { get; set; }
 
+        public ICommand ExecuteScriptCommand { get; set; }
+        
         public Action Invalidate { get; set; }
 
         public void ToggleIsClosed()
@@ -196,7 +200,7 @@ namespace SpiroNet.Wpf
             var point = new SpiroControlPoint();
             point.X = x;
             point.Y = y;
-            point.Type = PointType;
+            point.Type = shape.Points[index].Type;
             shape.Points[index] = point;
         }
 
@@ -455,6 +459,121 @@ namespace SpiroNet.Wpf
 
                 f.Write(sb);
             }
+        }
+  
+        private SpiroControlPoint ToPoint(SpiroPointType type, string x, string y)
+        {
+            var point = new SpiroControlPoint();
+            point.X = double.Parse(x, CultureInfo.GetCultureInfo("en-GB").NumberFormat);
+            point.Y = double.Parse(y, CultureInfo.GetCultureInfo("en-GB").NumberFormat);
+            point.Type = type;
+            return point;
+        }
+
+        public void ExecuteScript(string script)
+        {
+            if (string.IsNullOrEmpty(script))
+                return;
+
+            var newLine = Environment.NewLine.ToCharArray();
+            var separator = new char[] { ' ', '\t' };
+            var options = StringSplitOptions.RemoveEmptyEntries;
+            var lines = script.Split(newLine, options).Select(x => x.Trim().Split(separator, options));
+
+            var shape = new PathShape() { IsClosed = false, IsTagged = true, Points = new ObservableCollection<SpiroControlPoint>() };
+
+            foreach (var line in lines)
+            {
+                switch (line[0][0])
+                {
+                    case 'v':
+                        {
+                            if (line.Length == 3)
+                                shape.Points.Add(ToPoint(SpiroPointType.Corner, line[1], line[2]));
+                            else
+                                throw new FormatException();
+                        }
+                        break;
+                    case 'o':
+                        {
+                            if (line.Length == 3)
+                                shape.Points.Add(ToPoint(SpiroPointType.G4, line[1], line[2]));
+                            else
+                                throw new FormatException();
+                        }
+                        break;
+                    case 'c':
+                        {
+                            if (line.Length == 3)
+                                shape.Points.Add(ToPoint(SpiroPointType.G2, line[1], line[2]));
+                            else
+                                throw new FormatException();
+                        }
+                        break;
+                    case '[':
+                        {
+                            if (line.Length == 3)
+                                shape.Points.Add(ToPoint(SpiroPointType.Left, line[1], line[2]));
+                            else
+                                throw new FormatException();
+                        }
+                        break;
+                    case ']':
+                        {
+                            if (line.Length == 3)
+                                shape.Points.Add(ToPoint(SpiroPointType.Right, line[1], line[2]));
+                            else
+                                throw new FormatException();
+                        }
+                        break;
+                    case 'z':
+                        {
+                            if (line.Length == 1)
+                                 shape.Points.Add(ToPoint(SpiroPointType.End, "0", "0"));
+                            else if (line.Length == 3)
+                                shape.Points.Add(ToPoint(SpiroPointType.End, line[1], line[2]));
+                            else
+                                throw new FormatException();
+
+                            Shapes.Add(shape);
+                            UpdateData(shape);
+                            shape = new PathShape() { IsClosed = false, IsTagged = true, Points = new ObservableCollection<SpiroControlPoint>() };
+                        }
+                        break;
+                    case '{':
+                        {
+                            if (line.Length == 3)
+                                shape.Points.Add(ToPoint(SpiroPointType.OpenContour, line[1], line[2]));
+                            else
+                                throw new FormatException();
+                        }
+                        break;
+                    case '}':
+                        {
+                            if (line.Length == 3)
+                                shape.Points.Add(ToPoint(SpiroPointType.EndOpenContour, line[1], line[2]));
+                            else
+                                throw new FormatException();
+                            
+                            Shapes.Add(shape);
+                            UpdateData(shape);
+                            shape = new PathShape() { IsClosed = false, IsTagged = true, Points = new ObservableCollection<SpiroControlPoint>() };
+                        }
+                        break;
+                    default: 
+                        throw new FormatException();
+                }
+            }
+
+            if (shape != null)
+            {
+                shape.IsTagged = false;
+                Shapes.Add(shape);
+                UpdateData(shape);
+                shape = null;
+            }
+
+            Invalidate(); 
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SpiroNet.Wpf.SpiroControl"
+<UserControl x:Class="SpiroNet.Wpf.SpiroControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -257,6 +257,17 @@
             <TextBlock Text="Mouse:" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
             <TextBlock Text="Left  -> Add Point" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
             <TextBlock Text="Right -> Finish Shape" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="Script:" TextAlignment="Left" Foreground="Black" Margin="4,4,4,0"/>
+            <TextBox x:Name="scriptTextBox"
+                     AcceptsReturn="True"
+                     AcceptsTab="True"
+                     IsReadOnly="False"
+                     Height="240"
+                     VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Auto"
+                     Margin="4,0,4,0">
+            </TextBox>
+            <Button Content="Run" Command="{Binding ExecuteScriptCommand}" CommandParameter="{Binding ElementName=scriptTextBox, Path=Text}" Margin="4,4,4,0"/>
         </StackPanel>
     </Grid>
 </UserControl>

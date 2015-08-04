@@ -80,6 +80,7 @@ namespace SpiroNet.Wpf
             _context.IsClosedCommand = Command.Create(_context.ToggleIsClosed);
             _context.IsTaggedCommand = Command.Create(_context.ToggleIsTagged);
             _context.PointTypeCommand = Command<string>.Create(_context.TogglePointType);
+            _context.ExecuteScriptCommand = Command<string>.Create(_context.ExecuteScript);
         }
 
         private void Canvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
