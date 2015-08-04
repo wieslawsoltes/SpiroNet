@@ -460,7 +460,17 @@ namespace SpiroNet.Wpf
                 f.Write(sb);
             }
         }
-  
+
+        private PathShape NewTaggedShape()
+        {
+            return new PathShape()
+            {
+                IsClosed = false,
+                IsTagged = true,
+                Points = new ObservableCollection<SpiroControlPoint>()
+            };
+        }
+
         private SpiroControlPoint ToPoint(SpiroPointType type, string x, string y)
         {
             var point = new SpiroControlPoint();
@@ -480,7 +490,7 @@ namespace SpiroNet.Wpf
             var options = StringSplitOptions.RemoveEmptyEntries;
             var lines = script.Split(newLine, options).Select(x => x.Trim().Split(separator, options));
 
-            var shape = new PathShape() { IsClosed = false, IsTagged = true, Points = new ObservableCollection<SpiroControlPoint>() };
+            PathShape shape = null;
 
             foreach (var line in lines)
             {
@@ -488,6 +498,9 @@ namespace SpiroNet.Wpf
                 {
                     case 'v':
                         {
+                            if (shape == null)
+                                shape = NewTaggedShape();
+
                             if (line.Length == 3)
                                 shape.Points.Add(ToPoint(SpiroPointType.Corner, line[1], line[2]));
                             else
@@ -496,6 +509,9 @@ namespace SpiroNet.Wpf
                         break;
                     case 'o':
                         {
+                            if (shape == null)
+                                shape = NewTaggedShape();
+
                             if (line.Length == 3)
                                 shape.Points.Add(ToPoint(SpiroPointType.G4, line[1], line[2]));
                             else
@@ -504,6 +520,9 @@ namespace SpiroNet.Wpf
                         break;
                     case 'c':
                         {
+                            if (shape == null)
+                                shape = NewTaggedShape();
+
                             if (line.Length == 3)
                                 shape.Points.Add(ToPoint(SpiroPointType.G2, line[1], line[2]));
                             else
@@ -512,6 +531,9 @@ namespace SpiroNet.Wpf
                         break;
                     case '[':
                         {
+                            if (shape == null)
+                                shape = NewTaggedShape();
+
                             if (line.Length == 3)
                                 shape.Points.Add(ToPoint(SpiroPointType.Left, line[1], line[2]));
                             else
@@ -520,6 +542,9 @@ namespace SpiroNet.Wpf
                         break;
                     case ']':
                         {
+                            if (shape == null)
+                                shape = NewTaggedShape();
+
                             if (line.Length == 3)
                                 shape.Points.Add(ToPoint(SpiroPointType.Right, line[1], line[2]));
                             else
@@ -528,6 +553,9 @@ namespace SpiroNet.Wpf
                         break;
                     case 'z':
                         {
+                            if (shape == null)
+                                shape = NewTaggedShape();
+
                             if (line.Length == 1)
                                  shape.Points.Add(ToPoint(SpiroPointType.End, "0", "0"));
                             else if (line.Length == 3)
@@ -537,11 +565,14 @@ namespace SpiroNet.Wpf
 
                             Shapes.Add(shape);
                             UpdateData(shape);
-                            shape = new PathShape() { IsClosed = false, IsTagged = true, Points = new ObservableCollection<SpiroControlPoint>() };
+                            shape = null;
                         }
                         break;
                     case '{':
                         {
+                            if (shape == null)
+                                shape = NewTaggedShape();
+
                             if (line.Length == 3)
                                 shape.Points.Add(ToPoint(SpiroPointType.OpenContour, line[1], line[2]));
                             else
@@ -550,6 +581,9 @@ namespace SpiroNet.Wpf
                         break;
                     case '}':
                         {
+                            if (shape == null)
+                                shape = NewTaggedShape();
+
                             if (line.Length == 3)
                                 shape.Points.Add(ToPoint(SpiroPointType.EndOpenContour, line[1], line[2]));
                             else
@@ -557,7 +591,7 @@ namespace SpiroNet.Wpf
                             
                             Shapes.Add(shape);
                             UpdateData(shape);
-                            shape = new PathShape() { IsClosed = false, IsTagged = true, Points = new ObservableCollection<SpiroControlPoint>() };
+                            shape = null;
                         }
                         break;
                     default: 
