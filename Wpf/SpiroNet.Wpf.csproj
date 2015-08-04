@@ -71,6 +71,7 @@
     <Compile Include="Path\PathBezierContext.cs" />
     <Compile Include="Path\PathDrawing.cs" />
     <Compile Include="Path\PathShape.cs" />
+    <Compile Include="Plate\Plate.cs" />
     <Compile Include="Util\Command.cs" />
     <Compile Include="Util\ObservableObject.cs" />
     <Page Include="MainWindow.xaml">

@@ -481,7 +481,19 @@ namespace SpiroNet.Wpf
             using (var f = System.IO.File.OpenText(path))
             {
                 var plate = f.ReadToEnd();
-                ExecuteScript(plate);
+                var shapes = Plate.ToShapes(plate);
+                if (shapes != null)
+                {
+                    Shapes = shapes;
+                    Data = new Dictionary<PathShape, string>();
+
+                    foreach (var shape in Shapes)
+                    {
+                        UpdateData(shape);
+                    }
+
+                    Invalidate();
+                }
             }
         }
 
@@ -489,62 +501,9 @@ namespace SpiroNet.Wpf
         {
             using (var f = System.IO.File.CreateText(path))
             {
-                var plate = ToPlate(Shapes);
+                var plate = Plate.FromShapes(Shapes);
                 f.Write(plate);
             }
-        }
-
-        private static string Format(double value)
-        {
-            return value.ToString(CultureInfo.GetCultureInfo("en-GB"));
-        }
-
-        public static string ToPlate(IList<PathShape> shapes)
-        {
-            var sb = new StringBuilder();
-
-            sb.AppendLine("(plate");
-
-            foreach (var shape in shapes)
-            {
-                foreach (var point in shape.Points)
-                {
-                    switch (point.Type)
-                    {
-                        case SpiroPointType.Corner:
-                            sb.AppendLine(string.Format("  (v {0} {1})", Format(point.X), Format(point.Y)));
-                            break;
-                        case SpiroPointType.G4:
-                            sb.AppendLine(string.Format("  (o {0} {1})", Format(point.X), Format(point.Y)));
-                            break;
-                        case SpiroPointType.G2:
-                            sb.AppendLine(string.Format("  (c {0} {1})", Format(point.X), Format(point.Y)));
-                            break;
-                        case SpiroPointType.Left:
-                            sb.AppendLine(string.Format("  ([ {0} {1})", Format(point.X), Format(point.Y)));
-                            break;
-                        case SpiroPointType.Right:
-                            sb.AppendLine(string.Format("  (] {0} {1})", Format(point.X), Format(point.Y)));
-                            break;
-                        case SpiroPointType.End:
-                            sb.AppendLine("  (z)");
-                            break;
-                        case SpiroPointType.OpenContour:
-                            sb.AppendLine(string.Format("  ({ {0} {1})", Format(point.X), Format(point.Y)));
-                            break;
-                        case SpiroPointType.EndOpenContour:
-                            sb.AppendLine(string.Format("  (} {0} {1})", Format(point.X), Format(point.Y)));
-                            break;
-                    }
-                }
-
-                if (shape.IsClosed && !shape.IsTagged)
-                    sb.AppendLine("  (z)");
-            }
-
-            sb.AppendLine(")");
-
-            return sb.ToString();
         }
 
         public void ExportAsSvg(string path)
@@ -580,159 +539,19 @@ namespace SpiroNet.Wpf
             }
         }
 
-        private PathShape NewTaggedShape()
-        {
-            return new PathShape()
-            {
-                IsStroked = true,
-                IsFilled = false,
-                IsClosed = false,
-                IsTagged = true,
-                Points = new ObservableCollection<SpiroControlPoint>()
-            };
-        }
-
-        private static SpiroControlPoint ToPoint(SpiroPointType type, string x, string y)
-        {
-            var point = new SpiroControlPoint();
-            point.X = double.Parse(x, CultureInfo.GetCultureInfo("en-GB").NumberFormat);
-            point.Y = double.Parse(y, CultureInfo.GetCultureInfo("en-GB").NumberFormat);
-            point.Type = type;
-            return point;
-        }
-
         public void ExecuteScript(string script)
         {
-            if (string.IsNullOrEmpty(script))
-                return;
-
-            var newLine = Environment.NewLine.ToCharArray();
-            var separator = new char[] { ' ', '\t' };
-            var trim = new char[] { '(', ')' };
-            var options = StringSplitOptions.RemoveEmptyEntries;
-            var lines = script.Split(newLine, options).Select(x => x.Trim().Trim(trim).Split(separator, options));
-
-            PathShape shape = null;
-
-            foreach (var line in lines)
+            var shapes = Plate.ToShapes(script);
+            if (shapes != null)
             {
-                if (line.Length == 0 || line[0] == "plate")
-                    continue;
-
-                switch (line[0][0])
+                foreach (var shape in shapes)
                 {
-                    case 'v':
-                        {
-                            if (shape == null)
-                                shape = NewTaggedShape();
-
-                            if (line.Length == 3)
-                                shape.Points.Add(ToPoint(SpiroPointType.Corner, line[1], line[2]));
-                            else
-                                throw new FormatException();
-                        }
-                        break;
-                    case 'o':
-                        {
-                            if (shape == null)
-                                shape = NewTaggedShape();
-
-                            if (line.Length == 3)
-                                shape.Points.Add(ToPoint(SpiroPointType.G4, line[1], line[2]));
-                            else
-                                throw new FormatException();
-                        }
-                        break;
-                    case 'c':
-                        {
-                            if (shape == null)
-                                shape = NewTaggedShape();
-
-                            if (line.Length == 3)
-                                shape.Points.Add(ToPoint(SpiroPointType.G2, line[1], line[2]));
-                            else
-                                throw new FormatException();
-                        }
-                        break;
-                    case '[':
-                        {
-                            if (shape == null)
-                                shape = NewTaggedShape();
-
-                            if (line.Length == 3)
-                                shape.Points.Add(ToPoint(SpiroPointType.Left, line[1], line[2]));
-                            else
-                                throw new FormatException();
-                        }
-                        break;
-                    case ']':
-                        {
-                            if (shape == null)
-                                shape = NewTaggedShape();
-
-                            if (line.Length == 3)
-                                shape.Points.Add(ToPoint(SpiroPointType.Right, line[1], line[2]));
-                            else
-                                throw new FormatException();
-                        }
-                        break;
-                    case 'z':
-                        {
-                            if (shape == null)
-                                shape = NewTaggedShape();
-
-                            if (line.Length == 1)
-                                 shape.Points.Add(ToPoint(SpiroPointType.End, "0", "0"));
-                            else if (line.Length == 3)
-                                shape.Points.Add(ToPoint(SpiroPointType.End, line[1], line[2]));
-                            else
-                                throw new FormatException();
-
-                            Shapes.Add(shape);
-                            UpdateData(shape);
-                            shape = null;
-                        }
-                        break;
-                    case '{':
-                        {
-                            if (shape == null)
-                                shape = NewTaggedShape();
-
-                            if (line.Length == 3)
-                                shape.Points.Add(ToPoint(SpiroPointType.OpenContour, line[1], line[2]));
-                            else
-                                throw new FormatException();
-                        }
-                        break;
-                    case '}':
-                        {
-                            if (shape == null)
-                                shape = NewTaggedShape();
-
-                            if (line.Length == 3)
-                                shape.Points.Add(ToPoint(SpiroPointType.EndOpenContour, line[1], line[2]));
-                            else
-                                throw new FormatException();
-                            
-                            Shapes.Add(shape);
-                            UpdateData(shape);
-                            shape = null;
-                        }
-                        break;
-                    default: 
-                        throw new FormatException();
+                    Shapes.Add(shape);
+                    UpdateData(shape);
                 }
-            }
 
-            if (shape != null)
-            {
-                shape.IsTagged = false;
-                Shapes.Add(shape);
-                UpdateData(shape);
-                shape = null;
+                Invalidate();
             }
-
-            Invalidate(); 
         }
     }
 }
