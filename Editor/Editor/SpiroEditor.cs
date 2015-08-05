@@ -242,14 +242,6 @@ namespace SpiroNet.Editor
             shape.Points.Insert(index, point);
         }
 
-        private void SetLastPointPosition(double x, double y)
-        {
-            if (_shape == null || _shape.Points.Count < 1)
-                return;
-
-            SetPointPosition(_shape, _shape.Points.Count - 1, x, y);
-        }
-
         private void SetPointPosition(PathShape shape, int index, double x, double y)
         {
             var point = new SpiroControlPoint();
@@ -500,7 +492,7 @@ namespace SpiroNet.Editor
             {
                 if (_shape.Points.Count > 1)
                 {
-                    SetLastPointPosition(x, y);
+                    SetPointPosition(_shape, _shape.Points.Count - 1, x, y);
                     UpdateData(_shape);
                     Invalidate();
                 }
