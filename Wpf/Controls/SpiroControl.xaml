@@ -283,14 +283,18 @@
                 </StackPanel>
             </GroupBox>
             <TextBlock Text="Mouse:" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
-            <TextBlock Text="Left  -> Add Point" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="Left  -> Begin Shape" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="      -> Add Point" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="      -> Move Point" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
             <TextBlock Text="Right -> Finish Shape" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="      -> Remove Shape" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="      -> Remove Point" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
             <TextBlock Text="Script/plate:" TextAlignment="Left" Foreground="Black" Margin="4,4,4,0"/>
             <TextBox x:Name="scriptTextBox"
                      AcceptsReturn="True"
                      AcceptsTab="True"
                      IsReadOnly="False"
-                     Height="180"
+                     Height="120"
                      VerticalScrollBarVisibility="Auto"
                      HorizontalScrollBarVisibility="Auto"
                      Margin="4,0,4,0">
