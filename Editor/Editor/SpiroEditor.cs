@@ -650,6 +650,39 @@ namespace SpiroNet.Editor
             }
         }
 
+        public void ExportAsPs(string path)
+        {
+            using (var f = System.IO.File.CreateText(path))
+            {
+                var sb = new StringBuilder();
+
+                sb.Append(PsBezierContext.PsProlog);
+                sb.Append(string.Format(PsBezierContext.PsSize, Width, Height));
+
+                foreach (var shape in Shapes)
+                {
+                    var bc = new PsBezierContext();
+
+                    try
+                    {
+                        if (TryGetData(shape, bc))
+                        {
+                            sb.Append(bc);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.Print(ex.Message);
+                        Debug.Print(ex.StackTrace);
+                    }
+                }
+
+                sb.Append(PsBezierContext.PsPostlog);
+
+                f.Write(sb);
+            }
+        }
+
         public void ExecuteScript(string script)
         {
             var shapes = Plate.ToShapes(script);

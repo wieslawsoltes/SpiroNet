@@ -217,7 +217,7 @@ namespace SpiroNet.Wpf
         private void Export()
         {
             var dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.Filter = "Svg Files (*.svg)|*.svg|All Files (*.*)|*.*";
+            dlg.Filter = "Svg Files (*.svg)|*.svg|Ps Files (*.ps)|*.ps|All Files (*.*)|*.*";
             dlg.FileName = "drawing.svg";
 
             var result = dlg.ShowDialog();
@@ -229,6 +229,9 @@ namespace SpiroNet.Wpf
                     {
                         case 1:
                             _editor.ExportAsSvg(dlg.FileName);
+                            break;
+                        case 2:
+                            _editor.ExportAsPs(dlg.FileName);
                             break;
                         default:
                             _editor.ExportAsSvg(dlg.FileName);
