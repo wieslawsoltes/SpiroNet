@@ -84,20 +84,38 @@ namespace SpiroNet.Wpf
             _context.IsClosedCommand = Command.Create(_context.ToggleIsClosed);
             _context.IsTaggedCommand = Command.Create(_context.ToggleIsTagged);
             _context.PointTypeCommand = Command<string>.Create(_context.TogglePointType);
-            _context.ExecuteScriptCommand = Command<string>.Create(_context.ExecuteScript);
+            _context.ExecuteScriptCommand = Command<string>.Create(ExecuteScript);
         }
 
         private void Canvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             canvas.Focus();
             var point = e.GetPosition(canvas);
-            _context.LeftDown(point.X, point.Y);
+
+            try
+            {
+                _context.LeftDown(point.X, point.Y);
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message);
+                Debug.Print(ex.StackTrace);
+            }
         }
 
         private void Canvas_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var point = e.GetPosition(canvas);
-            _context.LeftUp(point.X, point.Y);
+
+            try
+            {
+                _context.LeftUp(point.X, point.Y);
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message);
+                Debug.Print(ex.StackTrace);
+            }
         }
 
         private void Canvas_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -111,7 +129,16 @@ namespace SpiroNet.Wpf
         {
             canvas.Focus();
             var point = e.GetPosition(canvas);
-            _context.Move(point.X, point.Y);
+
+            try
+            {
+                _context.Move(point.X, point.Y);
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message);
+                Debug.Print(ex.StackTrace);
+            }
         }
 
         private void SpiroControl_Loaded(object sender, RoutedEventArgs e)
@@ -127,17 +154,25 @@ namespace SpiroNet.Wpf
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                switch (dlg.FilterIndex)
+                try
                 {
-                    case 1:
-                        _context.OpenDrawing(dlg.FileName);
-                        break;
-                    case 2:
-                        _context.OpenPlate(dlg.FileName);
-                        break;
-                    default:
-                        _context.OpenDrawing(dlg.FileName);
-                        break;
+                    switch (dlg.FilterIndex)
+                    {
+                        case 1:
+                            _context.OpenDrawing(dlg.FileName);
+                            break;
+                        case 2:
+                            _context.OpenPlate(dlg.FileName);
+                            break;
+                        default:
+                            _context.OpenDrawing(dlg.FileName);
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.Print(ex.Message);
+                    Debug.Print(ex.StackTrace);
                 }
             }
         }
@@ -151,17 +186,25 @@ namespace SpiroNet.Wpf
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                switch (dlg.FilterIndex)
+                try
                 {
-                    case 1:
-                        _context.SaveAsDrawing(dlg.FileName);
-                        break;
-                    case 2:
-                        _context.SaveAsPlate(dlg.FileName);
-                        break;
-                    default:
-                        _context.SaveAsDrawing(dlg.FileName);
-                        break;
+                    switch (dlg.FilterIndex)
+                    {
+                        case 1:
+                            _context.SaveAsDrawing(dlg.FileName);
+                            break;
+                        case 2:
+                            _context.SaveAsPlate(dlg.FileName);
+                            break;
+                        default:
+                            _context.SaveAsDrawing(dlg.FileName);
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.Print(ex.Message);
+                    Debug.Print(ex.StackTrace);
                 }
             }
         }
@@ -175,15 +218,36 @@ namespace SpiroNet.Wpf
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                switch (dlg.FilterIndex)
+                try
                 {
-                    case 1:
-                        _context.ExportAsSvg(dlg.FileName);
-                        break;
-                    default:
-                        _context.ExportAsSvg(dlg.FileName);
-                        break;
+                    switch (dlg.FilterIndex)
+                    {
+                        case 1:
+                            _context.ExportAsSvg(dlg.FileName);
+                            break;
+                        default:
+                            _context.ExportAsSvg(dlg.FileName);
+                            break;
+                    }
                 }
+                catch (Exception ex)
+                {
+                    Debug.Print(ex.Message);
+                    Debug.Print(ex.StackTrace);
+                }
+            }
+        }
+
+        private void ExecuteScript(string script)
+        {
+            try
+            {
+                _context.ExecuteScript(script);
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message);
+                Debug.Print(ex.StackTrace);
             }
         }
 
