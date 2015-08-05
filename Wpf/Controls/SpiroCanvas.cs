@@ -34,11 +34,9 @@ namespace SpiroNet.Wpf
         private Brush _geometryBrush;
         private Brush _geometryPenBrush;
         private Pen _geometryPen;
-
         private Brush _hitGeometryBrush;
         private Brush _hitGeometryPenBrush;
         private Pen _hitGeometryPen;
-        
         private Brush _pointBrush;
         private Brush _hitPointBrush;
 
@@ -50,9 +48,9 @@ namespace SpiroNet.Wpf
 
         public static readonly DependencyProperty ContextProperty =
             DependencyProperty.Register(
-                "Context", 
-                typeof(SpiroContext), 
-                typeof(SpiroCanvas), 
+                "Context",
+                typeof(SpiroContext),
+                typeof(SpiroCanvas),
                 new PropertyMetadata(null));
 
         public SpiroCanvas()
@@ -68,17 +66,17 @@ namespace SpiroNet.Wpf
             _geometryPenBrush.Freeze();
             _geometryPen = new Pen(_geometryPenBrush, 2.0);
             _geometryPen.Freeze();
-            
+
             _hitGeometryBrush = new SolidColorBrush(Color.FromArgb(128, 128, 0, 0));
             _hitGeometryBrush.Freeze();
             _hitGeometryPenBrush = new SolidColorBrush(Color.FromArgb(255, 255, 0, 0));
             _hitGeometryPenBrush.Freeze();
             _hitGeometryPen = new Pen(_hitGeometryPenBrush, 2.0);
             _hitGeometryPen.Freeze();
-            
+
             _pointBrush = new SolidColorBrush(Color.FromArgb(192, 0, 0, 255));
             _pointBrush.Freeze();
-            
+
             _hitPointBrush = new SolidColorBrush(Color.FromArgb(192, 255, 0, 0));
             _hitPointBrush.Freeze();
         }
@@ -108,7 +106,7 @@ namespace SpiroNet.Wpf
 
             var hitShape = Context.HitShape;
             var hitShapePointIndex = Context.HitShapePointIndex;
-            
+
             string data;
             if (Context.Data.TryGetValue(shape, out data) && !string.IsNullOrEmpty(data))
             {
@@ -116,15 +114,15 @@ namespace SpiroNet.Wpf
                 if (shape == hitShape && hitShapePointIndex == -1)
                 {
                     dc.DrawGeometry(
-                        shape.IsFilled ? _hitGeometryBrush : null, 
-                        shape.IsStroked ? _hitGeometryPen : null, 
+                        shape.IsFilled ? _hitGeometryBrush : null,
+                        shape.IsStroked ? _hitGeometryPen : null,
                         geometry);
                 }
                 else
                 {
                     dc.DrawGeometry(
-                        shape.IsFilled ? _geometryBrush : null, 
-                        shape.IsStroked ? _geometryPen : null, 
+                        shape.IsFilled ? _geometryBrush : null,
+                        shape.IsStroked ? _geometryPen : null,
                         geometry);
                 }
             }
@@ -136,7 +134,7 @@ namespace SpiroNet.Wpf
                     var point = shape.Points[i];
                     var brush = shape == hitShape && i == hitShapePointIndex ? _hitPointBrush : _pointBrush;
 
-                    switch (point.Type) 
+                    switch (point.Type)
                     {
                         case SpiroPointType.Corner:
                             dc.DrawRectangle(brush, null, new Rect(point.X - 3.5, point.Y - 3.5, 7, 7));
