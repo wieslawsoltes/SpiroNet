@@ -53,8 +53,7 @@ namespace SpiroNet.Editor
         {
             if (_needToClose)
             {
-                var close = string.Format("Z");
-                _sb.Append(close);
+                _sb.Append("Z");
                 _needToClose = false;
             }
             return _sb.ToString();
@@ -79,8 +78,7 @@ namespace SpiroNet.Editor
         {
             if (_needToClose)
             {
-                var close = string.Format("Z");
-                _sb.AppendLine(close);
+                _sb.AppendLine("Z");
             }
 
             var move = string.Format("M {0},{1}", Format(x), Format(y));
