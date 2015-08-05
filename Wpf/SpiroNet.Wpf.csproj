@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="Path\PathBezierContext.cs" />
     <Compile Include="Path\PathDrawing.cs" />
+    <Compile Include="Path\PathHitTestBezierContext.cs" />
     <Compile Include="Path\PathShape.cs" />
     <Compile Include="Plate\Plate.cs" />
     <Compile Include="Util\Command.cs" />
