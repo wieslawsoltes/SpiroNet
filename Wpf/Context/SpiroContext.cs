@@ -292,17 +292,12 @@ namespace SpiroNet.Wpf
 
             try
             {
+                var bc = new PathBezierContext();
+                var result = TryGetData(shape, bc);
                 if (_data.ContainsKey(shape))
-                {
-                    var bc = new PathBezierContext();
-                    _data[shape] = TryGetData(shape, bc) ? bc.ToString() : null;
-                }
+                    _data[shape] = result ? bc.ToString() : null;
                 else
-                {
-                    var bc = new PathBezierContext();
-                    if (TryGetData(shape, bc))
-                        _data.Add(shape, bc.ToString());
-                }
+                    _data.Add(shape, result ? bc.ToString() : null);
             }
             catch (Exception ex)
             {
