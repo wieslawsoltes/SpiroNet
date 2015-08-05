@@ -290,20 +290,12 @@ namespace SpiroNet.Wpf
             if (shape == null)
                 return;
 
-            try
-            {
-                var bc = new PathBezierContext();
-                var result = TryGetData(shape, bc);
-                if (_data.ContainsKey(shape))
-                    _data[shape] = result ? bc.ToString() : null;
-                else
-                    _data.Add(shape, result ? bc.ToString() : null);
-            }
-            catch (Exception ex)
-            {
-                Debug.Print(ex.Message);
-                Debug.Print(ex.StackTrace);
-            }
+            var bc = new PathBezierContext();
+            var result = TryGetData(shape, bc);
+            if (_data.ContainsKey(shape))
+                _data[shape] = result ? bc.ToString() : null;
+            else
+                _data.Add(shape, result ? bc.ToString() : null);
         }
 
         private static double DistanceSquared(double x0, double y0, double x1, double y1)
