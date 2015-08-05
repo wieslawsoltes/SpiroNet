@@ -59,7 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Contexts\SpiroContext.cs" />
+    <Compile Include="Context\SpiroContext.cs" />
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Json\JsonSerializer.cs" />
     <Compile Include="Json\ObservableCollectionContractResolver.cs" />
