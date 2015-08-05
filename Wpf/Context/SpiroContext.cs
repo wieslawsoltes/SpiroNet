@@ -334,6 +334,7 @@ namespace SpiroNet.Wpf
                     }
                 }
             }
+
             hitShape = null;
             hitShapePointIndex = -1;
             return false;
