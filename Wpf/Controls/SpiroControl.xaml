@@ -282,13 +282,14 @@
                     </RadioButton>
                 </StackPanel>
             </GroupBox>
-            <TextBlock Text="Mouse:" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
-            <TextBlock Text="Left  -> Begin Shape" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
-            <TextBlock Text="      -> Add Point" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
-            <TextBlock Text="      -> Move Point" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
-            <TextBlock Text="Right -> Finish Shape" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
-            <TextBlock Text="      -> Remove Shape" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
-            <TextBlock Text="      -> Remove Point" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="Mouse Left:" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="- Begin Shape" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="- Add Point" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="- Move Point" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="Mouse Right" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="- Finish Shape" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="- Remove Shape" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
+            <TextBlock Text="- Remove Point" TextAlignment="Left" Foreground="Gray" Margin="4,0,4,0"/>
             <TextBlock Text="Script/plate:" TextAlignment="Left" Foreground="Black" Margin="4,4,4,0"/>
             <TextBox x:Name="scriptTextBox"
                      AcceptsReturn="True"
