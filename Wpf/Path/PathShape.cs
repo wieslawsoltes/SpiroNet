@@ -83,36 +83,5 @@ namespace SpiroNet.Wpf
             get { return _points; }
             set { Update(ref _points, value); }
         }
-
-        /// <summary>
-        /// Try to generate Path shape data from Points using path bezier context implementation.
-        /// </summary>
-        /// <returns>True when output data was generated successfully.</returns>
-        public bool TryGetData(out string data)
-        {
-            var points = this.Points.ToArray();
-            var bc = new PathBezierContext();
-
-            if (this.IsTagged)
-            {
-                var success = Spiro.TaggedSpiroCPsToBezier0(points, bc);
-                if (success)
-                    data = bc.ToString();
-                else
-                    data = null;
-
-                return success;
-            }
-            else
-            {
-                var success = Spiro.SpiroCPsToBezier0(points, points.Length, this.IsClosed, bc);
-                if (success)
-                    data = bc.ToString();
-                else
-                    data = null;
-
-                return success;
-            }
-        }
     }
 }
