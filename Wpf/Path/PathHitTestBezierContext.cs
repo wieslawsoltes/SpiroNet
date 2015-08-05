@@ -163,6 +163,22 @@ namespace SpiroNet.Wpf
             return minerr;
         }
 
+        public double Report(out int knotIndex)
+        {
+            double r_min = _state.r_min;
+            knotIndex = _state.knot_idx_min;
+            return r_min;
+        }
+
+        public PathHitTestBezierContext(double x, double y)
+        {
+            _state = new HitTestState();
+            _state.x = x;
+            _state.y = y;
+            _state.knot_idx_min = -1;
+            _state.r_min = 1e12;
+        }
+
         public void MoveTo(double x, double y, bool isOpen)
         {
             _state.x0 = x;
@@ -239,22 +255,6 @@ namespace SpiroNet.Wpf
         public void MarkKnot(int knotIndex)
         {
             _state.knot_idx = knotIndex;
-        }
-
-        public PathHitTestBezierContext(double x, double y)
-        {
-            _state = new HitTestState();
-            _state.x = x;
-            _state.y = y;
-            _state.knot_idx_min = -1;
-            _state.r_min = 1e12;
-        }
-
-        public double Report(out int p_knot_idx)
-        {
-            double r_min = _state.r_min;
-            p_knot_idx = _state.knot_idx_min;
-            return r_min;
         }
     }
 }
