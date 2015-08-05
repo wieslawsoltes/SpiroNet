@@ -145,7 +145,7 @@ namespace SpiroNet.Wpf
 
         public ICommand SaveAsCommand { get; set; }
 
-        public ICommand ExportAsSvgCommand { get; set; }
+        public ICommand ExportCommand { get; set; }
 
         public ICommand ExitCommand { get; set; }
 

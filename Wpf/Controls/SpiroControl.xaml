@@ -14,7 +14,7 @@
         <KeyBinding Command="{Binding NewCommand}" Gesture="Ctrl+N"/>
         <KeyBinding Command="{Binding OpenCommand}" Gesture="Ctrl+O"/>
         <KeyBinding Command="{Binding SaveAsCommand}" Gesture="Ctrl+S"/>
-        <KeyBinding Command="{Binding ExportAsSvgCommand}" Gesture="Ctrl+E"/>
+        <KeyBinding Command="{Binding ExportCommand}" Gesture="Ctrl+E"/>
         <KeyBinding Command="{Binding ExitCommand}" Gesture="Alt+F4"/>
     </UserControl.InputBindings>
     <UserControl.Resources>
@@ -59,7 +59,7 @@
                 <Separator/>
                 <MenuItem Command="{Binding SaveAsCommand}" Header="_Save As..." InputGestureText="Ctrl+S"/>
                 <Separator/>
-                <MenuItem Command="{Binding ExportAsSvgCommand}" Header="_Export As SVG..." InputGestureText="Ctrl+E"/>
+                <MenuItem Command="{Binding ExportCommand}" Header="_Export..." InputGestureText="Ctrl+E"/>
                 <Separator/>
                 <MenuItem Command="{Binding ExitCommand}" Header="E_xit" InputGestureText="Alt+F4"/>
             </MenuItem>

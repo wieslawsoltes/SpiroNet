@@ -77,7 +77,7 @@ namespace SpiroNet.Wpf
             _context.NewCommand = Command.Create(_context.New);
             _context.OpenCommand = Command.Create(Open);
             _context.SaveAsCommand = Command.Create(SaveAs);
-            _context.ExportAsSvgCommand = Command.Create(ExportAsSvg);
+            _context.ExportCommand = Command.Create(Export);
             _context.ExitCommand = Command.Create(Exit);
             _context.IsStrokedCommand = Command.Create(_context.ToggleIsStroked);
             _context.IsFilledCommand = Command.Create(_context.ToggleIsFilled);
@@ -166,7 +166,7 @@ namespace SpiroNet.Wpf
             }
         }
 
-        private void ExportAsSvg()
+        private void Export()
         {
             var dlg = new Microsoft.Win32.SaveFileDialog();
             dlg.Filter = "Svg Files (*.svg)|*.svg|All Files (*.*)|*.*";
@@ -175,7 +175,15 @@ namespace SpiroNet.Wpf
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                _context.ExportAsSvg(dlg.FileName);
+                switch (dlg.FilterIndex)
+                {
+                    case 1:
+                        _context.ExportAsSvg(dlg.FileName);
+                        break;
+                    default:
+                        _context.ExportAsSvg(dlg.FileName);
+                        break;
+                }
             }
         }
 
