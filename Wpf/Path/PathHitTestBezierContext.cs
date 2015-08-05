@@ -41,27 +41,27 @@ namespace SpiroNet.Wpf
         private HitTestState _state;
 
         private static double cube(double x) { return x * x * x; }
-    
+
         private static double my_cbrt(double x)
         {
             if (x >= 0)
-        	   return Math.Pow(x, 1.0 / 3.0);
+                return Math.Pow(x, 1.0 / 3.0);
             else
-        	   return -Math.Pow(-x, 1.0 / 3.0);
+                return -Math.Pow(-x, 1.0 / 3.0);
         }
 
         private static double hypot(double x, double y)
         {
             return Math.Sqrt(x * x + y * y);
         }
- 
+
         private static int solve_cubic(double c0, double c1, double c2, double c3, double[/*3*/] root)
         {
             // Give real roots to eqn c0 + c1 * x + c2 * x^2 + c3 * x^3 == 0.
             // Return value is number of roots found.
 
             double p, q, r, a, b, Q, x0;
-        
+
             p = c2 / c3;
             q = c1 / c3;
             r = c0 / c3;
@@ -69,15 +69,15 @@ namespace SpiroNet.Wpf
             b = (2 * cube(p) - 9 * p * q + 27 * r) / 27;
             Q = b * b / 4 + cube(a) / 27;
             x0 = p / 3;
-            
-            if (Q > 0) 
+
+            if (Q > 0)
             {
                 double sQ = Math.Sqrt(Q);
                 double t1 = my_cbrt(-b / 2 + sQ) + my_cbrt(-b / 2 - sQ);
                 root[0] = t1 - x0;
                 return 1;
-            } 
-            else if (Q == 0) 
+            }
+            else if (Q == 0)
             {
                 double t1 = my_cbrt(b / 2);
                 double x1 = t1 - x0;
@@ -85,8 +85,8 @@ namespace SpiroNet.Wpf
                 root[1] = x1;
                 root[2] = -2 * t1 - x0;
                 return 3;
-            } 
-            else 
+            }
+            else
             {
                 double sQ = Math.Sqrt(-Q);
                 double rho = hypot(-b / 2, sQ);
@@ -111,7 +111,7 @@ namespace SpiroNet.Wpf
             int n_ts;
             int i;
             double minerr = 0;
-        
+
             u0 = x1 - x0;
             u1 = x0 - 2 * x1 + x2;
             t0 = x0 - x;
@@ -120,8 +120,8 @@ namespace SpiroNet.Wpf
             c0 = t0 * u0;
             c1 = t1 * u0 + t0 * u1;
             c2 = t2 * u0 + t1 * u1;
-            c3 =           t2 * u1;
-        
+            c3 = t2 * u1;
+
             u0 = y1 - y0;
             u1 = y0 - 2 * y1 + y2;
             t0 = y0 - y;
@@ -130,36 +130,36 @@ namespace SpiroNet.Wpf
             c0 += t0 * u0;
             c1 += t1 * u0 + t0 * u1;
             c2 += t2 * u0 + t1 * u1;
-            c3 +=           t2 * u1;
-        
+            c3 += t2 * u1;
+
             n_roots = solve_cubic(c0, c1, c2, c3, roots);
             n_ts = 0;
-            
-            for (i = 0; i < n_roots; i++) 
+
+            for (i = 0; i < n_roots; i++)
             {
-            	double t = roots[i];
-            	if (t > 0 && t < 1)
-            	    ts[n_ts++] = t;
+                double t = roots[i];
+                if (t > 0 && t < 1)
+                    ts[n_ts++] = t;
             }
-            
-            if (n_ts < n_roots) 
+
+            if (n_ts < n_roots)
             {
-            	ts[n_ts++] = 0;
-            	ts[n_ts++] = 1;
+                ts[n_ts++] = 0;
+                ts[n_ts++] = 1;
             }
-            
-            for (i = 0; i < n_ts; i++) 
+
+            for (i = 0; i < n_ts; i++)
             {
                 double t = ts[i];
-            	double xa = x0 * (1 - t) * (1 - t) + 2 * x1 * (1 - t) * t + x2 * t * t;
-            	double ya = y0 * (1 - t) * (1 - t) + 2 * y1 * (1 - t) * t + y2 * t * t;
-            	double err = hypot(xa - x, ya - y);
-            	if (i == 0 || err < minerr) 
-            	{
-            	    minerr = err;
-            	}
+                double xa = x0 * (1 - t) * (1 - t) + 2 * x1 * (1 - t) * t + x2 * t * t;
+                double ya = y0 * (1 - t) * (1 - t) + 2 * y1 * (1 - t) * t + y2 * t * t;
+                double err = hypot(xa - x, ya - y);
+                if (i == 0 || err < minerr)
+                {
+                    minerr = err;
+                }
             }
-            
+
             return minerr;
         }
 
@@ -168,7 +168,7 @@ namespace SpiroNet.Wpf
             _state.x0 = x;
             _state.y0 = y;
         }
-    
+
         public void LineTo(double x, double y)
         {
             double x0 = _state.x0;
@@ -182,21 +182,21 @@ namespace SpiroNet.Wpf
             r = hypot(_state.x - x0, _state.y - y0);
             r_min = r;
             r = hypot(_state.x - x, _state.y - y);
-            if (r < r_min) 
+            if (r < r_min)
                 r_min = r;
-        
-            if (dotp >= 0 && dotp <= lin_dotp) 
+
+            if (dotp >= 0 && dotp <= lin_dotp)
             {
-            	double norm = (_state.x - x0) * dy - (_state.y - y0) * dx;
-            	r = Math.Abs(norm / Math.Sqrt(lin_dotp));
-            	if (r < r_min) 
-            	    r_min = r;
+                double norm = (_state.x - x0) * dy - (_state.y - y0) * dx;
+                r = Math.Abs(norm / Math.Sqrt(lin_dotp));
+                if (r < r_min)
+                    r_min = r;
             }
-        
-            if (r_min < _state.r_min) 
+
+            if (r_min < _state.r_min)
             {
-            	_state.r_min = r_min;
-            	_state.knot_idx_min = _state.knot_idx;
+                _state.r_min = r_min;
+                _state.knot_idx_min = _state.knot_idx;
             }
 
             _state.x0 = x;
@@ -207,10 +207,10 @@ namespace SpiroNet.Wpf
         {
             double r = dist_to_quadratic(_state.x, _state.y, _state.x0, _state.y0, x1, y1, x2, y2);
 
-            if (r < _state.r_min) 
+            if (r < _state.r_min)
             {
-            	_state.r_min = r;
-            	_state.knot_idx_min = _state.knot_idx;
+                _state.r_min = r;
+                _state.knot_idx_min = _state.knot_idx;
             }
 
             _state.x0 = x2;
@@ -224,15 +224,15 @@ namespace SpiroNet.Wpf
             const int n_subdiv = 32;
             int i;
             double xq2, yq2;
-        
+
             // TODO: Subdivide to quadratics rather than lines.
-            for (i = 0; i < n_subdiv; i++) 
+            for (i = 0; i < n_subdiv; i++)
             {
-            	double t = (1.0 / n_subdiv) * (i + 1);
-            	double mt = 1 - t;
-            	xq2 = x0 * mt * mt * mt + 3 * x1 * mt * t * t + 3 * x2 * mt * mt * t + x3 * t * t * t;
-            	yq2 = y0 * mt * mt * mt + 3 * y1 * mt * t * t + 3 * y2 * mt * mt * t + y3 * t * t * t;
-            	LineTo(xq2, yq2);
+                double t = (1.0 / n_subdiv) * (i + 1);
+                double mt = 1 - t;
+                xq2 = x0 * mt * mt * mt + 3 * x1 * mt * t * t + 3 * x2 * mt * mt * t + x3 * t * t * t;
+                yq2 = y0 * mt * mt * mt + 3 * y1 * mt * t * t + 3 * y2 * mt * mt * t + y3 * t * t * t;
+                LineTo(xq2, yq2);
             }
         }
 
@@ -241,7 +241,7 @@ namespace SpiroNet.Wpf
             _state.knot_idx = knotIndex;
         }
 
-        public PathHitTestBezierContext(double x, double y) 
+        public PathHitTestBezierContext(double x, double y)
         {
             _state = new HitTestState();
             _state.x = x;
