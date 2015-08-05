@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Wpf
+SpiroNet.Editor
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace SpiroNet.Wpf
+namespace SpiroNet.Editor
 {
     public static class Plate
     {

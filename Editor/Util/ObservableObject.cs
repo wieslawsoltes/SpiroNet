@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Wpf
+SpiroNet.Editor
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -19,24 +19,30 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 */
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
-namespace SpiroNet.Wpf
+namespace SpiroNet.Editor
 {
-    internal class ObservableCollectionContractResolver : DefaultContractResolver
+    public abstract class ObservableObject : INotifyPropertyChanged
     {
-        public override JsonContract ResolveContract(Type type)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void Notify([CallerMemberName] string propertyName = null)
         {
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IList<>))
+            var handler = PropertyChanged;
+            if (handler != null)
             {
-                return base.ResolveContract(typeof(ObservableCollection<>).MakeGenericType(type.GenericTypeArguments[0]));
+                handler(this, new PropertyChangedEventArgs(propertyName));
             }
-            else
+        }
+
+        public void Update<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (!Equals(field, value))
             {
-                return base.ResolveContract(type);
+                field = value;
+                Notify(propertyName);
             }
         }
     }

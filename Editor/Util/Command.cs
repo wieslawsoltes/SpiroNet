@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Wpf
+SpiroNet.Editor
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 using System;
 using System.Windows.Input;
 
-namespace SpiroNet.Wpf
+namespace SpiroNet.Editor
 {
     public class Command : ICommand
     {

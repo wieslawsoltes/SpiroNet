@@ -34,12 +34,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SpiroNet.Editor;
 
 namespace SpiroNet.Wpf
 {
     public partial class SpiroControl : UserControl
     {
-        private SpiroContext _context;
+        private SpiroEditor _editor;
 
         public SpiroControl()
         {
@@ -50,16 +51,7 @@ namespace SpiroNet.Wpf
             canvas.PreviewMouseRightButtonDown += Canvas_PreviewMouseRightButtonDown;
             canvas.PreviewMouseMove += Canvas_PreviewMouseMove;
 
-            InitializeContext();
-
-            DataContext = _context;
-
-            Loaded += SpiroControl_Loaded;
-        }
-
-        private void InitializeContext()
-        {
-            _context = new SpiroContext()
+            _editor = new SpiroEditor()
             {
                 Width = 600,
                 Height = 600,
@@ -72,19 +64,23 @@ namespace SpiroNet.Wpf
                 Data = new Dictionary<PathShape, string>()
             };
 
-            _context.Invalidate = canvas.InvalidateVisual;
+            _editor.Invalidate = canvas.InvalidateVisual;
 
-            _context.NewCommand = Command.Create(_context.New);
-            _context.OpenCommand = Command.Create(Open);
-            _context.SaveAsCommand = Command.Create(SaveAs);
-            _context.ExportCommand = Command.Create(Export);
-            _context.ExitCommand = Command.Create(Exit);
-            _context.IsStrokedCommand = Command.Create(_context.ToggleIsStroked);
-            _context.IsFilledCommand = Command.Create(_context.ToggleIsFilled);
-            _context.IsClosedCommand = Command.Create(_context.ToggleIsClosed);
-            _context.IsTaggedCommand = Command.Create(_context.ToggleIsTagged);
-            _context.PointTypeCommand = Command<string>.Create(_context.TogglePointType);
-            _context.ExecuteScriptCommand = Command<string>.Create(ExecuteScript);
+            _editor.NewCommand = Command.Create(_editor.New);
+            _editor.OpenCommand = Command.Create(Open);
+            _editor.SaveAsCommand = Command.Create(SaveAs);
+            _editor.ExportCommand = Command.Create(Export);
+            _editor.ExitCommand = Command.Create(Exit);
+            _editor.IsStrokedCommand = Command.Create(_editor.ToggleIsStroked);
+            _editor.IsFilledCommand = Command.Create(_editor.ToggleIsFilled);
+            _editor.IsClosedCommand = Command.Create(_editor.ToggleIsClosed);
+            _editor.IsTaggedCommand = Command.Create(_editor.ToggleIsTagged);
+            _editor.PointTypeCommand = Command<string>.Create(_editor.TogglePointType);
+            _editor.ExecuteScriptCommand = Command<string>.Create(ExecuteScript);
+
+            DataContext = _editor;
+
+            Loaded += SpiroControl_Loaded;
         }
 
         private void Canvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -94,7 +90,7 @@ namespace SpiroNet.Wpf
 
             try
             {
-                _context.LeftDown(point.X, point.Y);
+                _editor.LeftDown(point.X, point.Y);
             }
             catch (Exception ex)
             {
@@ -109,7 +105,7 @@ namespace SpiroNet.Wpf
 
             try
             {
-                _context.LeftUp(point.X, point.Y);
+                _editor.LeftUp(point.X, point.Y);
             }
             catch (Exception ex)
             {
@@ -122,7 +118,16 @@ namespace SpiroNet.Wpf
         {
             canvas.Focus();
             var point = e.GetPosition(canvas);
-            _context.RightDown(point.X, point.Y);
+
+            try
+            {
+                _editor.RightDown(point.X, point.Y);
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message);
+                Debug.Print(ex.StackTrace);
+            }
         }
 
         private void Canvas_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -132,7 +137,7 @@ namespace SpiroNet.Wpf
 
             try
             {
-                _context.Move(point.X, point.Y);
+                _editor.Move(point.X, point.Y);
             }
             catch (Exception ex)
             {
@@ -159,13 +164,13 @@ namespace SpiroNet.Wpf
                     switch (dlg.FilterIndex)
                     {
                         case 1:
-                            _context.OpenDrawing(dlg.FileName);
+                            _editor.OpenDrawing(dlg.FileName);
                             break;
                         case 2:
-                            _context.OpenPlate(dlg.FileName);
+                            _editor.OpenPlate(dlg.FileName);
                             break;
                         default:
-                            _context.OpenDrawing(dlg.FileName);
+                            _editor.OpenDrawing(dlg.FileName);
                             break;
                     }
                 }
@@ -191,13 +196,13 @@ namespace SpiroNet.Wpf
                     switch (dlg.FilterIndex)
                     {
                         case 1:
-                            _context.SaveAsDrawing(dlg.FileName);
+                            _editor.SaveAsDrawing(dlg.FileName);
                             break;
                         case 2:
-                            _context.SaveAsPlate(dlg.FileName);
+                            _editor.SaveAsPlate(dlg.FileName);
                             break;
                         default:
-                            _context.SaveAsDrawing(dlg.FileName);
+                            _editor.SaveAsDrawing(dlg.FileName);
                             break;
                     }
                 }
@@ -223,10 +228,10 @@ namespace SpiroNet.Wpf
                     switch (dlg.FilterIndex)
                     {
                         case 1:
-                            _context.ExportAsSvg(dlg.FileName);
+                            _editor.ExportAsSvg(dlg.FileName);
                             break;
                         default:
-                            _context.ExportAsSvg(dlg.FileName);
+                            _editor.ExportAsSvg(dlg.FileName);
                             break;
                     }
                 }
@@ -242,7 +247,7 @@ namespace SpiroNet.Wpf
         {
             try
             {
-                _context.ExecuteScript(script);
+                _editor.ExecuteScript(script);
             }
             catch (Exception ex)
             {

@@ -36,9 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -59,22 +56,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Context\SpiroContext.cs" />
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
-    <Compile Include="Json\JsonSerializer.cs" />
-    <Compile Include="Json\ObservableCollectionContractResolver.cs" />
     <Compile Include="Converters\ShapeToDataConverter.cs" />
     <Compile Include="Controls\SpiroCanvas.cs" />
     <Compile Include="Controls\SpiroControl.xaml.cs">
       <DependentUpon>SpiroControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Path\PathBezierContext.cs" />
-    <Compile Include="Path\PathDrawing.cs" />
-    <Compile Include="Path\PathHitTestBezierContext.cs" />
-    <Compile Include="Path\PathShape.cs" />
-    <Compile Include="Plate\Plate.cs" />
-    <Compile Include="Util\Command.cs" />
-    <Compile Include="Util\ObservableObject.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -110,7 +97,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -121,6 +107,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Editor\SpiroNet.Editor.csproj">
+      <Project>{887f25bc-71b2-434a-ad45-092780df9eaf}</Project>
+      <Name>SpiroNet.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Spiro\SpiroNet.csproj">
       <Project>{6f958fc2-ebc4-4ddb-9550-1742db599c3d}</Project>
       <Name>SpiroNet</Name>

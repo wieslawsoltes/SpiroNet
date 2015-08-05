@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using SpiroNet.Editor;
 
 namespace SpiroNet.Wpf
 {
@@ -40,16 +41,16 @@ namespace SpiroNet.Wpf
         private Brush _pointBrush;
         private Brush _hitPointBrush;
 
-        public SpiroContext Context
+        public SpiroEditor Editor
         {
-            get { return (SpiroContext)GetValue(ContextProperty); }
-            set { SetValue(ContextProperty, value); }
+            get { return (SpiroEditor)GetValue(EditorProperty); }
+            set { SetValue(EditorProperty, value); }
         }
 
-        public static readonly DependencyProperty ContextProperty =
+        public static readonly DependencyProperty EditorProperty =
             DependencyProperty.Register(
-                "Context",
-                typeof(SpiroContext),
+                "Editor",
+                typeof(SpiroEditor),
                 typeof(SpiroCanvas),
                 new PropertyMetadata(null));
 
@@ -90,10 +91,10 @@ namespace SpiroNet.Wpf
 
         private void DrawShapes(DrawingContext dc)
         {
-            if (Context == null || Context.Shapes == null)
+            if (Editor == null || Editor.Shapes == null)
                 return;
 
-            foreach (var shape in Context.Shapes)
+            foreach (var shape in Editor.Shapes)
             {
                 DrawShape(dc, shape);
             }
@@ -101,14 +102,14 @@ namespace SpiroNet.Wpf
 
         private void DrawShape(DrawingContext dc, PathShape shape)
         {
-            if (shape == null || Context == null || Context.Data == null)
+            if (shape == null || Editor == null || Editor.Data == null)
                 return;
 
-            var hitShape = Context.HitShape;
-            var hitShapePointIndex = Context.HitShapePointIndex;
+            var hitShape = Editor.HitShape;
+            var hitShapePointIndex = Editor.HitShapePointIndex;
 
             string data;
-            if (Context.Data.TryGetValue(shape, out data) && !string.IsNullOrEmpty(data))
+            if (Editor.Data.TryGetValue(shape, out data) && !string.IsNullOrEmpty(data))
             {
                 var geometry = Geometry.Parse(data);
                 if (shape == hitShape && hitShapePointIndex == -1)

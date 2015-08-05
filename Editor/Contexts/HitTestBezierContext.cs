@@ -23,9 +23,9 @@ using System;
 using System.Globalization;
 using System.Text;
 
-namespace SpiroNet.Wpf
+namespace SpiroNet.Editor
 {
-    public class PathHitTestBezierContext : IBezierContext
+    public class HitTestBezierContext : IBezierContext
     {
         private struct HitTestState
         {
@@ -170,7 +170,7 @@ namespace SpiroNet.Wpf
             return r_min;
         }
 
-        public PathHitTestBezierContext(double x, double y)
+        public HitTestBezierContext(double x, double y)
         {
             _state = new HitTestState();
             _state.x = x;

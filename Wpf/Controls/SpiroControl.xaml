@@ -109,7 +109,7 @@
                       Grid.Column="1"
                       Grid.Row="1">
             <local:SpiroCanvas x:Name="canvas" 
-                               Context="{Binding}"
+                               Editor="{Binding}"
                                Width="{Binding Width}" 
                                Height="{Binding Height}" 
                                Background="WhiteSmoke"

@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Wpf
+SpiroNet.Editor
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace SpiroNet.Wpf
+namespace SpiroNet.Editor
 {
     internal static class JsonSerializer
     {

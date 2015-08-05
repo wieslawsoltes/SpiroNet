@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Wpf
+SpiroNet.Editor
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@ using System;
 using System.Globalization;
 using System.Text;
 
-namespace SpiroNet.Wpf
+namespace SpiroNet.Editor
 {
     /// <summary>
     /// Bezier context implementation that handles the creation of Path data representation of bézier splines.

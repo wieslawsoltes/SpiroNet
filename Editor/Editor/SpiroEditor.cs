@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Wpf
+SpiroNet.Editor
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -22,16 +22,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
-namespace SpiroNet.Wpf
+namespace SpiroNet.Editor
 {
     public enum Mode { None, Create, Move, Selected }
 
-    public class SpiroContext : ObservableObject
+    public class SpiroEditor : ObservableObject
     {
         private Mode _mode = Mode.Create;
         private PathShape _shape = null;
@@ -331,7 +330,7 @@ namespace SpiroNet.Wpf
         {
             for (int i = 0; i < shapes.Count; i++)
             {
-                var bc = new PathHitTestBezierContext(x, y);
+                var bc = new HitTestBezierContext(x, y);
                 var shape = shapes[i];
                 int knontIndex;
 
