@@ -160,7 +160,7 @@ namespace SpiroNet.Wpf
         public ICommand PointTypeCommand { get; set; }
 
         public ICommand ExecuteScriptCommand { get; set; }
-        
+
         public Action Invalidate { get; set; }
 
         public void ToggleIsStroked()
@@ -233,7 +233,7 @@ namespace SpiroNet.Wpf
             point.Type = PointType;
             shape.Points.Add(point);
         }
-        
+
         private void NewPointAt(PathShape shape, double x, double y, int index)
         {
             var point = new SpiroControlPoint();
@@ -277,7 +277,7 @@ namespace SpiroNet.Wpf
         {
             if (shape == null || bc == null)
                 return false;
-                        
+
             var points = shape.Points.ToArray();
             if (shape.IsTagged)
                 return Spiro.TaggedSpiroCPsToBezier0(points, bc);
@@ -341,11 +341,11 @@ namespace SpiroNet.Wpf
 
         private static bool HitTestForShape(IList<PathShape> shapes, double x, double y, double treshold, out PathShape hitShape, out int hitShapePointIndex)
         {
-            for (int i = 0; i < shapes.Count; i++) 
+            for (int i = 0; i < shapes.Count; i++)
             {
-            	var bc = new PathHitTestBezierContext(x, y);
-            	var shape = shapes[i];
-            	int knontIndex;
+                var bc = new PathHitTestBezierContext(x, y);
+                var shape = shapes[i];
+                int knontIndex;
 
                 try
                 {
@@ -359,19 +359,19 @@ namespace SpiroNet.Wpf
                     continue;
                 }
 
-            	if (bc.Report(out knontIndex) < treshold) 
-            	{
-            	    hitShape = shape;
-            	    hitShapePointIndex = knontIndex;
+                if (bc.Report(out knontIndex) < treshold)
+                {
+                    hitShape = shape;
+                    hitShapePointIndex = knontIndex;
                     return true;
-            	}
+                }
             }
 
             hitShape = null;
             hitShapePointIndex = -1;
             return false;
         }
-        
+
         public void LeftDown(double x, double y)
         {
             if (_shape == null)
@@ -398,9 +398,9 @@ namespace SpiroNet.Wpf
                     {
                         // Insert new point.
                         PathShape shape = hitShape;
-                	    int index = hitShapePointIndex + 1;
+                        int index = hitShapePointIndex + 1;
                         NewPointAt(shape, x, y, index);
-                        
+
                         // Select shape.
                         //_hitShape = shape;
                         // Select new point.
@@ -412,12 +412,12 @@ namespace SpiroNet.Wpf
                         // Deselect point.
                         _hitShapePointIndex = -1;
                         _mode = Mode.Create;
-                        
+
                         UpdateData(shape);
                         Invalidate();
                         return;
                     }
-                
+
                     if (_hitShape != null)
                     {
                         // Deselect shape.
@@ -483,7 +483,7 @@ namespace SpiroNet.Wpf
                 {
                     // Delete point.
                     hitShape.Points.RemoveAt(hitShapePointIndex);
-                    
+
                     if (hitShape.Points.Count == 0)
                     {
                         // Delete shape.
@@ -500,7 +500,7 @@ namespace SpiroNet.Wpf
                     return;
                 }
                 else
-                { 
+                {
                     if (HitTestForShape(_shapes, x, y, _hitTreshold, out hitShape, out hitShapePointIndex))
                     {
                         // Delete shape.
@@ -654,8 +654,8 @@ namespace SpiroNet.Wpf
                 sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
                 sb.AppendLine(
                     string.Format(
-                        "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"{0}\" height=\"{1}\">", 
-                        Width, 
+                        "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"{0}\" height=\"{1}\">",
+                        Width,
                         Height));
 
                 foreach (var shape in Shapes)
@@ -667,7 +667,7 @@ namespace SpiroNet.Wpf
                             shape.IsFilled ? "fill:#808080;fill-opacity:0.5" : "fill:none"));
                     sb.AppendLine(
                         string.Format(
-                            "        d=\"{0}\"/>", 
+                            "        d=\"{0}\"/>",
                             Data[shape].Replace(Environment.NewLine, suffix)));
                 }
 
