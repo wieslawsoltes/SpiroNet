@@ -34,6 +34,11 @@ namespace SpiroNet.Wpf
         private Brush _geometryBrush;
         private Brush _geometryPenBrush;
         private Pen _geometryPen;
+
+        private Brush _hitGeometryBrush;
+        private Brush _hitGeometryPenBrush;
+        private Pen _hitGeometryPen;
+        
         private Brush _pointBrush;
         private Brush _hitPointBrush;
 
@@ -63,9 +68,18 @@ namespace SpiroNet.Wpf
             _geometryPenBrush.Freeze();
             _geometryPen = new Pen(_geometryPenBrush, 2.0);
             _geometryPen.Freeze();
-            _pointBrush = new SolidColorBrush(Color.FromArgb(128, 255, 0, 0));
+            
+            _hitGeometryBrush = new SolidColorBrush(Color.FromArgb(128, 128, 0, 0));
+            _hitGeometryBrush.Freeze();
+            _hitGeometryPenBrush = new SolidColorBrush(Color.FromArgb(255, 255, 0, 0));
+            _hitGeometryPenBrush.Freeze();
+            _hitGeometryPen = new Pen(_hitGeometryPenBrush, 2.0);
+            _hitGeometryPen.Freeze();
+            
+            _pointBrush = new SolidColorBrush(Color.FromArgb(192, 0, 0, 255));
             _pointBrush.Freeze();
-            _hitPointBrush = new SolidColorBrush(Color.FromArgb(128, 255, 255, 0));
+            
+            _hitPointBrush = new SolidColorBrush(Color.FromArgb(192, 255, 0, 0));
             _hitPointBrush.Freeze();
         }
 
@@ -92,28 +106,63 @@ namespace SpiroNet.Wpf
             if (shape == null || Context == null || Context.Data == null)
                 return;
 
+            var hitShape = Context.HitShape;
+            var hitShapePointIndex = Context.HitShapePointIndex;
+            
             string data;
             if (Context.Data.TryGetValue(shape, out data) && !string.IsNullOrEmpty(data))
             {
                 var geometry = Geometry.Parse(data);
-                dc.DrawGeometry(
-                    shape.IsFilled ? _geometryBrush : null, 
-                    shape.IsStroked ? _geometryPen : null, 
-                    geometry);
+                if (shape == hitShape && hitShapePointIndex == -1)
+                {
+                    dc.DrawGeometry(
+                        shape.IsFilled ? _hitGeometryBrush : null, 
+                        shape.IsStroked ? _hitGeometryPen : null, 
+                        geometry);
+                }
+                else
+                {
+                    dc.DrawGeometry(
+                        shape.IsFilled ? _geometryBrush : null, 
+                        shape.IsStroked ? _geometryPen : null, 
+                        geometry);
+                }
             }
 
             if (shape.Points != null)
             {
-                var hitShape = Context.HitShape;
-                var hitShapePointIndex = Context.HitShapePointIndex;
-
                 for (int i = 0; i < shape.Points.Count; i++)
                 {
                     var point = shape.Points[i];
-                    if (shape == hitShape && i == hitShapePointIndex)
-                        dc.DrawEllipse(_hitPointBrush, null, new Point(point.X, point.Y), 4.0, 4.0);
-                    else
-                        dc.DrawEllipse(_pointBrush, null, new Point(point.X, point.Y), 4.0, 4.0);
+                    var brush = shape == hitShape && i == hitShapePointIndex ? _hitPointBrush : _pointBrush;
+
+                    switch (point.Type) 
+                    {
+                        case SpiroPointType.Corner:
+                            dc.DrawRectangle(brush, null, new Rect(point.X - 3.5, point.Y - 3.5, 7, 7));
+                            break;
+                        case SpiroPointType.G4:
+                            dc.DrawEllipse(brush, null, new Point(point.X, point.Y), 3.5, 3.5);
+                            break;
+                        case SpiroPointType.G2:
+                            dc.DrawEllipse(brush, null, new Point(point.X, point.Y), 3.5, 3.5);
+                            break;
+                        case SpiroPointType.Left:
+                            dc.DrawRectangle(brush, null, new Rect(point.X - 3.5, point.Y - 3.5, 7, 7));
+                            break;
+                        case SpiroPointType.Right:
+                            dc.DrawRectangle(brush, null, new Rect(point.X - 3.5, point.Y - 3.5, 7, 7));
+                            break;
+                        case SpiroPointType.End:
+                            dc.DrawRectangle(brush, null, new Rect(point.X - 3.5, point.Y - 3.5, 7, 7));
+                            break;
+                        case SpiroPointType.OpenContour:
+                            dc.DrawRectangle(brush, null, new Rect(point.X - 3.5, point.Y - 3.5, 7, 7));
+                            break;
+                        case SpiroPointType.EndOpenContour:
+                            dc.DrawRectangle(brush, null, new Rect(point.X - 3.5, point.Y - 3.5, 7, 7));
+                            break;
+                    }
                 }
             }
         }
