@@ -401,12 +401,6 @@ namespace SpiroNet.Wpf
                         int index = hitShapePointIndex + 1;
                         NewPointAt(shape, x, y, index);
 
-                        // Select shape.
-                        //_hitShape = shape;
-                        // Select new point.
-                        //_hitShapePointIndex = index;
-                        //_mode = Mode.Selected;
-
                         // Deselect shape.
                         _hitShape = null;
                         // Deselect point.
