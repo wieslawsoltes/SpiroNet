@@ -599,21 +599,6 @@ namespace SpiroNet.Wpf
             Invalidate();
         }
 
-        public void SaveAsDrawing(string path)
-        {
-            using (var f = System.IO.File.CreateText(path))
-            {
-                var drawing = new PathDrawing()
-                {
-                    Width = Width,
-                    Height = Height,
-                    Shapes = Shapes
-                };
-                var json = JsonSerializer.Serialize(drawing);
-                f.Write(json);
-            }
-        }
-
         public void OpenPlate(string path)
         {
             using (var f = System.IO.File.OpenText(path))
@@ -632,6 +617,21 @@ namespace SpiroNet.Wpf
 
                     Invalidate();
                 }
+            }
+        }
+
+        public void SaveAsDrawing(string path)
+        {
+            using (var f = System.IO.File.CreateText(path))
+            {
+                var drawing = new PathDrawing()
+                {
+                    Width = Width,
+                    Height = Height,
+                    Shapes = Shapes
+                };
+                var json = JsonSerializer.Serialize(drawing);
+                f.Write(json);
             }
         }
 
