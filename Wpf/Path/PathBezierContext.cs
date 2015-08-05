@@ -84,7 +84,7 @@ namespace SpiroNet.Wpf
             }
 
             var move = string.Format("M {0},{1}", Format(x), Format(y));
-             _sb.AppendLine(move);
+            _sb.AppendLine(move);
             _needToClose = !isOpen;
         }
 
@@ -96,7 +96,7 @@ namespace SpiroNet.Wpf
         public void LineTo(double x, double y)
         {
             var line = string.Format("L {0},{1}", Format(x), Format(y));
-             _sb.AppendLine(line);
+            _sb.AppendLine(line);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace SpiroNet.Wpf
         public void QuadTo(double x1, double y1, double x2, double y2)
         {
             var quad = string.Format("Q {0},{1} {2},{3}", Format(x1), Format(y1), Format(x2), Format(y2));
-             _sb.AppendLine(quad);
+            _sb.AppendLine(quad);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace SpiroNet.Wpf
         public void CurveTo(double x1, double y1, double x2, double y2, double x3, double y3)
         {
             var curve = string.Format("C {0},{1} {2},{3} {4},{5}", Format(x1), Format(y1), Format(x2), Format(y2), Format(x3), Format(y3));
-             _sb.AppendLine(curve);
+            _sb.AppendLine(curve);
         }
 
         /// <summary>
