@@ -53,30 +53,29 @@ namespace SpiroNet.Wpf
 
             _editor = new SpiroEditor()
             {
-                Width = 600,
-                Height = 600,
-                IsStroked = true,
-                IsFilled = false,
-                IsClosed = false,
-                IsTagged = false,
-                PointType = SpiroPointType.G4,
-                Shapes = new ObservableCollection<PathShape>(),
+                State = new SpirtoEditorState(),
+                Commands = new SpirtoEditorCommands(),
+                Invalidate = canvas.InvalidateVisual,
+                Drawing = new PathDrawing()
+                {
+                    Width = 600,
+                    Height = 600,
+                    Shapes = new ObservableCollection<PathShape>()
+                },
                 Data = new Dictionary<PathShape, string>()
             };
 
-            _editor.Invalidate = canvas.InvalidateVisual;
-
-            _editor.NewCommand = Command.Create(_editor.New);
-            _editor.OpenCommand = Command.Create(Open);
-            _editor.SaveAsCommand = Command.Create(SaveAs);
-            _editor.ExportCommand = Command.Create(Export);
-            _editor.ExitCommand = Command.Create(Exit);
-            _editor.IsStrokedCommand = Command.Create(_editor.ToggleIsStroked);
-            _editor.IsFilledCommand = Command.Create(_editor.ToggleIsFilled);
-            _editor.IsClosedCommand = Command.Create(_editor.ToggleIsClosed);
-            _editor.IsTaggedCommand = Command.Create(_editor.ToggleIsTagged);
-            _editor.PointTypeCommand = Command<string>.Create(_editor.TogglePointType);
-            _editor.ExecuteScriptCommand = Command<string>.Create(ExecuteScript);
+            _editor.Commands.NewCommand = Command.Create(_editor.New);
+            _editor.Commands.OpenCommand = Command.Create(Open);
+            _editor.Commands.SaveAsCommand = Command.Create(SaveAs);
+            _editor.Commands.ExportCommand = Command.Create(Export);
+            _editor.Commands.ExitCommand = Command.Create(Exit);
+            _editor.Commands.IsStrokedCommand = Command.Create(_editor.ToggleIsStroked);
+            _editor.Commands.IsFilledCommand = Command.Create(_editor.ToggleIsFilled);
+            _editor.Commands.IsClosedCommand = Command.Create(_editor.ToggleIsClosed);
+            _editor.Commands.IsTaggedCommand = Command.Create(_editor.ToggleIsTagged);
+            _editor.Commands.PointTypeCommand = Command<string>.Create(_editor.TogglePointType);
+            _editor.Commands.ExecuteScriptCommand = Command<string>.Create(ExecuteScript);
 
             DataContext = _editor;
 

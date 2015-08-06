@@ -11,11 +11,11 @@
              SnapsToDevicePixels="True" UseLayoutRounding="True"
              TextOptions.TextFormattingMode="Display">
     <UserControl.InputBindings>
-        <KeyBinding Command="{Binding NewCommand}" Gesture="Ctrl+N"/>
-        <KeyBinding Command="{Binding OpenCommand}" Gesture="Ctrl+O"/>
-        <KeyBinding Command="{Binding SaveAsCommand}" Gesture="Ctrl+S"/>
-        <KeyBinding Command="{Binding ExportCommand}" Gesture="Ctrl+E"/>
-        <KeyBinding Command="{Binding ExitCommand}" Gesture="Alt+F4"/>
+        <KeyBinding Command="{Binding Commands.NewCommand}" Gesture="Ctrl+N"/>
+        <KeyBinding Command="{Binding Commands.OpenCommand}" Gesture="Ctrl+O"/>
+        <KeyBinding Command="{Binding Commands.SaveAsCommand}" Gesture="Ctrl+S"/>
+        <KeyBinding Command="{Binding Commands.ExportCommand}" Gesture="Ctrl+E"/>
+        <KeyBinding Command="{Binding Commands.ExitCommand}" Gesture="Alt+F4"/>
     </UserControl.InputBindings>
     <UserControl.Resources>
         <local:ShapeToDataConverter x:Key="ShapeToDataConverterKey"/>
@@ -53,15 +53,15 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Background="{x:Null}">
             <MenuItem Header="_File">
-                <MenuItem Command="{Binding NewCommand}" Header="_New" InputGestureText="Ctrl+N"/>
+                <MenuItem Command="{Binding Commands.NewCommand}" Header="_New" InputGestureText="Ctrl+N"/>
                 <Separator/>
-                <MenuItem Command="{Binding OpenCommand}" Header="_Open..." InputGestureText="Ctrl+O"/>
+                <MenuItem Command="{Binding Commands.OpenCommand}" Header="_Open..." InputGestureText="Ctrl+O"/>
                 <Separator/>
-                <MenuItem Command="{Binding SaveAsCommand}" Header="_Save As..." InputGestureText="Ctrl+S"/>
+                <MenuItem Command="{Binding Commands.SaveAsCommand}" Header="_Save As..." InputGestureText="Ctrl+S"/>
                 <Separator/>
-                <MenuItem Command="{Binding ExportCommand}" Header="_Export..." InputGestureText="Ctrl+E"/>
+                <MenuItem Command="{Binding Commands.ExportCommand}" Header="_Export..." InputGestureText="Ctrl+E"/>
                 <Separator/>
-                <MenuItem Command="{Binding ExitCommand}" Header="E_xit" InputGestureText="Alt+F4"/>
+                <MenuItem Command="{Binding Commands.ExitCommand}" Header="E_xit" InputGestureText="Alt+F4"/>
             </MenuItem>
         </Menu>
         <Grid Width="160"
@@ -72,7 +72,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <ListBox x:Name="shapesListBox"
-                     ItemsSource="{Binding Shapes}"
+                     ItemsSource="{Binding Drawing.Shapes}"
                      VerticalAlignment="Stretch" 
                      HorizontalContentAlignment="Stretch"
                      Background="White"
@@ -110,24 +110,24 @@
                       Grid.Row="1">
             <local:SpiroCanvas x:Name="canvas" 
                                Editor="{Binding}"
-                               Width="{Binding Width}" 
-                               Height="{Binding Height}" 
+                               Width="{Binding Drawing.Width}" 
+                               Height="{Binding Drawing.Height}" 
                                Background="WhiteSmoke"
                                Focusable="True"
                                FocusVisualStyle="{x:Null}">
                 <local:SpiroCanvas.InputBindings>
-                    <KeyBinding Command="{Binding IsStrokedCommand}" Key="K" Modifiers=""/>
-                    <KeyBinding Command="{Binding IsFilledCommand}" Key="F" Modifiers=""/>
-                    <KeyBinding Command="{Binding IsClosedCommand}" Key="D" Modifiers=""/>
-                    <KeyBinding Command="{Binding IsTaggedCommand}" Key="T" Modifiers=""/>
-                    <KeyBinding Command="{Binding PointTypeCommand}" CommandParameter="Corner" Key="V" Modifiers=""/>
-                    <KeyBinding Command="{Binding PointTypeCommand}" CommandParameter="G4" Key="O" Modifiers=""/>
-                    <KeyBinding Command="{Binding PointTypeCommand}" CommandParameter="G2" Key="C" Modifiers=""/>
-                    <KeyBinding Command="{Binding PointTypeCommand}" CommandParameter="Left" Key="OemOpenBrackets" Modifiers=""/>
-                    <KeyBinding Command="{Binding PointTypeCommand}" CommandParameter="Right" Key="OemCloseBrackets" Modifiers=""/>
-                    <KeyBinding Command="{Binding PointTypeCommand}" CommandParameter="End" Key="Z" Modifiers=""/>
-                    <KeyBinding Command="{Binding PointTypeCommand}" CommandParameter="OpenContour" Key="OemOpenBrackets" Modifiers="Shift"/>
-                    <KeyBinding Command="{Binding PointTypeCommand}" CommandParameter="EndOpenContour" Key="OemCloseBrackets" Modifiers="Shift"/>
+                    <KeyBinding Command="{Binding Commands.IsStrokedCommand}" Key="K" Modifiers=""/>
+                    <KeyBinding Command="{Binding Commands.IsFilledCommand}" Key="F" Modifiers=""/>
+                    <KeyBinding Command="{Binding Commands.IsClosedCommand}" Key="D" Modifiers=""/>
+                    <KeyBinding Command="{Binding Commands.IsTaggedCommand}" Key="T" Modifiers=""/>
+                    <KeyBinding Command="{Binding Commands.PointTypeCommand}" CommandParameter="Corner" Key="V" Modifiers=""/>
+                    <KeyBinding Command="{Binding Commands.PointTypeCommand}" CommandParameter="G4" Key="O" Modifiers=""/>
+                    <KeyBinding Command="{Binding Commands.PointTypeCommand}" CommandParameter="G2" Key="C" Modifiers=""/>
+                    <KeyBinding Command="{Binding Commands.PointTypeCommand}" CommandParameter="Left" Key="OemOpenBrackets" Modifiers=""/>
+                    <KeyBinding Command="{Binding Commands.PointTypeCommand}" CommandParameter="Right" Key="OemCloseBrackets" Modifiers=""/>
+                    <KeyBinding Command="{Binding Commands.PointTypeCommand}" CommandParameter="End" Key="Z" Modifiers=""/>
+                    <KeyBinding Command="{Binding Commands.PointTypeCommand}" CommandParameter="OpenContour" Key="OemOpenBrackets" Modifiers="Shift"/>
+                    <KeyBinding Command="{Binding Commands.PointTypeCommand}" CommandParameter="EndOpenContour" Key="OemCloseBrackets" Modifiers="Shift"/>
                 </local:SpiroCanvas.InputBindings>
             </local:SpiroCanvas>
         </ScrollViewer>
@@ -135,15 +135,15 @@
                     Background="White"
                     Grid.Column="2"
                     Grid.Row="1">
-            <GroupBox Header="Canvas Size" Margin="4,2,4,2">
+            <GroupBox Header="Drawing Size" Margin="4,2,4,2">
                 <StackPanel>
-                    <TextBox Text="{Binding Width}" Margin="1"/>
-                    <TextBox Text="{Binding Height}" Margin="1"/>
+                    <TextBox Text="{Binding Drawing.Width}" Margin="1"/>
+                    <TextBox Text="{Binding Drawing.Height}" Margin="1"/>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="New Shape" Margin="4,2,4,2">
                 <StackPanel>
-                    <CheckBox IsChecked="{Binding IsStroked}" 
+                    <CheckBox IsChecked="{Binding State.IsStroked}" 
                               VerticalContentAlignment="Center" 
                               Content="Is Stroked      k" 
                               Margin="1">
@@ -153,7 +153,7 @@
                             </StackPanel>
                         </CheckBox.ToolTip>
                     </CheckBox>
-                    <CheckBox IsChecked="{Binding IsFilled}" 
+                    <CheckBox IsChecked="{Binding State.IsFilled}" 
                               VerticalContentAlignment="Center" 
                               Content="Is Filled       f" 
                               Margin="1">
@@ -163,7 +163,7 @@
                             </StackPanel>
                         </CheckBox.ToolTip>
                     </CheckBox>
-                    <CheckBox IsChecked="{Binding IsClosed}" 
+                    <CheckBox IsChecked="{Binding State.IsClosed}" 
                               VerticalContentAlignment="Center" 
                               Content="Is Closed       d" 
                               Margin="1">
@@ -174,7 +174,7 @@
                             </StackPanel>
                         </CheckBox.ToolTip>
                     </CheckBox>
-                    <CheckBox IsChecked="{Binding IsTagged}" 
+                    <CheckBox IsChecked="{Binding State.IsTagged}" 
                               VerticalContentAlignment="Center"
                               Content="Is Tagged       t" 
                               Margin="1">
@@ -191,7 +191,7 @@
             </GroupBox>
             <GroupBox Header="New Point" Margin="4,2,4,2">
                 <StackPanel>
-                    <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.Corner}}"
+                    <RadioButton IsChecked="{Binding Path=State.PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.Corner}}"
                                  VerticalContentAlignment="Center" 
                                  Content="Corner          v" 
                                  Margin="1">
@@ -202,7 +202,7 @@
                             </StackPanel>
                         </RadioButton.ToolTip>
                     </RadioButton>
-                    <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.G4}}"
+                    <RadioButton IsChecked="{Binding Path=State.PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.G4}}"
                                  VerticalContentAlignment="Center" 
                                  Content="G4              o" 
                                  Margin="1">
@@ -213,7 +213,7 @@
                             </StackPanel>
                         </RadioButton.ToolTip>
                     </RadioButton>
-                    <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.G2}}"
+                    <RadioButton IsChecked="{Binding Path=State.PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.G2}}"
                                  VerticalContentAlignment="Center" 
                                  Content="G2              c" 
                                  Margin="1">
@@ -224,7 +224,7 @@
                             </StackPanel>
                         </RadioButton.ToolTip>
                     </RadioButton>
-                    <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.Left}}"
+                    <RadioButton IsChecked="{Binding Path=State.PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.Left}}"
                                  VerticalContentAlignment="Center" 
                                  Content="Left            [" 
                                  Margin="1">
@@ -235,7 +235,7 @@
                             </StackPanel>
                         </RadioButton.ToolTip>
                     </RadioButton>
-                    <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.Right}}"
+                    <RadioButton IsChecked="{Binding Path=State.PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.Right}}"
                                  VerticalContentAlignment="Center" 
                                  Content="Right           ]" 
                                  Margin="1">
@@ -247,7 +247,7 @@
                             </StackPanel>
                         </RadioButton.ToolTip>
                     </RadioButton>
-                    <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.End}}"
+                    <RadioButton IsChecked="{Binding Path=State.PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.End}}"
                                  VerticalContentAlignment="Center" 
                                  Content="End             z" 
                                  Margin="1">
@@ -258,7 +258,7 @@
                             </StackPanel>
                         </RadioButton.ToolTip>
                     </RadioButton>
-                    <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.OpenContour}}" 
+                    <RadioButton IsChecked="{Binding Path=State.PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.OpenContour}}" 
                                  VerticalContentAlignment="Center" 
                                  Content="OpenContour     {" 
                                  Margin="1">
@@ -269,7 +269,7 @@
                             </StackPanel>
                         </RadioButton.ToolTip>
                     </RadioButton>
-                    <RadioButton IsChecked="{Binding Path=PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.EndOpenContour}}"
+                    <RadioButton IsChecked="{Binding Path=State.PointType, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static spiro:SpiroPointType.EndOpenContour}}"
                                  VerticalContentAlignment="Center" 
                                  Content="EndOpenContour  }" 
                                  Margin="1">
@@ -300,7 +300,7 @@
                      HorizontalScrollBarVisibility="Auto"
                      Margin="4,0,4,0">
             </TextBox>
-            <Button Content="Run" Command="{Binding ExecuteScriptCommand}" 
+            <Button Content="Run" Command="{Binding Commands.ExecuteScriptCommand}" 
                     CommandParameter="{Binding ElementName=scriptTextBox, Path=Text}" 
                     Margin="4,4,4,0">
             </Button>

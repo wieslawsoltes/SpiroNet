@@ -47,6 +47,9 @@
   <ItemGroup>
     <Compile Include="Contexts\PsBezierContext.cs" />
     <Compile Include="Editor\SpiroEditor.cs" />
+    <Compile Include="Editor\SpirtoEditorCommands.cs" />
+    <Compile Include="Editor\SpirtoEditorMode.cs" />
+    <Compile Include="Editor\SpirtoEditorState.cs" />
     <Compile Include="Json\JsonSerializer.cs" />
     <Compile Include="Json\ObservableCollectionContractResolver.cs" />
     <Compile Include="Contexts\PathBezierContext.cs" />

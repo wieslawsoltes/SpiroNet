@@ -24,112 +24,39 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Windows.Input;
 
 namespace SpiroNet.Editor
 {
-    public enum Mode { None, Create, Move, Selected }
-
     public class SpiroEditor : ObservableObject
     {
-        private Mode _mode = Mode.Create;
-        private PathShape _shape = null;
-        private double _hitTreshold = 7;
-        private double _hitTresholdSquared = 49;
-        private PathShape _hitShape = null;
-        private int _hitShapePointIndex = -1;
-        private double _width = 600;
-        private double _height = 600;
-        private bool _isStroked = true;
-        private bool _isFilled = false;
-        private bool _isClosed = false;
-        private bool _isTagged = false;
-        private SpiroPointType _pointType = SpiroPointType.G4;
-        private IList<PathShape> _shapes = null;
+        private SpirtoEditorState _state = null;
+        private SpirtoEditorCommands _commands = null;
+        private Action _invalidate = null;
+        private PathDrawing _drawing = null;
         private IDictionary<PathShape, string> _data = null;
 
-        public Mode Mode
+        public SpirtoEditorState State
         {
-            get { return _mode; }
-            set { Update(ref _mode, value); }
+            get { return _state; }
+            set { Update(ref _state, value); }
         }
 
-        public PathShape Shape
+        public SpirtoEditorCommands Commands
         {
-            get { return _shape; }
-            set { Update(ref _shape, value); }
+            get { return _commands; }
+            set { Update(ref _commands, value); }
         }
 
-        public double HitTreshold
+        public Action Invalidate
         {
-            get { return _hitTreshold; }
-            set { Update(ref _hitTreshold, value); }
+            get { return _invalidate; }
+            set { Update(ref _invalidate, value); }
         }
 
-        public double HitTresholdSquared
+        public PathDrawing Drawing
         {
-            get { return _hitTresholdSquared; }
-            set { Update(ref _hitTresholdSquared, value); }
-        }
-
-        public PathShape HitShape
-        {
-            get { return _hitShape; }
-            set { Update(ref _hitShape, value); }
-        }
-
-        public int HitShapePointIndex
-        {
-            get { return _hitShapePointIndex; }
-            set { Update(ref _hitShapePointIndex, value); }
-        }
-
-        public double Width
-        {
-            get { return _width; }
-            set { Update(ref _width, value); }
-        }
-
-        public double Height
-        {
-            get { return _height; }
-            set { Update(ref _height, value); }
-        }
-
-        public bool IsStroked
-        {
-            get { return _isStroked; }
-            set { Update(ref _isStroked, value); }
-        }
-
-        public bool IsFilled
-        {
-            get { return _isFilled; }
-            set { Update(ref _isFilled, value); }
-        }
-
-        public bool IsClosed
-        {
-            get { return _isClosed; }
-            set { Update(ref _isClosed, value); }
-        }
-
-        public bool IsTagged
-        {
-            get { return _isTagged; }
-            set { Update(ref _isTagged, value); }
-        }
-
-        public SpiroPointType PointType
-        {
-            get { return _pointType; }
-            set { Update(ref _pointType, value); }
-        }
-
-        public IList<PathShape> Shapes
-        {
-            get { return _shapes; }
-            set { Update(ref _shapes, value); }
+            get { return _drawing; }
+            set { Update(ref _drawing, value); }
         }
 
         public IDictionary<PathShape, string> Data
@@ -138,90 +65,68 @@ namespace SpiroNet.Editor
             set { Update(ref _data, value); }
         }
 
-        public ICommand NewCommand { get; set; }
-
-        public ICommand OpenCommand { get; set; }
-
-        public ICommand SaveAsCommand { get; set; }
-
-        public ICommand ExportCommand { get; set; }
-
-        public ICommand ExitCommand { get; set; }
-
-        public ICommand IsStrokedCommand { get; set; }
-
-        public ICommand IsFilledCommand { get; set; }
-
-        public ICommand IsClosedCommand { get; set; }
-
-        public ICommand IsTaggedCommand { get; set; }
-
-        public ICommand PointTypeCommand { get; set; }
-
-        public ICommand ExecuteScriptCommand { get; set; }
-
-        public Action Invalidate { get; set; }
-
         public void ToggleIsStroked()
         {
-            IsStroked = !IsStroked;
-            if (_shape != null)
+            _state.IsStroked = !_state.IsStroked;
+            if (_state.Shape != null)
             {
-                _shape.IsStroked = IsStroked;
-                Invalidate();
+                _state.Shape.IsStroked = _state.IsStroked;
+                _invalidate();
             }
         }
 
         public void ToggleIsFilled()
         {
-            IsFilled = !IsFilled;
-            if (_shape != null)
+            _state.IsFilled = !_state.IsFilled;
+            if (_state.Shape != null)
             {
-                _shape.IsFilled = IsFilled;
-                Invalidate();
+                _state.Shape.IsFilled = _state.IsFilled;
+                _invalidate();
             }
         }
 
         public void ToggleIsClosed()
         {
-            IsClosed = !IsClosed;
-            if (_shape != null)
+            _state.IsClosed = !_state.IsClosed;
+            if (_state.Shape != null)
             {
-                _shape.IsClosed = IsClosed;
-                UpdateData(_shape);
-                Invalidate();
+                _state.Shape.IsClosed = _state.IsClosed;
+                UpdateData(_state.Shape);
+                _invalidate();
             }
         }
 
         public void ToggleIsTagged()
         {
-            IsTagged = !IsTagged;
-            if (_shape != null)
+            _state.IsTagged = !_state.IsTagged;
+            if (_state.Shape != null)
             {
-                _shape.IsTagged = IsTagged;
-                UpdateData(_shape);
-                Invalidate();
+                _state.Shape.IsTagged = _state.IsTagged;
+                UpdateData(_state.Shape);
+                _invalidate();
             }
         }
 
         public void TogglePointType(string value)
         {
             var type = (SpiroPointType)Enum.Parse(typeof(SpiroPointType), value);
-            PointType = type;
+            _state.PointType = type;
             SetLastPointType(type);
-            UpdateData(_shape);
-            Invalidate();
+            UpdateData(_state.Shape);
+            _invalidate();
         }
 
         private void NewShape()
         {
-            _shape = new PathShape();
-            _shape.IsStroked = IsStroked;
-            _shape.IsFilled = IsFilled;
-            _shape.IsClosed = IsClosed;
-            _shape.IsTagged = IsTagged;
-            _shape.Points = new ObservableCollection<SpiroControlPoint>();
-            Shapes.Add(_shape);
+            _state.Shape = new PathShape()
+            {
+                IsStroked = _state.IsStroked,
+                IsFilled = _state.IsFilled,
+                IsClosed = _state.IsClosed,
+                IsTagged = _state.IsTagged,
+                Points = new ObservableCollection<SpiroControlPoint>()
+            };
+            _drawing.Shapes.Add(_state.Shape);
         }
 
         private void NewPoint(PathShape shape, double x, double y)
@@ -229,7 +134,7 @@ namespace SpiroNet.Editor
             var point = new SpiroControlPoint();
             point.X = x;
             point.Y = y;
-            point.Type = PointType;
+            point.Type = _state.PointType;
             shape.Points.Add(point);
         }
 
@@ -238,7 +143,7 @@ namespace SpiroNet.Editor
             var point = new SpiroControlPoint();
             point.X = x;
             point.Y = y;
-            point.Type = PointType;
+            point.Type = _state.PointType;
             shape.Points.Insert(index, point);
         }
 
@@ -253,15 +158,15 @@ namespace SpiroNet.Editor
 
         private void SetLastPointType(SpiroPointType type)
         {
-            if (_shape == null || _shape.Points.Count < 1)
+            if (_state.Shape == null || _state.Shape.Points.Count < 1)
                 return;
 
-            var old = _shape.Points[_shape.Points.Count - 1];
+            var old = _state.Shape.Points[_state.Shape.Points.Count - 1];
             var point = new SpiroControlPoint();
             point.X = old.X;
             point.Y = old.Y;
             point.Type = type;
-            _shape.Points[_shape.Points.Count - 1] = point;
+            _state.Shape.Points[_state.Shape.Points.Count - 1] = point;
         }
 
         private static bool TryGetData(PathShape shape, IBezierContext bc)
@@ -353,27 +258,27 @@ namespace SpiroNet.Editor
 
         public void LeftDown(double x, double y)
         {
-            if (_shape == null)
+            if (_state.Shape == null)
             {
                 PathShape hitShape;
                 int hitShapePointIndex;
 
                 // Hit test for point.
-                var result = HitTestForPoint(_shapes, x, y, _hitTresholdSquared, out hitShape, out hitShapePointIndex);
+                var result = HitTestForPoint(_drawing.Shapes, x, y, _state.HitTresholdSquared, out hitShape, out hitShapePointIndex);
                 if (result)
                 {
                     // Select point.
-                    _hitShape = hitShape;
-                    _hitShapePointIndex = hitShapePointIndex;
+                    _state.HitShape = hitShape;
+                    _state.HitShapePointIndex = hitShapePointIndex;
                     // Begin move.
-                    _mode = Mode.Move;
-                    Invalidate();
+                    _state.Mode = SpirtoEditorMode.Move;
+                    _invalidate();
                     return;
                 }
                 else
                 {
                     // Hit test for shape and nearest point.
-                    if (HitTestForShape(_shapes, x, y, _hitTreshold, out hitShape, out hitShapePointIndex))
+                    if (HitTestForShape(_drawing.Shapes, x, y, _state.HitTreshold, out hitShape, out hitShapePointIndex))
                     {
                         // Insert new point.
                         PathShape shape = hitShape;
@@ -381,77 +286,77 @@ namespace SpiroNet.Editor
                         NewPointAt(shape, x, y, index);
 
                         // Deselect shape.
-                        _hitShape = null;
+                        _state.HitShape = null;
                         // Deselect point.
-                        _hitShapePointIndex = -1;
-                        _mode = Mode.Create;
+                        _state.HitShapePointIndex = -1;
+                        _state.Mode = SpirtoEditorMode.Create;
 
                         UpdateData(shape);
-                        Invalidate();
+                        _invalidate();
                         return;
                     }
 
-                    if (_hitShape != null)
+                    if (_state.HitShape != null)
                     {
                         // Deselect shape.
-                        _hitShape = null;
+                        _state.HitShape = null;
                         // Deselect point.
-                        _hitShapePointIndex = -1;
+                        _state.HitShapePointIndex = -1;
                         // Begin edit.
-                        _mode = Mode.Create;
-                        Invalidate();
+                        _state.Mode = SpirtoEditorMode.Create;
+                        _invalidate();
                         return;
                     }
                 }
             }
 
-            if (_mode == Mode.Create)
+            if (_state.Mode == SpirtoEditorMode.Create)
             {
                 // Add new shape.
-                if (_shape == null)
+                if (_state.Shape == null)
                     NewShape();
 
                 // Add new point.
-                NewPoint(_shape, x, y);
+                NewPoint(_state.Shape, x, y);
 
-                UpdateData(_shape);
-                Invalidate();
+                UpdateData(_state.Shape);
+                _invalidate();
             }
         }
 
         public void LeftUp(double x, double y)
         {
-            if (_mode == Mode.Move)
+            if (_state.Mode == SpirtoEditorMode.Move)
             {
                 // Finish move.
-                _mode = Mode.Selected;
+                _state.Mode = SpirtoEditorMode.Selected;
             }
         }
 
         public void RightDown(double x, double y)
         {
-            if (_shape != null)
+            if (_state.Shape != null)
             {
                 // Finish create.
-                UpdateData(_shape);
-                Invalidate();
-                _shape = null;
+                UpdateData(_state.Shape);
+                _invalidate();
+                _state.Shape = null;
             }
             else
             {
-                if (_hitShape != null)
+                if (_state.HitShape != null)
                 {
                     // Deselect point.
-                    _hitShape = null;
-                    _hitShapePointIndex = -1;
+                    _state.HitShape = null;
+                    _state.HitShapePointIndex = -1;
                     // Begin create.
-                    _mode = Mode.Create;
-                    Invalidate();
+                    _state.Mode = SpirtoEditorMode.Create;
+                    _invalidate();
                 }
 
                 PathShape hitShape;
                 int hitShapePointIndex;
-                var result = HitTestForPoint(_shapes, x, y, _hitTresholdSquared, out hitShape, out hitShapePointIndex);
+                var result = HitTestForPoint(_drawing.Shapes, x, y, _state.HitTresholdSquared, out hitShape, out hitShapePointIndex);
                 if (result)
                 {
                     // Delete point.
@@ -460,26 +365,26 @@ namespace SpiroNet.Editor
                     if (hitShape.Points.Count == 0)
                     {
                         // Delete shape.
-                        _shapes.Remove(hitShape);
+                        _drawing.Shapes.Remove(hitShape);
                         _data.Remove(hitShape);
-                        Invalidate();
+                        _invalidate();
                     }
                     else
                     {
                         UpdateData(hitShape);
-                        Invalidate();
+                        _invalidate();
                     }
 
                     return;
                 }
                 else
                 {
-                    if (HitTestForShape(_shapes, x, y, _hitTreshold, out hitShape, out hitShapePointIndex))
+                    if (HitTestForShape(_drawing.Shapes, x, y, _state.HitTreshold, out hitShape, out hitShapePointIndex))
                     {
                         // Delete shape.
-                        _shapes.Remove(hitShape);
+                        _drawing.Shapes.Remove(hitShape);
                         _data.Remove(hitShape);
-                        Invalidate();
+                        _invalidate();
                         return;
                     }
                 }
@@ -488,53 +393,53 @@ namespace SpiroNet.Editor
 
         public void Move(double x, double y)
         {
-            if (_shape != null)
+            if (_state.Shape != null)
             {
-                if (_shape.Points.Count > 1)
+                if (_state.Shape.Points.Count > 1)
                 {
-                    SetPointPosition(_shape, _shape.Points.Count - 1, x, y);
-                    UpdateData(_shape);
-                    Invalidate();
+                    SetPointPosition(_state.Shape, _state.Shape.Points.Count - 1, x, y);
+                    UpdateData(_state.Shape);
+                    _invalidate();
                 }
             }
             else
             {
-                if (_mode == Mode.Move)
+                if (_state.Mode == SpirtoEditorMode.Move)
                 {
-                    SetPointPosition(_hitShape, _hitShapePointIndex, x, y);
-                    UpdateData(_hitShape);
-                    Invalidate();
+                    SetPointPosition(_state.HitShape, _state.HitShapePointIndex, x, y);
+                    UpdateData(_state.HitShape);
+                    _invalidate();
                 }
-                else if (_mode == Mode.Create)
+                else if (_state.Mode == SpirtoEditorMode.Create)
                 {
                     PathShape hitShape;
                     int hitShapePointIndex;
-                    var result = HitTestForPoint(_shapes, x, y, _hitTresholdSquared, out hitShape, out hitShapePointIndex);
+                    var result = HitTestForPoint(_drawing.Shapes, x, y, _state.HitTresholdSquared, out hitShape, out hitShapePointIndex);
                     if (result)
                     {
                         // Hover shape.
-                        _hitShape = hitShape;
+                        _state.HitShape = hitShape;
                         // Hover point.
-                        _hitShapePointIndex = hitShapePointIndex;
-                        Invalidate();
+                        _state.HitShapePointIndex = hitShapePointIndex;
+                        _invalidate();
                     }
                     else
                     {
-                        if (HitTestForShape(_shapes, x, y, _hitTreshold, out hitShape, out hitShapePointIndex))
+                        if (HitTestForShape(_drawing.Shapes, x, y, _state.HitTreshold, out hitShape, out hitShapePointIndex))
                         {
                             // Hover shape.
-                            _hitShape = hitShape;
+                            _state.HitShape = hitShape;
                             // Dehover point.
-                            _hitShapePointIndex = -1;
+                            _state.HitShapePointIndex = -1;
                         }
                         else
                         {
                             // Dehover shape.
-                            _hitShape = null;
+                            _state.HitShape = null;
                             // Dehover point.
-                            _hitShapePointIndex = -1;
+                            _state.HitShapePointIndex = -1;
                         }
-                        Invalidate();
+                        _invalidate();
                     }
                 }
             }
@@ -542,9 +447,14 @@ namespace SpiroNet.Editor
 
         public void New()
         {
-            Shapes = new ObservableCollection<PathShape>();
-            Data = new Dictionary<PathShape, string>();
-            Invalidate();
+            var drawing = new PathDrawing()
+            {
+                Width = _drawing.Width,
+                Height = _drawing.Height,
+                Shapes = new ObservableCollection<PathShape>()
+            };
+
+            OpenDrawing(drawing);
         }
 
         public void OpenDrawing(string path)
@@ -559,17 +469,15 @@ namespace SpiroNet.Editor
 
         public void OpenDrawing(PathDrawing drawing)
         {
-            Width = drawing.Width;
-            Height = drawing.Height;
-            Shapes = drawing.Shapes;
+            Drawing = drawing;
             Data = new Dictionary<PathShape, string>();
 
-            foreach (var shape in Shapes)
+            foreach (var shape in _drawing.Shapes)
             {
                 UpdateData(shape);
             }
 
-            Invalidate();
+            _invalidate();
         }
 
         public void OpenPlate(string path)
@@ -580,15 +488,14 @@ namespace SpiroNet.Editor
                 var shapes = Plate.ToShapes(plate);
                 if (shapes != null)
                 {
-                    Shapes = shapes;
-                    Data = new Dictionary<PathShape, string>();
-
-                    foreach (var shape in Shapes)
+                    var drawing = new PathDrawing()
                     {
-                        UpdateData(shape);
-                    }
-
-                    Invalidate();
+                        Width = _drawing.Width,
+                        Height = _drawing.Height,
+                        Shapes = shapes
+                    };
+                    
+                    OpenDrawing(drawing);
                 }
             }
         }
@@ -597,13 +504,7 @@ namespace SpiroNet.Editor
         {
             using (var f = System.IO.File.CreateText(path))
             {
-                var drawing = new PathDrawing()
-                {
-                    Width = Width,
-                    Height = Height,
-                    Shapes = Shapes
-                };
-                var json = JsonSerializer.Serialize(drawing);
+                var json = JsonSerializer.Serialize(_drawing);
                 f.Write(json);
             }
         }
@@ -612,7 +513,7 @@ namespace SpiroNet.Editor
         {
             using (var f = System.IO.File.CreateText(path))
             {
-                var plate = Plate.FromShapes(Shapes);
+                var plate = Plate.FromShapes(_drawing.Shapes);
                 f.Write(plate);
             }
         }
@@ -628,10 +529,10 @@ namespace SpiroNet.Editor
                 sb.AppendLine(
                     string.Format(
                         "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"{0}\" height=\"{1}\">",
-                        Width,
-                        Height));
+                        _drawing.Width,
+                        _drawing.Height));
 
-                foreach (var shape in Shapes)
+                foreach (var shape in _drawing.Shapes)
                 {
                     sb.AppendLine(
                         string.Format(
@@ -657,9 +558,9 @@ namespace SpiroNet.Editor
                 var sb = new StringBuilder();
 
                 sb.Append(PsBezierContext.PsProlog);
-                sb.Append(string.Format(PsBezierContext.PsSize, Width, Height));
+                sb.Append(string.Format(PsBezierContext.PsSize, _drawing.Width, _drawing.Height));
 
-                foreach (var shape in Shapes)
+                foreach (var shape in _drawing.Shapes)
                 {
                     var bc = new PsBezierContext();
 
@@ -690,11 +591,11 @@ namespace SpiroNet.Editor
             {
                 foreach (var shape in shapes)
                 {
-                    Shapes.Add(shape);
+                    _drawing.Shapes.Add(shape);
                     UpdateData(shape);
                 }
 
-                Invalidate();
+                _invalidate();
             }
         }
     }

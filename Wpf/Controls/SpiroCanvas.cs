@@ -91,10 +91,10 @@ namespace SpiroNet.Wpf
 
         private void DrawShapes(DrawingContext dc)
         {
-            if (Editor == null || Editor.Shapes == null)
+            if (Editor == null || Editor.Drawing == null || Editor.Drawing.Shapes == null)
                 return;
 
-            foreach (var shape in Editor.Shapes)
+            foreach (var shape in Editor.Drawing.Shapes)
             {
                 DrawShape(dc, shape);
             }
@@ -105,8 +105,8 @@ namespace SpiroNet.Wpf
             if (shape == null || Editor == null || Editor.Data == null)
                 return;
 
-            var hitShape = Editor.HitShape;
-            var hitShapePointIndex = Editor.HitShapePointIndex;
+            var hitShape = Editor.State.HitShape;
+            var hitShapePointIndex = Editor.State.HitShapePointIndex;
 
             string data;
             if (Editor.Data.TryGetValue(shape, out data) && !string.IsNullOrEmpty(data))
