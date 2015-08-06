@@ -173,7 +173,16 @@ namespace SpiroNet
             SpiroSegment[] s;
             int n;
 
-            for (n = 0; spiros[n].Type != SpiroPointType.End && spiros[n].Type != SpiroPointType.EndOpenContour; ++n) ;
+            n = 0;
+            while (true)
+            {
+                if (spiros[n].Type == SpiroPointType.End || spiros[n].Type == SpiroPointType.EndOpenContour)
+                    break;
+
+                // invalid input
+                if (n >= spiros.Length)
+                    return false;
+            }
 
             if (spiros[n].Type == SpiroPointType.EndOpenContour)
                 ++n;
