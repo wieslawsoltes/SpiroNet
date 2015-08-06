@@ -182,6 +182,8 @@ namespace SpiroNet
                 // invalid input
                 if (n >= spiros.Length)
                     return false;
+
+                ++n;
             }
 
             if (spiros[n].Type == SpiroPointType.EndOpenContour)
