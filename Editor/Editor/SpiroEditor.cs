@@ -34,6 +34,7 @@ namespace SpiroNet.Editor
         private Action _invalidate = null;
         private PathDrawing _drawing = null;
         private IDictionary<PathShape, string> _data = null;
+        private IDictionary<PathShape, IList<SpiroKnot>> _knots = null;
 
         public SpirtoEditorState State
         {
@@ -63,6 +64,12 @@ namespace SpiroNet.Editor
         {
             get { return _data; }
             set { Update(ref _data, value); }
+        }
+
+        public IDictionary<PathShape, IList<SpiroKnot>> Knots
+        {
+            get { return _knots; }
+            set { Update(ref _knots, value); }
         }
 
         public void ToggleIsStroked()
@@ -189,9 +196,15 @@ namespace SpiroNet.Editor
             var bc = new PathBezierContext();
             var result = TryGetData(shape, bc);
             if (_data.ContainsKey(shape))
+            {
                 _data[shape] = result ? bc.ToString() : null;
+                _knots[shape] = result ? bc.GetKnots() : null;
+            }
             else
+            {
                 _data.Add(shape, result ? bc.ToString() : null);
+                _knots.Add(shape, result ? bc.GetKnots() : null);
+            }
         }
 
         private static double DistanceSquared(double x0, double y0, double x1, double y1)
@@ -367,6 +380,7 @@ namespace SpiroNet.Editor
                         // Delete shape.
                         _drawing.Shapes.Remove(hitShape);
                         _data.Remove(hitShape);
+                        _knots.Remove(hitShape);
                         _invalidate();
                     }
                     else
@@ -384,6 +398,7 @@ namespace SpiroNet.Editor
                         // Delete shape.
                         _drawing.Shapes.Remove(hitShape);
                         _data.Remove(hitShape);
+                        _knots.Remove(hitShape);
                         _invalidate();
                         return;
                     }
@@ -471,6 +486,7 @@ namespace SpiroNet.Editor
         {
             Drawing = drawing;
             Data = new Dictionary<PathShape, string>();
+            Knots = new Dictionary<PathShape, IList<SpiroKnot>>();
 
             foreach (var shape in _drawing.Shapes)
             {

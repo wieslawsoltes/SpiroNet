@@ -73,7 +73,11 @@ namespace SpiroNet
         /// <summary>
         /// Called by spiro to mark current control point knot.
         /// </summary>
-        /// <param name="knotIndex">The current spiros control point knot index.</param>
-        void MarkKnot(int knotIndex);
+        /// <param name="index">The spiros control point knot index.</param>
+        /// <param name="theta">The spiros control point knot theta angle.</param>
+        /// <param name="x">The spiros control point X location.</param>
+        /// <param name="y">The spiros control point Y location.</param>
+        /// <param name="type">The spiros control point type.</param>
+        void MarkKnot(int index, double theta, double x, double y, SpiroPointType type);
     }
 }

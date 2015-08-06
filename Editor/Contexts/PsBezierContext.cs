@@ -117,7 +117,7 @@ namespace SpiroNet.Editor
             _state.y = y3;
         }
 
-        public void MarkKnot(int knotIndex)
+        public void MarkKnot(int index, double theta, double x, double y, SpiroPointType type)
         {
         }
     }

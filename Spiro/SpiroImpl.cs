@@ -769,9 +769,12 @@ namespace SpiroNet
                 if (i == 0)
                     bc.MoveTo(x0, y0, s[0].Type == SpiroPointType.OpenContour ? true : false);
 
-                bc.MarkKnot(i);
+                bc.MarkKnot(i, get_knot_th(s, i), s[i].X, s[i].Y, s[i].Type);
                 spiro_seg_to_bpath(s[i].ks, x0, y0, x1, y1, bc, 0);
             }
+
+            if (nsegs == n - 1)
+                bc.MarkKnot(n - 1, get_knot_th(s, n - 1), s[n - 1].X, s[n - 1].Y, s[n - 1].Type);
         }
 
         public static double get_knot_th(SpiroSegment[] s, int i)

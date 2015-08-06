@@ -19,6 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 */
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 
@@ -34,6 +36,7 @@ namespace SpiroNet.Editor
     {
         private bool _needToClose = false;
         private StringBuilder _sb = new StringBuilder();
+        private IList<SpiroKnot> _knots = new List<SpiroKnot>();
 
         /// <summary>
         /// Format double value using en-GB culture info.
@@ -57,6 +60,15 @@ namespace SpiroNet.Editor
                 _needToClose = false;
             }
             return _sb.ToString();
+        }
+
+        /// <summary>
+        /// Get output spiro control point knots for current Path segment.
+        /// </summary>
+        /// <returns>The spiro control point knots for current Path segment.</returns>
+        public IList<SpiroKnot> GetKnots()
+        {
+            return _knots;
         }
 
         /// <summary>
@@ -126,11 +138,24 @@ namespace SpiroNet.Editor
         }
 
         /// <summary>
-        /// Mark current control point knot. Currenlty not implemented, may be usefull for marking generated curves to original spiro code points.
+        /// Mark current control point knot. 
+        /// Currenlty not implemented, may be usefull for marking generated curves to original spiro code points.
         /// </summary>
-        /// <param name="knotIndex">The current spiros control point knot index.</param>
-        public void MarkKnot(int knotIndex)
+        /// <param name="index">The spiros control point knot index.</param>
+        /// <param name="theta">The spiros control point knot theta angle.</param>
+        /// <param name="x">The spiros control point X location.</param>
+        /// <param name="y">The spiros control point Y location.</param>
+        /// <param name="type">The spiros control point type.</param>
+        public void MarkKnot(int index, double theta, double x, double y, SpiroPointType type)
         {
+            _knots.Add(new SpiroKnot()
+            {
+                Index = index,
+                Theta = theta * 180 / Math.PI,
+                X = x,
+                Y = y,
+                Type = type
+            });
         }
     }
 }

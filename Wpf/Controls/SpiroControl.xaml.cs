@@ -62,7 +62,8 @@ namespace SpiroNet.Wpf
                     Height = 600,
                     Shapes = new ObservableCollection<PathShape>()
                 },
-                Data = new Dictionary<PathShape, string>()
+                Data = new Dictionary<PathShape, string>(),
+                Knots = new Dictionary<PathShape, IList<SpiroKnot>>()
             };
 
             _editor.Commands.NewCommand = Command.Create(_editor.New);
