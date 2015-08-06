@@ -42,34 +42,51 @@ namespace SpiroNet.Editor
 
             foreach (var shape in shapes)
             {
-                foreach (var point in shape.Points)
+                if (shape.Points.Count == 0)
+                    continue;
+
+                int n = shape.Points.Count;
+                for (int j = 0; j < n; j++)
                 {
-                    switch (point.Type)
+                    var point = shape.Points[j];
+
+                    if (!shape.IsClosed && j == 0)
                     {
-                        case SpiroPointType.Corner:
-                            sb.AppendLine(string.Format("  (v {0} {1})", Format(point.X), Format(point.Y)));
-                            break;
-                        case SpiroPointType.G4:
-                            sb.AppendLine(string.Format("  (o {0} {1})", Format(point.X), Format(point.Y)));
-                            break;
-                        case SpiroPointType.G2:
-                            sb.AppendLine(string.Format("  (c {0} {1})", Format(point.X), Format(point.Y)));
-                            break;
-                        case SpiroPointType.Left:
-                            sb.AppendLine(string.Format("  ([ {0} {1})", Format(point.X), Format(point.Y)));
-                            break;
-                        case SpiroPointType.Right:
-                            sb.AppendLine(string.Format("  (] {0} {1})", Format(point.X), Format(point.Y)));
-                            break;
-                        case SpiroPointType.End:
-                            sb.AppendLine("  (z)");
-                            break;
-                        case SpiroPointType.OpenContour:
-                            sb.AppendLine(string.Format("  ({ {0} {1})", Format(point.X), Format(point.Y)));
-                            break;
-                        case SpiroPointType.EndOpenContour:
-                            sb.AppendLine(string.Format("  (} {0} {1})", Format(point.X), Format(point.Y)));
-                            break;
+                        sb.AppendLine(string.Format("  ({{ {0} {1})", Format(point.X), Format(point.Y)));
+                    }
+                    else if (!shape.IsClosed && j == n - 1)
+                    {
+                        sb.AppendLine(string.Format("  (}} {0} {1})", Format(point.X), Format(point.Y)));
+                    }
+                    else
+                    {
+                        switch (point.Type)
+                        {
+                            case SpiroPointType.Corner:
+                                sb.AppendLine(string.Format("  (v {0} {1})", Format(point.X), Format(point.Y)));
+                                break;
+                            case SpiroPointType.G4:
+                                sb.AppendLine(string.Format("  (o {0} {1})", Format(point.X), Format(point.Y)));
+                                break;
+                            case SpiroPointType.G2:
+                                sb.AppendLine(string.Format("  (c {0} {1})", Format(point.X), Format(point.Y)));
+                                break;
+                            case SpiroPointType.Left:
+                                sb.AppendLine(string.Format("  ([ {0} {1})", Format(point.X), Format(point.Y)));
+                                break;
+                            case SpiroPointType.Right:
+                                sb.AppendLine(string.Format("  (] {0} {1})", Format(point.X), Format(point.Y)));
+                                break;
+                            case SpiroPointType.End:
+                                sb.AppendLine("  (z)");
+                                break;
+                            case SpiroPointType.OpenContour:
+                                sb.AppendLine(string.Format("  ({{ {0} {1})", Format(point.X), Format(point.Y)));
+                                break;
+                            case SpiroPointType.EndOpenContour:
+                                sb.AppendLine(string.Format("  (}} {0} {1})", Format(point.X), Format(point.Y)));
+                                break;
+                        }
                     }
                 }
 
