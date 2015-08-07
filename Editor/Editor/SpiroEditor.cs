@@ -644,7 +644,7 @@ namespace SpiroNet.Editor
             }
         }
 
-        public void New()
+        public void NewDrawing()
         {
             var drawing = new PathDrawing()
             {

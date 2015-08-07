@@ -68,7 +68,7 @@ namespace SpiroNet.Wpf
             };
 
             _editor.Commands.InvalidateCommand = Command.Create(_editor.Invalidate);
-            _editor.Commands.NewCommand = Command.Create(_editor.New);
+            _editor.Commands.NewCommand = Command.Create(_editor.NewDrawing);
             _editor.Commands.OpenCommand = Command.Create(Open);
             _editor.Commands.SaveAsCommand = Command.Create(SaveAs);
             _editor.Commands.ExportCommand = Command.Create(Export);
