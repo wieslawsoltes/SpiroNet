@@ -46,6 +46,7 @@ namespace SpiroNet.Wpf
         {
             InitializeComponent();
 
+            canvas.PreviewMouseDown += Canvas_PreviewMouseDown;
             canvas.PreviewMouseLeftButtonDown += Canvas_PreviewMouseLeftButtonDown;
             canvas.PreviewMouseLeftButtonUp += Canvas_PreviewMouseLeftButtonUp;
             canvas.PreviewMouseRightButtonDown += Canvas_PreviewMouseRightButtonDown;
@@ -66,6 +67,7 @@ namespace SpiroNet.Wpf
                 Knots = new Dictionary<PathShape, IList<SpiroKnot>>()
             };
 
+            _editor.Commands.InvalidateCommand = Command.Create(_editor.Invalidate);
             _editor.Commands.NewCommand = Command.Create(_editor.New);
             _editor.Commands.OpenCommand = Command.Create(Open);
             _editor.Commands.SaveAsCommand = Command.Create(SaveAs);
@@ -83,6 +85,25 @@ namespace SpiroNet.Wpf
             Loaded += SpiroControl_Loaded;
         }
 
+        private void Canvas_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            canvas.Focus();
+            var point = e.GetPosition(canvas);
+
+            try
+            {
+                if (e.ChangedButton == MouseButton.Middle)
+                {
+                    _editor.MiddleDown(point.X, point.Y);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message);
+                Debug.Print(ex.StackTrace);
+            }
+        }
+        
         private void Canvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             canvas.Focus();
