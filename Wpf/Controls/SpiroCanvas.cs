@@ -141,6 +141,9 @@ namespace SpiroNet.Wpf
                 }
             }
 
+            if (!Editor.State.DisplayKnots)
+                return;
+            
             // draw shape knots
             IList<SpiroKnot> knots;
             Editor.Knots.TryGetValue(shape, out knots);
