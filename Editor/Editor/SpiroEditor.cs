@@ -121,14 +121,14 @@ namespace SpiroNet.Editor
             if (_state.Shape != null)
             {
                 _state.Shape.IsClosed = _state.IsClosed;
-                UpdateData(_state.Shape);
+                RunSpiro(_state.Shape);
                 _invalidate();
             }
             
             if (_state.HitShape != null && _state.HitShapePointIndex == -1)
             {
                 _state.HitShape.IsClosed = _state.IsClosed;
-                UpdateData(_state.HitShape);
+                RunSpiro(_state.HitShape);
                 _invalidate();
             }
         }
@@ -140,14 +140,14 @@ namespace SpiroNet.Editor
             if (_state.Shape != null)
             {
                 _state.Shape.IsTagged = _state.IsTagged;
-                UpdateData(_state.Shape);
+                RunSpiro(_state.Shape);
                 _invalidate();
             }
 
             if (_state.HitShape != null && _state.HitShapePointIndex == -1)
             {
                 _state.HitShape.IsTagged = _state.IsTagged;
-                UpdateData(_state.HitShape);
+                RunSpiro(_state.HitShape);
                 _invalidate();
             }
         }
@@ -161,14 +161,14 @@ namespace SpiroNet.Editor
             if (_state.Shape != null && _state.Shape.Points.Count >= 1)
             {
                 SetPointType(_state.Shape, _state.Shape.Points.Count - 1, type);
-                UpdateData(_state.Shape);
+                RunSpiro(_state.Shape);
             }
             
             // Change selected point type.
             if (_state.HitShape != null && _state.HitShapePointIndex != -1)
             {
                 SetPointType(_state.HitShape, _state.HitShapePointIndex, type);
-                UpdateData(_state.HitShape);
+                RunSpiro(_state.HitShape);
             }
 
             _invalidate();
@@ -208,7 +208,7 @@ namespace SpiroNet.Editor
             shape.Points[index] = point;
         }
 
-        private static bool TryGetData(PathShape shape, IBezierContext bc)
+        private static bool TryToRunSpiro(PathShape shape, IBezierContext bc)
         {
             if (shape == null || bc == null)
                 return false;
@@ -230,13 +230,13 @@ namespace SpiroNet.Editor
             return false;
         }
 
-        private void UpdateData(PathShape shape)
+        private void RunSpiro(PathShape shape)
         {
             if (shape == null)
                 return;
 
             var bc = new PathBezierContext();
-            var result = TryGetData(shape, bc);
+            var result = TryToRunSpiro(shape, bc);
             if (_data.ContainsKey(shape))
             {
                 _data[shape] = result ? bc.ToString() : null;
@@ -288,7 +288,7 @@ namespace SpiroNet.Editor
 
                 try
                 {
-                    if (!TryGetData(shape, bc))
+                    if (!TryToRunSpiro(shape, bc))
                         continue;
                 }
                 catch (Exception ex)
@@ -351,14 +351,14 @@ namespace SpiroNet.Editor
             // Add new point.
             NewPoint(_state.Shape, x, y);
 
-            UpdateData(_state.Shape);
+            RunSpiro(_state.Shape);
             _invalidate();
         }
 
         private void Finish()
         {
             // Finish create.
-            UpdateData(_state.Shape);
+            RunSpiro(_state.Shape);
             _invalidate();
             _state.Shape = null;
         }
@@ -370,7 +370,7 @@ namespace SpiroNet.Editor
             int index = hitShapePointIndex + 1;
             NewPointAt(shape, x, y, index);
 
-            UpdateData(shape);
+            RunSpiro(shape);
 
             Deselect();
         }
@@ -385,7 +385,7 @@ namespace SpiroNet.Editor
             }
             else
             {
-                UpdateData(shape);
+                RunSpiro(shape);
                 _invalidate();
             }
         }
@@ -434,7 +434,7 @@ namespace SpiroNet.Editor
                 _state.IsFilled = shape.IsFilled;
                 _state.IsClosed = shape.IsClosed;
                 _state.IsTagged = shape.IsTagged;
-                UpdateData(shape);
+                RunSpiro(shape);
             }
 
             _invalidate();
@@ -573,7 +573,7 @@ namespace SpiroNet.Editor
                 if (_state.Shape.Points.Count > 1)
                 {
                     SetPointPosition(_state.Shape, _state.Shape.Points.Count - 1, sx, sy);
-                    UpdateData(_state.Shape);
+                    RunSpiro(_state.Shape);
                     _invalidate();
                 }
             }
@@ -628,7 +628,7 @@ namespace SpiroNet.Editor
                         for (int i = 0; i < _state.HitShape.Points.Count; i++)
                             SetPointPositionDelta(_state.HitShape, i, dx, dy);
 
-                        UpdateData(_state.HitShape);
+                        RunSpiro(_state.HitShape);
                         _invalidate();
                     }
 
@@ -637,7 +637,7 @@ namespace SpiroNet.Editor
                     {
                         SetPointPosition(_state.HitShape, _state.HitShapePointIndex, sx, sy);
 
-                        UpdateData(_state.HitShape);
+                        RunSpiro(_state.HitShape);
                         _invalidate();
                     }
                 }
@@ -674,7 +674,7 @@ namespace SpiroNet.Editor
 
             foreach (var shape in _drawing.Shapes)
             {
-                UpdateData(shape);
+                RunSpiro(shape);
             }
 
             _invalidate();
@@ -766,7 +766,7 @@ namespace SpiroNet.Editor
 
                     try
                     {
-                        if (TryGetData(shape, bc))
+                        if (TryToRunSpiro(shape, bc))
                         {
                             sb.Append(bc);
                         }
@@ -792,7 +792,7 @@ namespace SpiroNet.Editor
                 foreach (var shape in shapes)
                 {
                     _drawing.Shapes.Add(shape);
-                    UpdateData(shape);
+                    RunSpiro(shape);
                 }
 
                 _invalidate();
