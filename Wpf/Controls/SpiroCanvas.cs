@@ -252,6 +252,5 @@ namespace SpiroNet.Wpf
                     break;
             }
         }
-
     }
 }
