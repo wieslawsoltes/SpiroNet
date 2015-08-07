@@ -399,6 +399,24 @@ namespace SpiroNet.Editor
             _invalidate();
         }
 
+        private void Delete(double x, double y)
+        {
+            PathShape hitShape;
+            int hitShapePointIndex;
+            var result = HitTestForPoint(_drawing.Shapes, x, y, _state.HitTresholdSquared, out hitShape, out hitShapePointIndex);
+            if (result)
+            {
+                RemovePoint(hitShape, hitShapePointIndex);
+            }
+            else
+            {
+                if (HitTestForShape(_drawing.Shapes, x, y, _state.HitTreshold, out hitShape, out hitShapePointIndex))
+                {
+                    RemoveShape(hitShape);
+                }
+            }
+        }
+
         private void Select(PathShape hitShape, int hitShapePointIndex)
         {
             // Select shape.
@@ -544,22 +562,7 @@ namespace SpiroNet.Editor
                     Deselect();
                 }
 
-                PathShape hitShape;
-                int hitShapePointIndex;
-                var result = HitTestForPoint(_drawing.Shapes, x, y, _state.HitTresholdSquared, out hitShape, out hitShapePointIndex);
-                if (result)
-                {
-                    RemovePoint(hitShape, hitShapePointIndex);
-                    return;
-                }
-                else
-                {
-                    if (HitTestForShape(_drawing.Shapes, x, y, _state.HitTreshold, out hitShape, out hitShapePointIndex))
-                    {
-                        RemoveShape(hitShape);
-                        return;
-                    }
-                }
+                Delete(x, y);
             }
         }
 
