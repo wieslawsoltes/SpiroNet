@@ -25,6 +25,8 @@ namespace SpiroNet.Editor
 {
     public class SpirtoEditorCommands
     {
+        public ICommand InvalidateCommand { get; set; }
+        
         public ICommand NewCommand { get; set; }
 
         public ICommand OpenCommand { get; set; }
