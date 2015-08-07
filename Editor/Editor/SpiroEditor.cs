@@ -174,37 +174,6 @@ namespace SpiroNet.Editor
             _invalidate();
         }
 
-        private void NewShape()
-        {
-            _state.Shape = new PathShape()
-            {
-                IsStroked = _state.IsStroked,
-                IsFilled = _state.IsFilled,
-                IsClosed = _state.IsClosed,
-                IsTagged = _state.IsTagged,
-                Points = new ObservableCollection<SpiroControlPoint>()
-            };
-            _drawing.Shapes.Add(_state.Shape);
-        }
-
-        private void NewPoint(PathShape shape, double x, double y)
-        {
-            var point = new SpiroControlPoint();
-            point.X = x;
-            point.Y = y;
-            point.Type = _state.PointType;
-            shape.Points.Add(point);
-        }
-
-        private void NewPointAt(PathShape shape, double x, double y, int index)
-        {
-            var point = new SpiroControlPoint();
-            point.X = x;
-            point.Y = y;
-            point.Type = _state.PointType;
-            shape.Points.Insert(index, point);
-        }
-
         private void SetPointPositionDelta(PathShape shape, int index, double dx, double dy)
         {
             var old = shape.Points[index];
@@ -244,11 +213,21 @@ namespace SpiroNet.Editor
             if (shape == null || bc == null)
                 return false;
 
-            var points = shape.Points.ToArray();
-            if (shape.IsTagged)
-                return Spiro.TaggedSpiroCPsToBezier0(points, bc);
-            else
-                return Spiro.SpiroCPsToBezier0(points, points.Length, shape.IsClosed, bc);
+            try
+            {
+                var points = shape.Points.ToArray();
+                if (shape.IsTagged)
+                    return Spiro.TaggedSpiroCPsToBezier0(points, bc);
+                else
+                    return Spiro.SpiroCPsToBezier0(points, points.Length, shape.IsClosed, bc);
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message);
+                Debug.Print(ex.StackTrace);
+            }
+
+            return false;
         }
 
         private void UpdateData(PathShape shape)
@@ -332,47 +311,145 @@ namespace SpiroNet.Editor
             return false;
         }
 
-        public void MiddleDown(double x, double y)
+        private void NewShape()
         {
-            double sx = _state.EnableSnap ? Snap(x, _state.SnapX) : x;
-            double sy = _state.EnableSnap ? Snap(y, _state.SnapY) : y;
-
-            if (_state.Shape == null)
+            _state.Shape = new PathShape()
             {
-                PathShape hitShape;
-                int hitShapePointIndex;
+                IsStroked = _state.IsStroked,
+                IsFilled = _state.IsFilled,
+                IsClosed = _state.IsClosed,
+                IsTagged = _state.IsTagged,
+                Points = new ObservableCollection<SpiroControlPoint>()
+            };
+            _drawing.Shapes.Add(_state.Shape);
+        }
 
-                // Hit test for shape and nearest point.
-                if (HitTestForShape(_drawing.Shapes, x, y, _state.HitTreshold, out hitShape, out hitShapePointIndex))
-                {
-                    // Insert new point.
-                    PathShape shape = hitShape;
-                    int index = hitShapePointIndex + 1;
-                    NewPointAt(shape, sx, sy, index);
+        private void NewPoint(PathShape shape, double x, double y)
+        {
+            var point = new SpiroControlPoint();
+            point.X = x;
+            point.Y = y;
+            point.Type = _state.PointType;
+            shape.Points.Add(point);
+        }
 
-                    // Deselect shape.
-                    _state.HitShape = null;
-                    // Deselect point.
-                    _state.HitShapePointIndex = -1;
-                    _state.Mode = SpirtoEditorMode.Create;
+        private void NewPointAt(PathShape shape, double x, double y, int index)
+        {
+            var point = new SpiroControlPoint();
+            point.X = x;
+            point.Y = y;
+            point.Type = _state.PointType;
+            shape.Points.Insert(index, point);
+        }
 
-                    UpdateData(shape);
-                    _invalidate();
-                    return;
-                }
+        private void Create(double x, double y)
+        {
+            // Add new shape.
+            if (_state.Shape == null)
+                NewShape();
 
-                if (_state.HitShape != null)
-                {
-                    // Deselect shape.
-                    _state.HitShape = null;
-                    // Deselect point.
-                    _state.HitShapePointIndex = -1;
-                    // Begin edit.
-                    _state.Mode = SpirtoEditorMode.Create;
-                    _invalidate();
-                    return;
-                }
+            // Add new point.
+            NewPoint(_state.Shape, x, y);
+
+            UpdateData(_state.Shape);
+            _invalidate();
+        }
+
+        private void Finish()
+        {
+            // Finish create.
+            UpdateData(_state.Shape);
+            _invalidate();
+            _state.Shape = null;
+        }
+
+        private void InsertPoint(double x, double y, PathShape hitShape, int hitShapePointIndex)
+        {
+            // Insert new point.
+            PathShape shape = hitShape;
+            int index = hitShapePointIndex + 1;
+            NewPointAt(shape, x, y, index);
+
+            UpdateData(shape);
+
+            Deselect();
+        }
+
+        private void RemovePoint(PathShape shape, int index)
+        {
+            shape.Points.RemoveAt(index);
+
+            if (shape.Points.Count == 0)
+            {
+                RemoveShape(shape);
             }
+            else
+            {
+                UpdateData(shape);
+                _invalidate();
+            }
+        }
+
+        private void RemoveShape(PathShape shape)
+        {
+            _drawing.Shapes.Remove(shape);
+            _data.Remove(shape);
+            _knots.Remove(shape);
+
+            _invalidate();
+        }
+
+        private void Select(PathShape hitShape, int hitShapePointIndex)
+        {
+            // Select shape.
+            _state.HitShape = hitShape;
+            // Select point.
+            _state.HitShapePointIndex = hitShapePointIndex;
+            // Begin point move.
+            _state.Mode = SpirtoEditorMode.Move;
+
+            // Update point type.
+            if (_state.HitShapePointIndex != -1)
+            {
+                _state.PointType = _state.HitShape.Points[_state.HitShapePointIndex].Type;
+            }
+
+            _invalidate();
+        }
+
+        private void Select(PathShape hitShape)
+        {
+            // Select shape.
+            _state.HitShape = hitShape;
+            // Deselect point.
+            _state.HitShapePointIndex = -1;
+            // Begin shape move.
+            _state.Mode = SpirtoEditorMode.Move;
+
+            // Update shape info.
+            if (_state.HitShape != null)
+            {
+                var shape = _state.HitShape;
+                _state.IsStroked = shape.IsStroked;
+                _state.IsFilled = shape.IsFilled;
+                _state.IsClosed = shape.IsClosed;
+                _state.IsTagged = shape.IsTagged;
+                UpdateData(shape);
+            }
+
+            _invalidate();
+        }
+
+        private void Deselect()
+        {
+            // Deselect shape.
+            _state.HitShape = null;
+            // Deselect point.
+            _state.HitShapePointIndex = -1;
+            // Begin edit.
+            _state.Mode = SpirtoEditorMode.Create;
+
+            _invalidate();
         }
 
         public void LeftDown(double x, double y)
@@ -391,20 +468,7 @@ namespace SpiroNet.Editor
                 var result = HitTestForPoint(_drawing.Shapes, x, y, _state.HitTresholdSquared, out hitShape, out hitShapePointIndex);
                 if (result)
                 {
-                    // Select shape.
-                    _state.HitShape = hitShape;
-                    // Select point.
-                    _state.HitShapePointIndex = hitShapePointIndex;
-                    // Begin point move.
-                    _state.Mode = SpirtoEditorMode.Move;
-                    
-                    // Update point type.
-                    if (_state.HitShapePointIndex != -1)
-                    {
-                        _state.PointType = _state.HitShape.Points[_state.HitShapePointIndex].Type; 
-                    }
-                    
-                    _invalidate();
+                    Select(hitShape, hitShapePointIndex);
                     return;
                 }
                 else
@@ -412,37 +476,13 @@ namespace SpiroNet.Editor
                     // Hit test for shape and nearest point.
                     if (HitTestForShape(_drawing.Shapes, x, y, _state.HitTreshold, out hitShape, out hitShapePointIndex))
                     {
-                        // Select shape.
-                        _state.HitShape = hitShape;
-                        // Deselect point.
-                        _state.HitShapePointIndex = -1;
-                        // Begin shape move.
-                        _state.Mode = SpirtoEditorMode.Move;
-                        
-                        // Update shape info.
-                        if (_state.HitShape != null)
-                        {
-                            var shape = _state.HitShape;
-                            _state.IsStroked = shape.IsStroked;
-                            _state.IsFilled = shape.IsFilled;
-                            _state.IsClosed = shape.IsClosed;
-                            _state.IsTagged = shape.IsTagged;
-                            UpdateData(shape);
-                        }
-
-                        _invalidate();
+                        Select(hitShape);
                         return;
                     }
 
                     if (_state.HitShape != null)
                     {
-                        // Deselect shape.
-                        _state.HitShape = null;
-                        // Deselect point.
-                        _state.HitShapePointIndex = -1;
-                        // Begin edit.
-                        _state.Mode = SpirtoEditorMode.Create;
-                        _invalidate();
+                        Deselect();
                         return;
                     }
                 }
@@ -450,15 +490,7 @@ namespace SpiroNet.Editor
 
             if (_state.Mode == SpirtoEditorMode.Create)
             {
-                // Add new shape.
-                if (_state.Shape == null)
-                    NewShape();
-
-                // Add new point.
-                NewPoint(_state.Shape, sx, sy);
-
-                UpdateData(_state.Shape);
-                _invalidate();
+                Create(sx, sy);
             }
         }
 
@@ -474,28 +506,42 @@ namespace SpiroNet.Editor
             }
         }
 
-        public void RightDown(double x, double y)
+        public void MiddleDown(double x, double y)
         {
             double sx = _state.EnableSnap ? Snap(x, _state.SnapX) : x;
             double sy = _state.EnableSnap ? Snap(y, _state.SnapY) : y;
-            
+
+            if (_state.Shape == null)
+            {
+                PathShape hitShape;
+                int hitShapePointIndex;
+
+                // Hit test for shape and nearest point.
+                if (HitTestForShape(_drawing.Shapes, x, y, _state.HitTreshold, out hitShape, out hitShapePointIndex))
+                {
+                    InsertPoint(sx, sy, hitShape, hitShapePointIndex);
+                    return;
+                }
+
+                if (_state.HitShape != null)
+                {
+                    Deselect();
+                    return;
+                }
+            }
+        }
+
+        public void RightDown(double x, double y)
+        {
             if (_state.Shape != null)
             {
-                // Finish create.
-                UpdateData(_state.Shape);
-                _invalidate();
-                _state.Shape = null;
+                Finish();
             }
             else
             {
                 if (_state.HitShape != null)
                 {
-                    // Deselect point.
-                    _state.HitShape = null;
-                    _state.HitShapePointIndex = -1;
-                    // Begin create.
-                    _state.Mode = SpirtoEditorMode.Create;
-                    _invalidate();
+                    Deselect();
                 }
 
                 PathShape hitShape;
@@ -503,34 +549,14 @@ namespace SpiroNet.Editor
                 var result = HitTestForPoint(_drawing.Shapes, x, y, _state.HitTresholdSquared, out hitShape, out hitShapePointIndex);
                 if (result)
                 {
-                    // Delete point.
-                    hitShape.Points.RemoveAt(hitShapePointIndex);
-
-                    if (hitShape.Points.Count == 0)
-                    {
-                        // Delete shape.
-                        _drawing.Shapes.Remove(hitShape);
-                        _data.Remove(hitShape);
-                        _knots.Remove(hitShape);
-                        _invalidate();
-                    }
-                    else
-                    {
-                        UpdateData(hitShape);
-                        _invalidate();
-                    }
-
+                    RemovePoint(hitShape, hitShapePointIndex);
                     return;
                 }
                 else
                 {
                     if (HitTestForShape(_drawing.Shapes, x, y, _state.HitTreshold, out hitShape, out hitShapePointIndex))
                     {
-                        // Delete shape.
-                        _drawing.Shapes.Remove(hitShape);
-                        _data.Remove(hitShape);
-                        _knots.Remove(hitShape);
-                        _invalidate();
+                        RemoveShape(hitShape);
                         return;
                     }
                 }
@@ -553,35 +579,7 @@ namespace SpiroNet.Editor
             }
             else
             {
-                if (_state.Mode == SpirtoEditorMode.Move)
-                {
-                    // Move selected shape.
-                    if (_state.HitShape != null && _state.HitShapePointIndex == -1)
-                    {
-                        // Calculate move offset.
-                        double dx = sx - _startX;
-                        double dy = sy - _startY;
-                        // Update start position.
-                        _startX = sx;
-                        _startY = sy;
-                        // Move all shape points.
-                        for (int i = 0; i < _state.HitShape.Points.Count; i++)
-                            SetPointPositionDelta(_state.HitShape, i, dx, dy);
-                        
-                        UpdateData(_state.HitShape);
-                        _invalidate();
-                    }
-                    
-                    // Move selected point.
-                    if (_state.HitShapePointIndex != -1)
-                    {
-                        SetPointPosition(_state.HitShape, _state.HitShapePointIndex, sx, sy);
-                        
-                        UpdateData(_state.HitShape);
-                        _invalidate();
-                    }
-                }
-                else if (_state.Mode == SpirtoEditorMode.Create)
+                if (_state.Mode == SpirtoEditorMode.Create)
                 {
                     PathShape hitShape;
                     int hitShapePointIndex;
@@ -592,8 +590,7 @@ namespace SpiroNet.Editor
                         _state.HitShape = hitShape;
                         // Hover point.
                         _state.HitShapePointIndex = hitShapePointIndex;
-                        //if (_state.HitShapePointIndex != -1)
-                        //    _state.PointType = _state.HitShape.Points[_state.HitShapePointIndex].Type;
+
                         _invalidate();
                     }
                     else
@@ -612,6 +609,35 @@ namespace SpiroNet.Editor
                             // Dehover point.
                             _state.HitShapePointIndex = -1;
                         }
+
+                        _invalidate();
+                    }
+                }
+                else if (_state.Mode == SpirtoEditorMode.Move)
+                {
+                    // Move selected shape.
+                    if (_state.HitShape != null && _state.HitShapePointIndex == -1)
+                    {
+                        // Calculate move offset.
+                        double dx = sx - _startX;
+                        double dy = sy - _startY;
+                        // Update start position.
+                        _startX = sx;
+                        _startY = sy;
+                        // Move all shape points.
+                        for (int i = 0; i < _state.HitShape.Points.Count; i++)
+                            SetPointPositionDelta(_state.HitShape, i, dx, dy);
+
+                        UpdateData(_state.HitShape);
+                        _invalidate();
+                    }
+
+                    // Move selected point.
+                    if (_state.HitShapePointIndex != -1)
+                    {
+                        SetPointPosition(_state.HitShape, _state.HitShapePointIndex, sx, sy);
+
+                        UpdateData(_state.HitShape);
                         _invalidate();
                     }
                 }
