@@ -28,29 +28,37 @@ namespace SpiroNet.Editor
     {
         private SpirtoEditorMode _mode;
         private PathShape _shape;
+        private double _snapX;
+        private double _snapY;
+        private bool _enableSnap;
         private double _hitTreshold;
         private double _hitTresholdSquared;
         private PathShape _hitShape;
         private int _hitShapePointIndex;
-        private bool _isStroked ;
+        private bool _isStroked;
         private bool _isFilled;
         private bool _isClosed;
         private bool _isTagged;
         private SpiroPointType _pointType;
+        private bool _displayKnots;
 
         public SpirtoEditorState()
         {
             _mode = SpirtoEditorMode.Create;
             _shape = null;
+            _snapX = 15.0;
+            _snapY = 15.0;
+            _enableSnap = true;
             _hitTreshold = 7;
             _hitTresholdSquared = 49;
             _hitShape = null;
             _hitShapePointIndex = -1;
             _isStroked = true;
             _isFilled = false;
-            _isClosed = false;
+            _isClosed = true;
             _isTagged = false;
             _pointType = SpiroPointType.G4;
+            _displayKnots = true;
         }
         
         public SpirtoEditorMode Mode
@@ -63,6 +71,24 @@ namespace SpiroNet.Editor
         {
             get { return _shape; }
             set { Update(ref _shape, value); }
+        }
+
+        public double SnapX
+        {
+            get { return _snapX; }
+            set { Update(ref _snapX, value); }
+        }
+        
+        public double SnapY
+        {
+            get { return _snapY; }
+            set { Update(ref _snapY, value); }
+        }
+        
+        public bool EnableSnap
+        {
+            get { return _enableSnap; }
+            set { Update(ref _enableSnap, value); }
         }
 
         public double HitTreshold
@@ -111,6 +137,12 @@ namespace SpiroNet.Editor
         {
             get { return _isTagged; }
             set { Update(ref _isTagged, value); }
+        }
+        
+        public bool DisplayKnots
+        {
+            get { return _displayKnots; }
+            set { Update(ref _displayKnots, value); }
         }
 
         public SpiroPointType PointType
