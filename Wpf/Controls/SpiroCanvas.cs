@@ -109,20 +109,25 @@ namespace SpiroNet.Wpf
             foreach (var shape in Editor.Drawing.Shapes)
             {
                 DrawShape(dc, shape);
+
+                if (Editor.State.DisplayKnots)
+                {
+                    DrawKnots(dc, shape);
+                }
             }
         }
 
         private void DrawShape(DrawingContext dc, PathShape shape)
         {
-            if (shape == null || Editor == null)
+            if (shape == null || Editor == null || Editor.Data == null)
                 return;
 
             var hitShape = Editor.State.HitShape;
             var hitShapePointIndex = Editor.State.HitShapePointIndex;
 
-            // draw shapes
             string data;
-            if (Editor.Data != null && Editor.Data.TryGetValue(shape, out data) && !string.IsNullOrEmpty(data))
+            var result = Editor.Data.TryGetValue(shape, out data);
+            if (result && !string.IsNullOrEmpty(data))
             {
                 var geometry = Geometry.Parse(data);
                 if (shape == hitShape && hitShapePointIndex == -1)
@@ -140,11 +145,16 @@ namespace SpiroNet.Wpf
                         geometry);
                 }
             }
+        }
 
-            if (!Editor.State.DisplayKnots)
+        private void DrawKnots(DrawingContext dc, PathShape shape)
+        {
+            if (shape == null || Editor == null)
                 return;
-            
-            // draw shape knots
+
+            var hitShape = Editor.State.HitShape;
+            var hitShapePointIndex = Editor.State.HitShapePointIndex;
+
             IList<SpiroKnot> knots;
             Editor.Knots.TryGetValue(shape, out knots);
             if (knots != null)
@@ -154,59 +164,9 @@ namespace SpiroNet.Wpf
                     var knot = knots[i];
                     var brush = shape == hitShape && i == hitShapePointIndex ? _hitPointBrush : _pointBrush;
                     var pen = shape == hitShape && i == hitShapePointIndex ? _hitPointPen : _pointPen;
-
-                    switch (knot.Type)
-                    {
-                        case SpiroPointType.Corner:
-                            dc.DrawRectangle(brush, null, new Rect(knot.X - 3.5, knot.Y - 3.5, 7, 7));
-                            break;
-                        case SpiroPointType.G4:
-                            dc.DrawEllipse(brush, null, new Point(knot.X, knot.Y), 3.5, 3.5);
-                            break;
-                        case SpiroPointType.G2:
-                            dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
-                            dc.DrawRectangle(brush, null, new Rect(knot.X - 1.5, knot.Y - 3.5, 3, 7));
-                            dc.Pop();
-                            break;
-                        case SpiroPointType.Left:
-                            dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
-                            dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
-                            dc.DrawGeometry(brush, null, LeftKnot);
-                            dc.Pop();
-                            dc.Pop();
-                            break;
-                        case SpiroPointType.Right:
-                            dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
-                            dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
-                            dc.DrawGeometry(brush, null, RightKnot);
-                            dc.Pop();
-                            dc.Pop();
-                            break;
-                        case SpiroPointType.End:
-                            dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
-                            dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
-                            dc.DrawGeometry(null, pen, EndKnot);
-                            dc.Pop();
-                            dc.Pop();
-                            break;
-                        case SpiroPointType.OpenContour:
-                            dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
-                            dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
-                            dc.DrawGeometry(null, pen, OpenContourKnot);
-                            dc.Pop();
-                            dc.Pop();
-                            break;
-                        case SpiroPointType.EndOpenContour:
-                            dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
-                            dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
-                            dc.DrawGeometry(null, pen, EndOpenContourKnot);
-                            dc.Pop();
-                            dc.Pop();
-                            break;
-                    }
+                    DrawKnot(dc, brush, pen, knot);
                 }
             }
-            // draw shape points if knots do not exist
             else
             {
                 for (int i = 0; i < shape.Points.Count; i++)
@@ -214,26 +174,84 @@ namespace SpiroNet.Wpf
                     var point = shape.Points[i];
                     var brush = shape == hitShape && i == hitShapePointIndex ? _hitPointBrush : _pointBrush;
                     var pen = shape == hitShape && i == hitShapePointIndex ? _hitPointPen : _pointPen;
-
-                    switch (point.Type)
-                    {
-                        case SpiroPointType.Corner:
-                            dc.DrawRectangle(brush, null, new Rect(point.X - 3.5, point.Y - 3.5, 7, 7));
-                            break;
-                        case SpiroPointType.G4:
-                        case SpiroPointType.G2:
-                        case SpiroPointType.Left:
-                        case SpiroPointType.Right:
-                        case SpiroPointType.End:
-                        case SpiroPointType.OpenContour:
-                        case SpiroPointType.EndOpenContour:
-                            dc.PushTransform(new TranslateTransform(point.X, point.Y));
-                            dc.DrawGeometry(null, pen, EndKnot);
-                            dc.Pop();
-                            break;
-                    }
+                    DrawPoint(dc, brush, pen, point);
                 }
             }
         }
+
+        private void DrawKnot(DrawingContext dc, Brush brush, Pen pen, SpiroKnot knot)
+        {
+            switch (knot.Type)
+            {
+                case SpiroPointType.Corner:
+                    dc.DrawRectangle(brush, null, new Rect(knot.X - 3.5, knot.Y - 3.5, 7, 7));
+                    break;
+                case SpiroPointType.G4:
+                    dc.DrawEllipse(brush, null, new Point(knot.X, knot.Y), 3.5, 3.5);
+                    break;
+                case SpiroPointType.G2:
+                    dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
+                    dc.DrawRectangle(brush, null, new Rect(knot.X - 1.5, knot.Y - 3.5, 3, 7));
+                    dc.Pop();
+                    break;
+                case SpiroPointType.Left:
+                    dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
+                    dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
+                    dc.DrawGeometry(brush, null, LeftKnot);
+                    dc.Pop();
+                    dc.Pop();
+                    break;
+                case SpiroPointType.Right:
+                    dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
+                    dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
+                    dc.DrawGeometry(brush, null, RightKnot);
+                    dc.Pop();
+                    dc.Pop();
+                    break;
+                case SpiroPointType.End:
+                    dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
+                    dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
+                    dc.DrawGeometry(null, pen, EndKnot);
+                    dc.Pop();
+                    dc.Pop();
+                    break;
+                case SpiroPointType.OpenContour:
+                    dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
+                    dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
+                    dc.DrawGeometry(null, pen, OpenContourKnot);
+                    dc.Pop();
+                    dc.Pop();
+                    break;
+                case SpiroPointType.EndOpenContour:
+                    dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
+                    dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
+                    dc.DrawGeometry(null, pen, EndOpenContourKnot);
+                    dc.Pop();
+                    dc.Pop();
+                    break;
+            }
+        }
+
+        private void DrawPoint(DrawingContext dc, Brush brush, Pen pen, SpiroControlPoint point)
+        {
+            switch (point.Type)
+            {
+                case SpiroPointType.Corner:
+                    dc.DrawRectangle(brush, null, new Rect(point.X - 3.5, point.Y - 3.5, 7, 7));
+                    break;
+                case SpiroPointType.G4:
+                case SpiroPointType.G2:
+                case SpiroPointType.Left:
+                case SpiroPointType.Right:
+                case SpiroPointType.End:
+                case SpiroPointType.OpenContour:
+                case SpiroPointType.EndOpenContour:
+                    dc.PushTransform(new TranslateTransform(point.X, point.Y));
+                    dc.DrawGeometry(null, pen, EndKnot);
+                    dc.Pop();
+                    break;
+            }
+        }
+
     }
 }
