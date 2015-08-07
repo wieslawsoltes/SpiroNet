@@ -371,8 +371,6 @@ namespace SpiroNet.Editor
             NewPointAt(shape, x, y, index);
 
             RunSpiro(shape);
-
-            Deselect();
         }
 
         private void RemovePoint(PathShape shape, int index)
@@ -386,7 +384,6 @@ namespace SpiroNet.Editor
             else
             {
                 RunSpiro(shape);
-                _invalidate();
             }
         }
 
@@ -395,8 +392,6 @@ namespace SpiroNet.Editor
             _drawing.Shapes.Remove(shape);
             _data.Remove(shape);
             _knots.Remove(shape);
-
-            _invalidate();
         }
 
         private void Delete(double x, double y)
@@ -526,10 +521,23 @@ namespace SpiroNet.Editor
 
         public void MiddleDown(double x, double y)
         {
+            if (_state.Shape == null)
+            {
+                Delete(x, y);
+                Deselect();
+            }
+        }
+
+        public void RightDown(double x, double y)
+        {
             double sx = _state.EnableSnap ? Snap(x, _state.SnapX) : x;
             double sy = _state.EnableSnap ? Snap(y, _state.SnapY) : y;
 
-            if (_state.Shape == null)
+            if (_state.Shape != null)
+            {
+                Finish();
+            }
+            else
             {
                 PathShape hitShape;
                 int hitShapePointIndex;
@@ -538,31 +546,14 @@ namespace SpiroNet.Editor
                 if (HitTestForShape(_drawing.Shapes, x, y, _state.HitTreshold, out hitShape, out hitShapePointIndex))
                 {
                     InsertPoint(sx, sy, hitShape, hitShapePointIndex);
+                    _invalidate();
                     return;
                 }
 
                 if (_state.HitShape != null)
                 {
                     Deselect();
-                    return;
                 }
-            }
-        }
-
-        public void RightDown(double x, double y)
-        {
-            if (_state.Shape != null)
-            {
-                Finish();
-            }
-            else
-            {
-                if (_state.HitShape != null)
-                {
-                    Deselect();
-                }
-
-                Delete(x, y);
             }
         }
 

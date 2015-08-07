@@ -359,10 +359,10 @@
                         <TextBlock Text="- Move Point" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="Mouse Right" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="- Finish Shape" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBlock Text="- Insert Point" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBlock Text="Mouse Middle:" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="- Remove Shape" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="- Remove Point" TextAlignment="Left" Margin="4,0,4,0"/>
-                        <TextBlock Text="Mouse Middle:" TextAlignment="Left" Margin="4,0,4,0"/>
-                        <TextBlock Text="- Insert Point" TextAlignment="Left" Margin="4,0,4,0"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
