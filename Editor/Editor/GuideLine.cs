@@ -19,34 +19,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 */
 using System;
-using System.Windows.Input;
 
 namespace SpiroNet.Editor
 {
-    public class SpirtoEditorCommands
+    public class GuideLine
     {
-        public ICommand InvalidateCommand { get; set; }
-        
-        public ICommand NewCommand { get; set; }
+        public GuidePoint Point0 { get; private set; }
+        public GuidePoint Point1 { get; private set; }
 
-        public ICommand OpenCommand { get; set; }
-
-        public ICommand SaveAsCommand { get; set; }
-
-        public ICommand ExportCommand { get; set; }
-
-        public ICommand ExitCommand { get; set; }
-
-        public ICommand IsStrokedCommand { get; set; }
-
-        public ICommand IsFilledCommand { get; set; }
-
-        public ICommand IsClosedCommand { get; set; }
-
-        public ICommand IsTaggedCommand { get; set; }
-
-        public ICommand PointTypeCommand { get; set; }
-
-        public ICommand ExecuteScriptCommand { get; set; }
+        public GuideLine(GuidePoint point0, GuidePoint point1)
+        {
+            Point0 = point0;
+            Point1 = point1;
+        }
     }
 }

@@ -27,11 +27,12 @@ namespace SpiroNet.Editor
     /// <summary>
     /// The spiro drawing using path shapes geometries. 
     /// </summary>
-    public class PathDrawing : ObservableObject
+    public class SpiroDrawing : ObservableObject
     {
         private double _width;
         private double _height;
-        private IList<PathShape> _shapes;
+        private IList<SpiroShape> _shapes;
+        private IList<GuideLine> _guides;
 
         /// <summary>
         /// Width of the drawing.
@@ -54,10 +55,19 @@ namespace SpiroNet.Editor
         /// <summary>
         /// Path shapes array.
         /// </summary>
-        public IList<PathShape> Shapes
+        public IList<SpiroShape> Shapes
         {
             get { return _shapes; }
             set { Update(ref _shapes, value); }
+        }
+
+        /// <summary>
+        /// Path guides array.
+        /// </summary>
+        public IList<GuideLine> Guides
+        {
+            get { return _guides; }
+            set { Update(ref _guides, value); }
         }
     }
 }

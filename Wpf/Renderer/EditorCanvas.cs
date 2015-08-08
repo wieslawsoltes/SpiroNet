@@ -30,7 +30,7 @@ using SpiroNet.Editor;
 
 namespace SpiroNet.Wpf
 {
-    public class SpiroCanvas : Canvas
+    public class EditorCanvas : Canvas
     {
         private static Geometry LeftKnot = Geometry.Parse("M0,-4 A 4,4 0 0 0 0,4");
         private static Geometry RightKnot = Geometry.Parse("M0,-4 A 4,4 0 0 1 0,4");
@@ -45,20 +45,26 @@ namespace SpiroNet.Wpf
         private BasicStyle _pointStyle;
         private BasicStyle _hitPointStyle;
 
-        public SpiroEditor Editor
+        private BasicStyle _guideStyle;
+        private BasicStyle _snapGuideStyle;
+        private BasicStyle _snapPointStyle;
+        private BasicStyle _newLineStyle;
+        private BasicStyle _lineStyle;
+
+        public SpiroEditor SpiroEditor
         {
-            get { return (SpiroEditor)GetValue(EditorProperty); }
-            set { SetValue(EditorProperty, value); }
+            get { return (SpiroEditor)GetValue(SpiroEditorProperty); }
+            set { SetValue(SpiroEditorProperty, value); }
         }
 
-        public static readonly DependencyProperty EditorProperty =
+        public static readonly DependencyProperty SpiroEditorProperty =
             DependencyProperty.Register(
-                "Editor",
+                "SpiroEditor",
                 typeof(SpiroEditor),
-                typeof(SpiroCanvas),
+                typeof(EditorCanvas),
                 new PropertyMetadata(null));
 
-        public SpiroCanvas()
+        public EditorCanvas()
         {
             Initialize();
         }
@@ -67,25 +73,45 @@ namespace SpiroNet.Wpf
         {
             _cache = new Dictionary<BasicStyle, BasicStyleCache>();
 
+            // Spiro styles.
             _geometryStyle = new BasicStyle(
                 new Argb(255, 0, 0, 0),
                 new Argb(128, 128, 128, 128),
                 2.0);
-
             _hitGeometryStyle = new BasicStyle(
                 new Argb(255, 255, 0, 0),
                 new Argb(128, 128, 0, 0),
                 2.0);
-
             _pointStyle = new BasicStyle(
                 new Argb(192, 0, 0, 255),
                 new Argb(192, 0, 0, 255),
                 2.0);
-
             _hitPointStyle = new BasicStyle(
                 new Argb(192, 255, 0, 0),
                 new Argb(192, 255, 0, 0),
                 2.0);
+
+            // Guide styles.
+            _guideStyle = new BasicStyle(
+                new Argb(255, 0, 255, 255),
+                new Argb(255, 0, 255, 255),
+                1.0);
+            _snapGuideStyle = new BasicStyle(
+                new Argb(192, 0, 255, 255),
+                new Argb(192, 0, 255, 255),
+                1.0);
+            _snapPointStyle = new BasicStyle(
+                new Argb(255, 255, 255, 0),
+                new Argb(255, 255, 255, 0),
+                1.0);
+            _newLineStyle = new BasicStyle(
+                new Argb(255, 255, 255, 0),
+                new Argb(255, 255, 255, 0),
+                1.0);
+            _lineStyle = new BasicStyle(
+                new Argb(255, 0, 255, 255),
+                new Argb(255, 0, 255, 255),
+                1.0);
         }
 
         private BasicStyleCache FromCache(BasicStyle style)
@@ -104,35 +130,77 @@ namespace SpiroNet.Wpf
         {
             base.OnRender(dc);
 
-            DrawShapes(dc);
-        }
-
-        private void DrawShapes(DrawingContext dc)
-        {
-            if (Editor == null || Editor.Drawing == null || Editor.Drawing.Shapes == null)
-                return;
-
-            foreach (var shape in Editor.Drawing.Shapes)
+            if (SpiroEditor != null && SpiroEditor.Drawing != null)
             {
-                DrawShape(dc, shape);
-
-                if (Editor.State.DisplayKnots)
+                if (SpiroEditor.Drawing.Guides != null && SpiroEditor.State.DisplayGuides)
                 {
-                    DrawKnots(dc, shape);
+                    DrawGuides(dc);
+                }
+
+                var state = SpiroEditor.State;
+                if (SpiroEditor.State.DisplayGuides && (state.Tool == EditorTool.Guide || state.Tool == EditorTool.Spiro))
+                {
+                    if ((state.Tool == EditorTool.Spiro && state.EnableSnap)
+                        || (state.Tool == EditorTool.Guide && state.IsCaptured)
+                        || (state.Tool == EditorTool.Guide && state.HaveSnapPoint))
+                    {
+                        DrawHorizontalGuide(dc,
+                            FromCache(state.HaveSnapPoint ? _snapGuideStyle : _guideStyle),
+                            state.GuidePosition,
+                            SpiroEditor.Drawing.Width);
+
+                        DrawVerticalGuide(dc,
+                            FromCache(state.HaveSnapPoint ? _snapGuideStyle : _guideStyle),
+                            state.GuidePosition,
+                            SpiroEditor.Drawing.Height);
+                    }
+
+                    if (state.Tool == EditorTool.Guide && state.HaveSnapPoint)
+                    {
+                        DrawGuidePoint(
+                            dc,
+                            FromCache(_snapPointStyle),
+                            SpiroEditor.State.SnapPoint,
+                            SpiroEditor.State.SnapPointRadius);
+                    }
+
+                    if (state.Tool == EditorTool.Guide && state.IsCaptured)
+                    {
+                        DrawGuideLine(
+                            dc,
+                            FromCache(_newLineStyle),
+                            SpiroEditor.State.Point0,
+                            SpiroEditor.State.Point1);
+                    }
+                }
+
+                if (SpiroEditor.Drawing.Shapes != null)
+                {
+                    DrawSpiroShapes(dc);
                 }
             }
         }
 
-        private void DrawShape(DrawingContext dc, PathShape shape)
+        private void DrawSpiroShapes(DrawingContext dc)
         {
-            if (shape == null || Editor == null || Editor.Data == null)
-                return;
+            foreach (var shape in SpiroEditor.Drawing.Shapes)
+            {
+                DrawSpiroShape(dc, shape);
 
-            var hitShape = Editor.State.HitShape;
-            var hitShapePointIndex = Editor.State.HitShapePointIndex;
+                if (SpiroEditor.State.DisplayKnots)
+                {
+                    DrawSpiroKnots(dc, shape);
+                }
+            }
+        }
+
+        private void DrawSpiroShape(DrawingContext dc, SpiroShape shape)
+        {
+            var hitShape = SpiroEditor.State.HitShape;
+            var hitShapePointIndex = SpiroEditor.State.HitShapePointIndex;
 
             string data;
-            var result = Editor.Data.TryGetValue(shape, out data);
+            var result = SpiroEditor.Data.TryGetValue(shape, out data);
             if (result && !string.IsNullOrEmpty(data))
             {
                 var geometry = Geometry.Parse(data);
@@ -155,19 +223,16 @@ namespace SpiroNet.Wpf
             }
         }
 
-        private void DrawKnots(DrawingContext dc, PathShape shape)
+        private void DrawSpiroKnots(DrawingContext dc, SpiroShape shape)
         {
-            if (shape == null || Editor == null)
-                return;
-
             var pointCache = FromCache(_pointStyle);
             var hitPointCache = FromCache(_hitPointStyle);
 
-            var hitShape = Editor.State.HitShape;
-            var hitShapePointIndex = Editor.State.HitShapePointIndex;
+            var hitShape = SpiroEditor.State.HitShape;
+            var hitShapePointIndex = SpiroEditor.State.HitShapePointIndex;
 
             IList<SpiroKnot> knots;
-            Editor.Knots.TryGetValue(shape, out knots);
+            SpiroEditor.Knots.TryGetValue(shape, out knots);
             if (knots != null)
             {
                 for (int i = 0; i < knots.Count; i++)
@@ -175,7 +240,7 @@ namespace SpiroNet.Wpf
                     var knot = knots[i];
                     var brush = shape == hitShape && i == hitShapePointIndex ? hitPointCache.FillBrush : pointCache.FillBrush;
                     var pen = shape == hitShape && i == hitShapePointIndex ? hitPointCache.StrokePen : pointCache.StrokePen;
-                    DrawKnot(dc, brush, pen, knot);
+                    DrawSpiroKnot(dc, brush, pen, knot);
                 }
             }
             else
@@ -185,12 +250,12 @@ namespace SpiroNet.Wpf
                     var point = shape.Points[i];
                     var brush = shape == hitShape && i == hitShapePointIndex ? hitPointCache.FillBrush : pointCache.FillBrush;
                     var pen = shape == hitShape && i == hitShapePointIndex ? hitPointCache.StrokePen : pointCache.StrokePen;
-                    DrawPoint(dc, brush, pen, point);
+                    DrawSpiroPoint(dc, brush, pen, point);
                 }
             }
         }
 
-        private void DrawKnot(DrawingContext dc, Brush brush, Pen pen, SpiroKnot knot)
+        private void DrawSpiroKnot(DrawingContext dc, Brush brush, Pen pen, SpiroKnot knot)
         {
             switch (knot.Type)
             {
@@ -243,7 +308,7 @@ namespace SpiroNet.Wpf
             }
         }
 
-        private void DrawPoint(DrawingContext dc, Brush brush, Pen pen, SpiroControlPoint point)
+        private void DrawSpiroPoint(DrawingContext dc, Brush brush, Pen pen, SpiroControlPoint point)
         {
             switch (point.Type)
             {
@@ -262,6 +327,44 @@ namespace SpiroNet.Wpf
                     dc.Pop();
                     break;
             }
+        }
+
+        private void DrawGuides(DrawingContext dc)
+        {
+            foreach (var guide in SpiroEditor.Drawing.Guides)
+            {
+                DrawGuideLine(dc, FromCache(_lineStyle), guide.Point0, guide.Point1);
+            }
+        }
+
+        private void DrawGuidePoint(DrawingContext dc, BasicStyleCache cache, GuidePoint point, double radius)
+        {
+            dc.DrawEllipse(cache.FillBrush, null, new Point(point.X, point.Y), radius, radius);
+        }
+
+        private void DrawGuideLine(DrawingContext dc, BasicStyleCache cache, GuidePoint point0, GuidePoint point1)
+        {
+            var gs = new GuidelineSet(
+                new double[] { point0.X + cache.HalfThickness, point1.X + cache.HalfThickness },
+                new double[] { point0.Y + cache.HalfThickness, point1.Y + cache.HalfThickness });
+            gs.Freeze();
+            dc.PushGuidelineSet(gs);
+            dc.DrawLine(cache.StrokePen, new Point(point0.X, point0.Y), new Point(point1.X, point1.Y));
+            dc.Pop();
+        }
+
+        private void DrawHorizontalGuide(DrawingContext dc, BasicStyleCache cache, GuidePoint point, double width)
+        {
+            var point0 = new GuidePoint(0, point.Y);
+            var point1 = new GuidePoint(width, point.Y);
+            DrawGuideLine(dc, cache, point0, point1);
+        }
+
+        private void DrawVerticalGuide(DrawingContext dc, BasicStyleCache cache, GuidePoint point, double height)
+        {
+            var point0 = new GuidePoint(point.X, 0);
+            var point1 = new GuidePoint(point.X, height);
+            DrawGuideLine(dc, cache, point0, point1);
         }
     }
 }

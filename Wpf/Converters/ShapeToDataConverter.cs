@@ -40,8 +40,8 @@ namespace SpiroNet.Wpf
             if (values == null || values.Length != 2)
                 return null;
             
-            var shape = values[0] as PathShape;
-            var dict = values[1] as IDictionary<PathShape, string>;
+            var shape = values[0] as SpiroShape;
+            var dict = values[1] as IDictionary<SpiroShape, string>;
             if (shape == null || dict == null)
                 return null;
             

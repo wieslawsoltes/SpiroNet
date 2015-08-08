@@ -19,21 +19,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SpiroNet.Editor
 {
-    public class SpirtoEditorState : ObservableObject
+    public class EditorState : ObservableObject
     {
-        private SpirtoEditorMode _mode;
-        private PathShape _shape;
+        private EditorTool _tool;
+        private EditorMode _mode;
+
         private double _snapX;
         private double _snapY;
         private bool _enableSnap;
+
+        private SpiroShape _shape;
         private double _hitTreshold;
         private double _hitTresholdSquared;
-        private PathShape _hitShape;
+        private SpiroShape _hitShape;
         private int _hitShapePointIndex;
         private bool _isStroked;
         private bool _isFilled;
@@ -42,13 +43,28 @@ namespace SpiroNet.Editor
         private SpiroPointType _pointType;
         private bool _displayKnots;
 
-        public SpirtoEditorState()
+        private GuidePoint _guidePosition;
+        private GuidePoint _point0;
+        private GuidePoint _point1;
+        private bool _isCaptured;
+        private double _snapTreshold;
+        private GuideSnapMode _snapMode;
+        private double _snapPointRadius;
+        private GuidePoint _snapPoint;
+        private bool _haveSnapPoint;
+        private GuideSnapMode _snapResult;
+        private bool _displayGuides;
+
+        public EditorState()
         {
-            _mode = SpirtoEditorMode.Create;
-            _shape = null;
+            _tool = EditorTool.Spiro;
+            _mode = EditorMode.Create;
+
             _snapX = 15.0;
             _snapY = 15.0;
             _enableSnap = false;
+
+            _shape = null;
             _hitTreshold = 7;
             _hitTresholdSquared = 49;
             _hitShape = null;
@@ -59,15 +75,29 @@ namespace SpiroNet.Editor
             _isTagged = false;
             _pointType = SpiroPointType.G4;
             _displayKnots = true;
+
+            _isCaptured = false;
+            _snapTreshold = 10.0;
+            _snapMode = GuideSnapMode.Point | GuideSnapMode.Middle | GuideSnapMode.Intersection | GuideSnapMode.Horizontal | GuideSnapMode.Vertical;
+            _snapPointRadius = 3.5;
+            _snapPoint = default(GuidePoint);
+            _haveSnapPoint = false;
+            _displayGuides = true;
         }
-        
-        public SpirtoEditorMode Mode
+
+        public EditorTool Tool
+        {
+            get { return _tool; }
+            set { Update(ref _tool, value); }
+        }
+
+        public EditorMode Mode
         {
             get { return _mode; }
             set { Update(ref _mode, value); }
         }
 
-        public PathShape Shape
+        public SpiroShape Shape
         {
             get { return _shape; }
             set { Update(ref _shape, value); }
@@ -103,7 +133,7 @@ namespace SpiroNet.Editor
             set { Update(ref _hitTresholdSquared, value); }
         }
 
-        public PathShape HitShape
+        public SpiroShape HitShape
         {
             get { return _hitShape; }
             set { Update(ref _hitShape, value); }
@@ -149,6 +179,72 @@ namespace SpiroNet.Editor
         {
             get { return _pointType; }
             set { Update(ref _pointType, value); }
+        }
+
+        public GuidePoint GuidePosition
+        {
+            get { return _guidePosition; }
+            set { Update(ref _guidePosition, value); }
+        }
+
+        public GuidePoint Point0
+        {
+            get { return _point0; }
+            set { Update(ref _point0, value); }
+        }
+
+        public GuidePoint Point1
+        {
+            get { return _point1; }
+            set { Update(ref _point1, value); }
+        }
+
+        public bool IsCaptured
+        {
+            get { return _isCaptured; }
+            set { Update(ref _isCaptured, value); }
+        }
+
+        public double SnapTreshold
+        {
+            get { return _snapTreshold; }
+            set { Update(ref _snapTreshold, value); }
+        }
+
+        public GuideSnapMode SnapMode
+        {
+            get { return _snapMode; }
+            set { Update(ref _snapMode, value); }
+        }
+
+        public double SnapPointRadius
+        {
+            get { return _snapPointRadius; }
+            set { Update(ref _snapPointRadius, value); }
+        }
+
+        public GuidePoint SnapPoint
+        {
+            get { return _snapPoint; }
+            set { Update(ref _snapPoint, value); }
+        }
+
+        public bool HaveSnapPoint
+        {
+            get { return _haveSnapPoint; }
+            set { Update(ref _haveSnapPoint, value); }
+        }
+
+        public GuideSnapMode SnapResult
+        {
+            get { return _snapResult; }
+            set { Update(ref _snapResult, value); }
+        }
+
+        public bool DisplayGuides
+        {
+            get { return _displayGuides; }
+            set { Update(ref _displayGuides, value); }
         }
     }
 }

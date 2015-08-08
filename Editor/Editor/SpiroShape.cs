@@ -27,7 +27,7 @@ namespace SpiroNet.Editor
     /// <summary>
     /// The spiro shape used to generate Path data.
     /// </summary>
-    public class PathShape : ObservableObject
+    public class SpiroShape : ObservableObject
     {
         private bool _isStroked;
         private bool _isFilled;
