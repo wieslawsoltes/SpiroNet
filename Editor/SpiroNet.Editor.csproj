@@ -59,6 +59,8 @@
     <Compile Include="Path\PathShape.cs" />
     <Compile Include="Plate\Plate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Style\Argb.cs" />
+    <Compile Include="Style\BasicStyle.cs" />
     <Compile Include="Util\Command.cs" />
     <Compile Include="Util\ObservableObject.cs" />
   </ItemGroup>
