@@ -27,6 +27,9 @@ namespace SpiroNet.Editor
         private EditorTool _tool;
         private EditorMode _mode;
 
+        private bool _displayKnots;
+        private bool _displayGuides;
+
         private double _snapX;
         private double _snapY;
         private bool _enableSnap;
@@ -41,7 +44,6 @@ namespace SpiroNet.Editor
         private bool _isClosed;
         private bool _isTagged;
         private SpiroPointType _pointType;
-        private bool _displayKnots;
 
         private GuidePoint _guidePosition;
         private GuidePoint _point0;
@@ -53,12 +55,14 @@ namespace SpiroNet.Editor
         private GuidePoint _snapPoint;
         private bool _haveSnapPoint;
         private GuideSnapMode _snapResult;
-        private bool _displayGuides;
 
         public EditorState()
         {
             _tool = EditorTool.Spiro;
             _mode = EditorMode.Create;
+
+            _displayKnots = true;
+            _displayGuides = true;
 
             _snapX = 15.0;
             _snapY = 15.0;
@@ -74,7 +78,6 @@ namespace SpiroNet.Editor
             _isClosed = true;
             _isTagged = false;
             _pointType = SpiroPointType.G4;
-            _displayKnots = true;
 
             _isCaptured = false;
             _snapTreshold = 10.0;
@@ -82,7 +85,6 @@ namespace SpiroNet.Editor
             _snapPointRadius = 3.5;
             _snapPoint = default(GuidePoint);
             _haveSnapPoint = false;
-            _displayGuides = true;
         }
 
         public EditorTool Tool
@@ -95,6 +97,18 @@ namespace SpiroNet.Editor
         {
             get { return _mode; }
             set { Update(ref _mode, value); }
+        }
+
+        public bool DisplayKnots
+        {
+            get { return _displayKnots; }
+            set { Update(ref _displayKnots, value); }
+        }
+
+        public bool DisplayGuides
+        {
+            get { return _displayGuides; }
+            set { Update(ref _displayGuides, value); }
         }
 
         public SpiroShape Shape
@@ -168,12 +182,6 @@ namespace SpiroNet.Editor
             get { return _isTagged; }
             set { Update(ref _isTagged, value); }
         }
-        
-        public bool DisplayKnots
-        {
-            get { return _displayKnots; }
-            set { Update(ref _displayKnots, value); }
-        }
 
         public SpiroPointType PointType
         {
@@ -239,12 +247,6 @@ namespace SpiroNet.Editor
         {
             get { return _snapResult; }
             set { Update(ref _snapResult, value); }
-        }
-
-        public bool DisplayGuides
-        {
-            get { return _displayGuides; }
-            set { Update(ref _displayGuides, value); }
         }
     }
 }
