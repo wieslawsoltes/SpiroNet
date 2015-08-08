@@ -58,8 +58,8 @@
     </ApplicationDefinition>
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Converters\ShapeToDataConverter.cs" />
-    <Compile Include="Controls\BasicStyleCache.cs" />
-    <Compile Include="Controls\SpiroCanvas.cs" />
+    <Compile Include="Renderer\BasicStyleCache.cs" />
+    <Compile Include="Renderer\SpiroCanvas.cs" />
     <Compile Include="Controls\SpiroControl.xaml.cs">
       <DependentUpon>SpiroControl.xaml</DependentUpon>
     </Compile>
@@ -117,6 +117,7 @@
       <Name>SpiroNet</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
