@@ -58,6 +58,7 @@
     </ApplicationDefinition>
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Converters\ShapeToDataConverter.cs" />
+    <Compile Include="Controls\BasicStyleCache.cs" />
     <Compile Include="Controls\SpiroCanvas.cs" />
     <Compile Include="Controls\SpiroControl.xaml.cs">
       <DependentUpon>SpiroControl.xaml</DependentUpon>
