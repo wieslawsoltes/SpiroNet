@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpiroNet.Wpf"
         mc:Ignorable="d"
-        Title="SpiroNet.Wpf" Height="700" Width="1040"
+        Title="SpiroNet.Wpf" Height="720" Width="1040"
         Background="White"
         WindowStartupLocation="CenterScreen"
         SnapsToDevicePixels="True" UseLayoutRounding="True"
         TextOptions.TextFormattingMode="Display">
     <Grid>
-        <local:SpiroControl/>
+        <local:EditorControl/>
     </Grid>
 </Window>

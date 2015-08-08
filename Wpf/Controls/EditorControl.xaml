@@ -1,12 +1,13 @@
-<UserControl x:Class="SpiroNet.Wpf.SpiroControl"
+<UserControl x:Class="SpiroNet.Wpf.EditorControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SpiroNet.Wpf"
              xmlns:spiro="clr-namespace:SpiroNet;assembly=SpiroNet"
+             xmlns:editor="clr-namespace:SpiroNet.Editor;assembly=SpiroNet.Editor"
              mc:Ignorable="d" 
-             d:DesignHeight="700" d:DesignWidth="1040"
+             d:DesignHeight="720" d:DesignWidth="1040"
              Background="White"
              SnapsToDevicePixels="True" UseLayoutRounding="True"
              TextOptions.TextFormattingMode="Display">
@@ -81,7 +82,7 @@
                      Grid.Row="0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}"/>
+                        <TextBlock Text="Shape"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -108,14 +109,14 @@
                       HorizontalScrollBarVisibility="Auto"
                       Grid.Column="1"
                       Grid.Row="1">
-            <local:SpiroCanvas x:Name="canvas" 
-                               Editor="{Binding}"
+            <local:EditorCanvas x:Name="canvas" 
+                               SpiroEditor="{Binding}"
                                Width="{Binding Drawing.Width}" 
                                Height="{Binding Drawing.Height}" 
-                               Background="LightGray"
+                               Background="DarkGray"
                                Focusable="True"
                                FocusVisualStyle="{x:Null}">
-                <local:SpiroCanvas.InputBindings>
+                <local:EditorCanvas.InputBindings>
                     <KeyBinding Command="{Binding Commands.IsStrokedCommand}" Key="K" Modifiers=""/>
                     <KeyBinding Command="{Binding Commands.IsFilledCommand}" Key="F" Modifiers=""/>
                     <KeyBinding Command="{Binding Commands.IsClosedCommand}" Key="D" Modifiers=""/>
@@ -128,81 +129,52 @@
                     <KeyBinding Command="{Binding Commands.PointTypeCommand}" CommandParameter="End" Key="Z" Modifiers=""/>
                     <KeyBinding Command="{Binding Commands.PointTypeCommand}" CommandParameter="OpenContour" Key="OemOpenBrackets" Modifiers="Shift"/>
                     <KeyBinding Command="{Binding Commands.PointTypeCommand}" CommandParameter="EndOpenContour" Key="OemCloseBrackets" Modifiers="Shift"/>
-                </local:SpiroCanvas.InputBindings>
-            </local:SpiroCanvas>
+                </local:EditorCanvas.InputBindings>
+            </local:EditorCanvas>
         </ScrollViewer>
         <TabControl Grid.Column="2" Grid.Row="1" Width="200" Margin="4,0,4,4">
             <TabItem Header="State">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                     <StackPanel>
+                        <GroupBox Header="Tool" Margin="4,2,4,2">
+                            <StackPanel>
+                                <RadioButton IsChecked="{Binding Path=State.Tool, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static editor:EditorTool.None}}"
+                                             Command="{Binding Commands.InvalidateCommand}"
+                                             VerticalContentAlignment="Center"
+                                             Content="None" 
+                                             Margin="1">
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Path=State.Tool, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static editor:EditorTool.Guide}}"
+                                             Command="{Binding Commands.InvalidateCommand}"
+                                             VerticalContentAlignment="Center"
+                                             Content="Guide" 
+                                             Margin="1">
+                                </RadioButton>
+                                <RadioButton IsChecked="{Binding Path=State.Tool, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static editor:EditorTool.Spiro}}"
+                                             Command="{Binding Commands.InvalidateCommand}"
+                                             VerticalContentAlignment="Center"
+                                             Content="Spiro" 
+                                             Margin="1">
+                                </RadioButton>
+                            </StackPanel>
+                        </GroupBox>
                         <GroupBox Header="Drawing Size" Margin="4,2,4,2">
-                            <StackPanel>
-                                <TextBox Text="{Binding Drawing.Width}" Margin="1"/>
-                                <TextBox Text="{Binding Drawing.Height}" Margin="1"/>
-                            </StackPanel>
-                        </GroupBox>
-                        <GroupBox Header="Snap Mode" Margin="4,2,4,2">
-                            <StackPanel>
-                                <TextBox Text="{Binding State.SnapX}" Margin="1"/>
-                                <TextBox Text="{Binding State.SnapY}" Margin="1"/>
-                                <CheckBox IsChecked="{Binding State.EnableSnap}" 
-                                          VerticalContentAlignment="Center" 
-                                          Content="Enable Snap" 
-                                          Margin="1">
-                                </CheckBox>
-                            </StackPanel>
-                        </GroupBox>
-                        <GroupBox Header="New/Selected Shape" Margin="4,2,4,2">
-                            <StackPanel>
-                                <CheckBox IsChecked="{Binding State.IsStroked, Mode=OneWay}" 
-                                          Command="{Binding Commands.IsStrokedCommand}"
-                                          VerticalContentAlignment="Center" 
-                                          Content="Is Stroked      k" 
-                                          Margin="1">
-                                    <CheckBox.ToolTip>
-                                        <StackPanel>
-                                            <TextBlock Text="Is stroked path shape" FontWeight="Bold"/>
-                                        </StackPanel>
-                                    </CheckBox.ToolTip>
-                                </CheckBox>
-                                <CheckBox IsChecked="{Binding State.IsFilled, Mode=OneWay}" 
-                                          Command="{Binding Commands.IsFilledCommand}"
-                                          VerticalContentAlignment="Center" 
-                                          Content="Is Filled       f" 
-                                          Margin="1">
-                                    <CheckBox.ToolTip>
-                                        <StackPanel>
-                                            <TextBlock Text="Is filled path shape" FontWeight="Bold"/>
-                                        </StackPanel>
-                                    </CheckBox.ToolTip>
-                                </CheckBox>
-                                <CheckBox IsChecked="{Binding State.IsClosed, Mode=OneWay}" 
-                                          Command="{Binding Commands.IsClosedCommand}"
-                                          VerticalContentAlignment="Center" 
-                                          Content="Is Closed       d" 
-                                          Margin="1">
-                                    <CheckBox.ToolTip>
-                                        <StackPanel>
-                                            <TextBlock Text="Is closed spiro shape" FontWeight="Bold"/>
-                                            <TextBlock Text="Whether points describe a closed (True) or open (False) contour."/>
-                                        </StackPanel>
-                                    </CheckBox.ToolTip>
-                                </CheckBox>
-                                <CheckBox IsChecked="{Binding State.IsTagged, Mode=OneWay}" 
-                                          Command="{Binding Commands.IsTaggedCommand}"
-                                          VerticalContentAlignment="Center"
-                                          Content="Is Tagged       t" 
-                                          Margin="1">
-                                    <CheckBox.ToolTip>
-                                        <StackPanel>
-                                            <TextBlock Text="Is tagged spiro shape" FontWeight="Bold"/>
-                                            <TextBlock Text="This requires that spiro control points be tagged according to convention. A closed curve will have an extra control point attached to the end of it with a type of 'End'."/>
-                                            <TextBlock Text="The location of this last point is irrelevant."/>
-                                            <TextBlock Text="In an open contour the point types of the first and last control points are going to be ignored."/>
-                                        </StackPanel>
-                                    </CheckBox.ToolTip>
-                                </CheckBox>
-                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="50*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding Drawing.Width}" 
+                                         TextAlignment="Center"
+                                         Margin="2"  
+                                         Grid.Column="0">
+                                </TextBox>
+                                <TextBox Text="{Binding Drawing.Height}"
+                                         TextAlignment="Center"
+                                         Margin="2"
+                                         Grid.Column="1">
+                                </TextBox>
+                            </Grid>
                         </GroupBox>
                         <GroupBox Header="New/Selected Point" Margin="4,2,4,2">
                             <StackPanel>
@@ -313,13 +285,123 @@
                                 </RadioButton>
                             </StackPanel>
                         </GroupBox>
+                        <GroupBox Header="New/Selected Shape" Margin="4,2,4,2">
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding State.IsStroked, Mode=OneWay}" 
+                                          Command="{Binding Commands.IsStrokedCommand}"
+                                          VerticalContentAlignment="Center" 
+                                          Content="Is Stroked      k" 
+                                          Margin="1">
+                                    <CheckBox.ToolTip>
+                                        <StackPanel>
+                                            <TextBlock Text="Is stroked path shape" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </CheckBox.ToolTip>
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding State.IsFilled, Mode=OneWay}" 
+                                          Command="{Binding Commands.IsFilledCommand}"
+                                          VerticalContentAlignment="Center" 
+                                          Content="Is Filled       f" 
+                                          Margin="1">
+                                    <CheckBox.ToolTip>
+                                        <StackPanel>
+                                            <TextBlock Text="Is filled path shape" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </CheckBox.ToolTip>
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding State.IsClosed, Mode=OneWay}" 
+                                          Command="{Binding Commands.IsClosedCommand}"
+                                          VerticalContentAlignment="Center" 
+                                          Content="Is Closed       d" 
+                                          Margin="1">
+                                    <CheckBox.ToolTip>
+                                        <StackPanel>
+                                            <TextBlock Text="Is closed spiro shape" FontWeight="Bold"/>
+                                            <TextBlock Text="Whether points describe a closed (True) or open (False) contour."/>
+                                        </StackPanel>
+                                    </CheckBox.ToolTip>
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding State.IsTagged, Mode=OneWay}" 
+                                          Command="{Binding Commands.IsTaggedCommand}"
+                                          VerticalContentAlignment="Center"
+                                          Content="Is Tagged       t" 
+                                          Margin="1">
+                                    <CheckBox.ToolTip>
+                                        <StackPanel>
+                                            <TextBlock Text="Is tagged spiro shape" FontWeight="Bold"/>
+                                            <TextBlock Text="This requires that spiro control points be tagged according to convention. A closed curve will have an extra control point attached to the end of it with a type of 'End'."/>
+                                            <TextBlock Text="The location of this last point is irrelevant."/>
+                                            <TextBlock Text="In an open contour the point types of the first and last control points are going to be ignored."/>
+                                        </StackPanel>
+                                    </CheckBox.ToolTip>
+                                </CheckBox>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Snap Mode" Margin="4,2,4,2">
+                            <StackPanel>
+                                <CheckBox x:Name="snapModePoint"
+                                          Content="Point"
+                                          VerticalContentAlignment="Center" 
+                                          Margin="1"/>
+                                <CheckBox x:Name="snapModeMiddle"
+                                          Content="Middle" 
+                                          VerticalContentAlignment="Center" 
+                                          Margin="1"/>
+                                <CheckBox x:Name="snapModeNearest"
+                                          Content="Nearest" 
+                                          VerticalContentAlignment="Center" 
+                                          Margin="1"/>
+                                <CheckBox x:Name="snapModeIntersection"
+                                          Content="Intersection" 
+                                          VerticalContentAlignment="Center" 
+                                          Margin="1"/>
+                                <CheckBox x:Name="snapModeHorizontal"
+                                          Content="Horizontal" 
+                                          VerticalContentAlignment="Center" 
+                                          Margin="1"/>
+                                <CheckBox x:Name="snapModeVertical"
+                                          Content="Vertical" 
+                                          VerticalContentAlignment="Center" 
+                                          Margin="1"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50*"/>
+                                        <ColumnDefinition Width="50*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding State.SnapX}" 
+                                             TextAlignment="Center"
+                                             Margin="2"  
+                                             Grid.Column="0">
+                                    </TextBox>
+                                    <TextBox Text="{Binding State.SnapY}"
+                                             TextAlignment="Center"
+                                             Margin="2"
+                                             Grid.Column="2">
+                                    </TextBox>
+                                </Grid>
+                                <CheckBox IsChecked="{Binding State.EnableSnap}"
+                                          Command="{Binding Commands.InvalidateCommand}"
+                                          VerticalContentAlignment="Center" 
+                                          Content="Enable Snap" 
+                                          Margin="1">
+                                </CheckBox>
+                            </StackPanel>
+                        </GroupBox>
                         <GroupBox Header="Options" Margin="4,2,4,2">
-                            <CheckBox IsChecked="{Binding State.DisplayKnots}" 
-                                      Command="{Binding Commands.InvalidateCommand}"
-                                      VerticalContentAlignment="Center" 
-                                      Content="Display Knots" 
-                                      Margin="1">
-                            </CheckBox>
+                            <StackPanel>
+                                <CheckBox IsChecked="{Binding State.DisplayKnots}" 
+                                          Command="{Binding Commands.InvalidateCommand}"
+                                          VerticalContentAlignment="Center" 
+                                          Content="Display Knots" 
+                                          Margin="1">
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding State.DisplayGuides}" 
+                                          Command="{Binding Commands.InvalidateCommand}"
+                                          VerticalContentAlignment="Center" 
+                                          Content="Display Guides" 
+                                          Margin="1">
+                                </CheckBox>
+                            </StackPanel>
                         </GroupBox>
                     </StackPanel>
                 </ScrollViewer>
@@ -337,19 +419,20 @@
                              IsReadOnly="False"
                              VerticalScrollBarVisibility="Auto"
                              HorizontalScrollBarVisibility="Auto"
-                             Margin="4,0,4,0"
+                             Margin="4,4,4,0"
                              Grid.Row="0">
                     </TextBox>
                     <Button Content="Run" Command="{Binding Commands.ExecuteScriptCommand}" 
                             CommandParameter="{Binding ElementName=scriptTextBox, Path=Text}" 
-                            Margin="4,4,4,0"
+                            Margin="4,4,4,4"
                             Grid.Row="1">
                     </Button>
                 </Grid>
             </TabItem>
             <TabItem Header="Help">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                    <StackPanel>
+                    <StackPanel Margin="4">
+                        <TextBlock Text="Spiro Tool" FontWeight="Bold" TextAlignment="Center" Margin="4,0,4,0"/>
                         <TextBlock Text="Mouse Left:" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="- Begin Shape" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="- Add Point" TextAlignment="Left" Margin="4,0,4,0"/>
@@ -363,6 +446,12 @@
                         <TextBlock Text="Mouse Middle:" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="- Remove Shape" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="- Remove Point" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBlock Text="Guide Tool" FontWeight="Bold" TextAlignment="Center" Margin="4,0,4,0"/>
+                        <TextBlock Text="Mouse Left:" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBlock Text="- Begin Line" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBlock Text="- Finish Line" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBlock Text="Mouse Right" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBlock Text="- Cancel Shape" TextAlignment="Left" Margin="4,0,4,0"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

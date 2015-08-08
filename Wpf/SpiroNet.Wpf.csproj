@@ -59,9 +59,9 @@
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Converters\ShapeToDataConverter.cs" />
     <Compile Include="Renderer\BasicStyleCache.cs" />
-    <Compile Include="Renderer\SpiroCanvas.cs" />
-    <Compile Include="Controls\SpiroControl.xaml.cs">
-      <DependentUpon>SpiroControl.xaml</DependentUpon>
+    <Compile Include="Renderer\EditorCanvas.cs" />
+    <Compile Include="Controls\EditorControl.xaml.cs">
+      <DependentUpon>EditorControl.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -75,7 +75,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Controls\SpiroControl.xaml">
+    <Page Include="Controls\EditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

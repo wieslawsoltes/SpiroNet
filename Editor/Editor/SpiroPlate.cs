@@ -27,14 +27,14 @@ using System.Text;
 
 namespace SpiroNet.Editor
 {
-    public static class Plate
+    public static class SpiroPlate
     {
         private static string Format(double value)
         {
             return value.ToString(CultureInfo.GetCultureInfo("en-GB"));
         }
 
-        public static string FromShapes(IList<PathShape> shapes)
+        public static string FromShapes(IList<SpiroShape> shapes)
         {
             var sb = new StringBuilder();
 
@@ -99,9 +99,9 @@ namespace SpiroNet.Editor
             return sb.ToString();
         }
 
-        private static PathShape NewShape()
+        private static SpiroShape NewShape()
         {
-            return new PathShape()
+            return new SpiroShape()
             {
                 IsStroked = true,
                 IsFilled = false,
@@ -120,19 +120,19 @@ namespace SpiroNet.Editor
             return point;
         }
 
-        public static IList<PathShape> ToShapes(string plate)
+        public static IList<SpiroShape> ToShapes(string plate)
         {
             if (string.IsNullOrEmpty(plate))
                 return null;
 
-            var shapes = new ObservableCollection<PathShape>();
+            var shapes = new ObservableCollection<SpiroShape>();
             var newLine = Environment.NewLine.ToCharArray();
             var separator = new char[] { ' ', '\t' };
             var trim = new char[] { '(', ')' };
             var options = StringSplitOptions.RemoveEmptyEntries;
             var lines = plate.Split(newLine, options).Select(x => x.Trim().Trim(trim).Split(separator, options));
 
-            PathShape shape = null;
+            SpiroShape shape = null;
 
             foreach (var line in lines)
             {

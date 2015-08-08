@@ -22,11 +22,15 @@ using System;
 
 namespace SpiroNet.Editor
 {
-    public enum SpirtoEditorMode 
-    { 
-        None, 
-        Create, 
-        Move, 
-        Selected 
+    public struct GuidePoint
+    {
+        public double X;
+        public double Y;
+
+        public GuidePoint(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
     }
 }

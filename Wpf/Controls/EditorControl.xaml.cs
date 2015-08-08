@@ -38,33 +38,31 @@ using SpiroNet.Editor;
 
 namespace SpiroNet.Wpf
 {
-    public partial class SpiroControl : UserControl
+    public partial class EditorControl : UserControl
     {
         private SpiroEditor _editor;
 
-        public SpiroControl()
+        public EditorControl()
         {
             InitializeComponent();
 
-            canvas.PreviewMouseDown += Canvas_PreviewMouseDown;
-            canvas.PreviewMouseLeftButtonDown += Canvas_PreviewMouseLeftButtonDown;
-            canvas.PreviewMouseLeftButtonUp += Canvas_PreviewMouseLeftButtonUp;
-            canvas.PreviewMouseRightButtonDown += Canvas_PreviewMouseRightButtonDown;
-            canvas.PreviewMouseMove += Canvas_PreviewMouseMove;
-
+            // Editor initialization.
             _editor = new SpiroEditor()
             {
-                State = new SpirtoEditorState(),
-                Commands = new SpirtoEditorCommands(),
-                Invalidate = canvas.InvalidateVisual,
-                Drawing = new PathDrawing()
+                State = new EditorState(),
+                Commands = new EditorCommands(),
+                Invalidate = () => canvas.InvalidateVisual(),
+                Capture = () => canvas.CaptureMouse(),
+                Release = () => canvas.ReleaseMouseCapture(),
+                Drawing = new SpiroDrawing()
                 {
                     Width = 600,
                     Height = 600,
-                    Shapes = new ObservableCollection<PathShape>()
+                    Shapes = new ObservableCollection<SpiroShape>(),
+                    Guides = new ObservableCollection<GuideLine>(),
                 },
-                Data = new Dictionary<PathShape, string>(),
-                Knots = new Dictionary<PathShape, IList<SpiroKnot>>()
+                Data = new Dictionary<SpiroShape, string>(),
+                Knots = new Dictionary<SpiroShape, IList<SpiroKnot>>()
             };
 
             _editor.Commands.InvalidateCommand = Command.Create(_editor.Invalidate);
@@ -80,9 +78,68 @@ namespace SpiroNet.Wpf
             _editor.Commands.PointTypeCommand = Command<string>.Create(_editor.TogglePointType);
             _editor.Commands.ExecuteScriptCommand = Command<string>.Create(ExecuteScript);
 
+            // Canvas initialization.
+            canvas.PreviewMouseDown += Canvas_PreviewMouseDown;
+            canvas.PreviewMouseLeftButtonDown += Canvas_PreviewMouseLeftButtonDown;
+            canvas.PreviewMouseLeftButtonUp += Canvas_PreviewMouseLeftButtonUp;
+            canvas.PreviewMouseRightButtonDown += Canvas_PreviewMouseRightButtonDown;
+            canvas.PreviewMouseMove += Canvas_PreviewMouseMove;
+
+            InitSnapMode();
+
             DataContext = _editor;
 
             Loaded += SpiroControl_Loaded;
+        }
+
+        private void InitSnapMode()
+        {
+            snapModePoint.Click += (sender, e) => UpdateSnapMode();
+            snapModeMiddle.Click += (sender, e) => UpdateSnapMode();
+            snapModeNearest.Click += (sender, e) => UpdateSnapMode();
+            snapModeIntersection.Click += (sender, e) => UpdateSnapMode();
+            snapModeHorizontal.Click += (sender, e) => UpdateSnapMode();
+            snapModeVertical.Click += (sender, e) => UpdateSnapMode();
+
+            snapModePoint.IsChecked = _editor.State.SnapMode.HasFlag(GuideSnapMode.Point);
+            snapModeMiddle.IsChecked = _editor.State.SnapMode.HasFlag(GuideSnapMode.Middle);
+            snapModeNearest.IsChecked = _editor.State.SnapMode.HasFlag(GuideSnapMode.Nearest);
+            snapModeIntersection.IsChecked = _editor.State.SnapMode.HasFlag(GuideSnapMode.Intersection);
+            snapModeHorizontal.IsChecked = _editor.State.SnapMode.HasFlag(GuideSnapMode.Horizontal);
+            snapModeVertical.IsChecked = _editor.State.SnapMode.HasFlag(GuideSnapMode.Vertical);
+        }
+
+        private void UpdateSnapMode()
+        {
+            if (snapModePoint.IsChecked == true)
+                _editor.State.SnapMode |= GuideSnapMode.Point;
+            else
+                _editor.State.SnapMode &= ~GuideSnapMode.Point;
+
+            if (snapModeMiddle.IsChecked == true)
+                _editor.State.SnapMode |= GuideSnapMode.Middle;
+            else
+                _editor.State.SnapMode &= ~GuideSnapMode.Middle;
+
+            if (snapModeNearest.IsChecked == true)
+                _editor.State.SnapMode |= GuideSnapMode.Nearest;
+            else
+                _editor.State.SnapMode &= ~GuideSnapMode.Nearest;
+
+            if (snapModeIntersection.IsChecked == true)
+                _editor.State.SnapMode |= GuideSnapMode.Intersection;
+            else
+                _editor.State.SnapMode &= ~GuideSnapMode.Intersection;
+
+            if (snapModeHorizontal.IsChecked == true)
+                _editor.State.SnapMode |= GuideSnapMode.Horizontal;
+            else
+                _editor.State.SnapMode &= ~GuideSnapMode.Horizontal;
+
+            if (snapModeVertical.IsChecked == true)
+                _editor.State.SnapMode |= GuideSnapMode.Vertical;
+            else
+                _editor.State.SnapMode &= ~GuideSnapMode.Vertical;
         }
 
         private void Canvas_PreviewMouseDown(object sender, MouseButtonEventArgs e)
