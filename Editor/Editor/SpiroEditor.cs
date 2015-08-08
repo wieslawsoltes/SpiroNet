@@ -83,7 +83,7 @@ namespace SpiroNet.Editor
         public void ToggleIsStroked()
         {
             _state.IsStroked = !_state.IsStroked;
-            
+
             if (_state.Shape != null)
             {
                 _state.Shape.IsStroked = _state.IsStroked;
@@ -100,13 +100,13 @@ namespace SpiroNet.Editor
         public void ToggleIsFilled()
         {
             _state.IsFilled = !_state.IsFilled;
-            
+
             if (_state.Shape != null)
             {
                 _state.Shape.IsFilled = _state.IsFilled;
                 _invalidate();
             }
-            
+
             if (_state.HitShape != null && _state.HitShapePointIndex == -1)
             {
                 _state.HitShape.IsFilled = _state.IsFilled;
@@ -117,14 +117,14 @@ namespace SpiroNet.Editor
         public void ToggleIsClosed()
         {
             _state.IsClosed = !_state.IsClosed;
-            
+
             if (_state.Shape != null)
             {
                 _state.Shape.IsClosed = _state.IsClosed;
                 RunSpiro(_state.Shape);
                 _invalidate();
             }
-            
+
             if (_state.HitShape != null && _state.HitShapePointIndex == -1)
             {
                 _state.HitShape.IsClosed = _state.IsClosed;
@@ -136,7 +136,7 @@ namespace SpiroNet.Editor
         public void ToggleIsTagged()
         {
             _state.IsTagged = !_state.IsTagged;
-            
+
             if (_state.Shape != null)
             {
                 _state.Shape.IsTagged = _state.IsTagged;
@@ -163,7 +163,7 @@ namespace SpiroNet.Editor
                 SetPointType(_state.Shape, _state.Shape.Points.Count - 1, type);
                 RunSpiro(_state.Shape);
             }
-            
+
             // Change selected point type.
             if (_state.HitShape != null && _state.HitShapePointIndex != -1)
             {
@@ -187,7 +187,7 @@ namespace SpiroNet.Editor
             point.Type = old.Type;
             shape.Points[index] = point;
         }
-        
+
         private void SetPointPosition(PathShape shape, int index, double x, double y)
         {
             var old = shape.Points[index];
@@ -197,7 +197,7 @@ namespace SpiroNet.Editor
             point.Type = old.Type;
             shape.Points[index] = point;
         }
-        
+
         private void SetPointType(PathShape shape, int index, SpiroPointType type)
         {
             var old = shape.Points[index];
@@ -511,7 +511,7 @@ namespace SpiroNet.Editor
         {
             double sx = _state.EnableSnap ? Snap(x, _state.SnapX) : x;
             double sy = _state.EnableSnap ? Snap(y, _state.SnapY) : y;
-            
+
             if (_state.Mode == SpirtoEditorMode.Move)
             {
                 // Finish move.
@@ -561,7 +561,7 @@ namespace SpiroNet.Editor
         {
             double sx = _state.EnableSnap ? Snap(x, _state.SnapX) : x;
             double sy = _state.EnableSnap ? Snap(y, _state.SnapY) : y;
-            
+
             if (_state.Shape != null)
             {
                 if (_state.Shape.Points.Count > 1)
@@ -688,7 +688,7 @@ namespace SpiroNet.Editor
                         Height = _drawing.Height,
                         Shapes = shapes
                     };
-                    
+
                     OpenDrawing(drawing);
                 }
             }
