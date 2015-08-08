@@ -479,13 +479,7 @@ namespace SpiroNet.Editor
             _invalidate();
         }
 
-        public static bool TryToSnapToGuideLine(
-            IList<GuideLine> guides,
-            GuideSnapMode mode,
-            double treshold,
-            GuidePoint point,
-            out GuidePoint snap,
-            out GuideSnapMode result)
+        public static bool TryToSnapToGuideLine(IList<GuideLine> guides, GuideSnapMode mode, double treshold, GuidePoint point, out GuidePoint snap, out GuideSnapMode result)
         {
             snap = default(GuidePoint);
             result = default(GuideSnapMode);
@@ -646,12 +640,7 @@ namespace SpiroNet.Editor
             _state.SnapResult = snapResult;
         }
 
-        private bool HitTestForGuideLine(
-            IList<GuideLine> guides, 
-            double x, 
-            double y, 
-            double treshold, 
-            out GuideLine hitGuide)
+        private bool HitTestForGuideLine(IList<GuideLine> guides, double x, double y, double treshold, out GuideLine hitGuide)
         {
             var point = new GuidePoint(x, y);
             foreach (var guide in _drawing.Guides)
