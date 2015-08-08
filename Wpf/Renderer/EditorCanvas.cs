@@ -66,10 +66,10 @@ namespace SpiroNet.Wpf
 
         public EditorCanvas()
         {
-            Initialize();
+            InitializeStyles();
         }
 
-        private void Initialize()
+        private void InitializeStyles()
         {
             _cache = new Dictionary<BasicStyle, BasicStyleCache>();
 
