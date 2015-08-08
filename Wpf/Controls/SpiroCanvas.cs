@@ -38,16 +38,12 @@ namespace SpiroNet.Wpf
         private static Geometry EndOpenContourKnot = Geometry.Parse("M-3.5,-3.5 L0,0 -3.5,3.5");
         private static Geometry OpenContourKnot = Geometry.Parse("M3.5,-3.5 L0,0 3.5,3.5");
 
-        private Brush _geometryBrush;
-        private Brush _geometryPenBrush;
-        private Pen _geometryPen;
-        private Brush _hitGeometryBrush;
-        private Brush _hitGeometryPenBrush;
-        private Pen _hitGeometryPen;
-        private Brush _pointBrush;
-        private Pen _pointPen;
-        private Brush _hitPointBrush;
-        private Pen _hitPointPen;
+        private IDictionary<BasicStyle, BasicStyleCache> _cache;
+
+        private BasicStyle _geometryStyle;
+        private BasicStyle _hitGeometryStyle;
+        private BasicStyle _pointStyle;
+        private BasicStyle _hitPointStyle;
 
         public SpiroEditor Editor
         {
@@ -69,29 +65,39 @@ namespace SpiroNet.Wpf
 
         private void Initialize()
         {
-            _geometryBrush = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128));
-            _geometryBrush.Freeze();
-            _geometryPenBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
-            _geometryPenBrush.Freeze();
-            _geometryPen = new Pen(_geometryPenBrush, 2.0);
-            _geometryPen.Freeze();
+            _cache = new Dictionary<BasicStyle, BasicStyleCache>();
 
-            _hitGeometryBrush = new SolidColorBrush(Color.FromArgb(128, 128, 0, 0));
-            _hitGeometryBrush.Freeze();
-            _hitGeometryPenBrush = new SolidColorBrush(Color.FromArgb(255, 255, 0, 0));
-            _hitGeometryPenBrush.Freeze();
-            _hitGeometryPen = new Pen(_hitGeometryPenBrush, 2.0);
-            _hitGeometryPen.Freeze();
+            _geometryStyle = new BasicStyle(
+                new Argb(255, 0, 0, 0),
+                new Argb(128, 128, 128, 128),
+                2.0);
 
-            _pointBrush = new SolidColorBrush(Color.FromArgb(192, 0, 0, 255));
-            _pointBrush.Freeze();
-            _pointPen = new Pen(_pointBrush, 2.0);
-            _pointPen.Freeze();
+            _hitGeometryStyle = new BasicStyle(
+                new Argb(255, 255, 0, 0),
+                new Argb(128, 128, 0, 0),
+                2.0);
 
-            _hitPointBrush = new SolidColorBrush(Color.FromArgb(192, 255, 0, 0));
-            _hitPointBrush.Freeze();
-            _hitPointPen = new Pen(_hitPointBrush, 2.0);
-            _hitPointPen.Freeze();
+            _pointStyle = new BasicStyle(
+                new Argb(192, 0, 0, 255),
+                new Argb(192, 0, 0, 255),
+                2.0);
+
+            _hitPointStyle = new BasicStyle(
+                new Argb(192, 255, 0, 0),
+                new Argb(192, 255, 0, 0),
+                2.0);
+        }
+
+        private BasicStyleCache FromCache(BasicStyle style)
+        {
+            BasicStyleCache value;
+            if (_cache.TryGetValue(style, out value))
+            {
+                return value;
+            }
+            value = new BasicStyleCache(style);
+            _cache.Add(style, value);
+            return value;
         }
 
         protected override void OnRender(DrawingContext dc)
@@ -132,16 +138,18 @@ namespace SpiroNet.Wpf
                 var geometry = Geometry.Parse(data);
                 if (shape == hitShape && hitShapePointIndex == -1)
                 {
+                    var cache = FromCache(_hitGeometryStyle);
                     dc.DrawGeometry(
-                        shape.IsFilled ? _hitGeometryBrush : null,
-                        shape.IsStroked ? _hitGeometryPen : null,
+                        shape.IsFilled ? cache.FillBrush : null,
+                        shape.IsStroked ? cache.StrokePen : null,
                         geometry);
                 }
                 else
                 {
+                    var cache = FromCache(_geometryStyle);
                     dc.DrawGeometry(
-                        shape.IsFilled ? _geometryBrush : null,
-                        shape.IsStroked ? _geometryPen : null,
+                        shape.IsFilled ? cache.FillBrush : null,
+                        shape.IsStroked ? cache.StrokePen : null,
                         geometry);
                 }
             }
@@ -151,6 +159,9 @@ namespace SpiroNet.Wpf
         {
             if (shape == null || Editor == null)
                 return;
+
+            var pointCache = FromCache(_pointStyle);
+            var hitPointCache = FromCache(_hitPointStyle);
 
             var hitShape = Editor.State.HitShape;
             var hitShapePointIndex = Editor.State.HitShapePointIndex;
@@ -162,8 +173,8 @@ namespace SpiroNet.Wpf
                 for (int i = 0; i < knots.Count; i++)
                 {
                     var knot = knots[i];
-                    var brush = shape == hitShape && i == hitShapePointIndex ? _hitPointBrush : _pointBrush;
-                    var pen = shape == hitShape && i == hitShapePointIndex ? _hitPointPen : _pointPen;
+                    var brush = shape == hitShape && i == hitShapePointIndex ? hitPointCache.FillBrush : pointCache.FillBrush;
+                    var pen = shape == hitShape && i == hitShapePointIndex ? hitPointCache.StrokePen : pointCache.StrokePen;
                     DrawKnot(dc, brush, pen, knot);
                 }
             }
@@ -172,8 +183,8 @@ namespace SpiroNet.Wpf
                 for (int i = 0; i < shape.Points.Count; i++)
                 {
                     var point = shape.Points[i];
-                    var brush = shape == hitShape && i == hitShapePointIndex ? _hitPointBrush : _pointBrush;
-                    var pen = shape == hitShape && i == hitShapePointIndex ? _hitPointPen : _pointPen;
+                    var brush = shape == hitShape && i == hitShapePointIndex ? hitPointCache.FillBrush : pointCache.FillBrush;
+                    var pen = shape == hitShape && i == hitShapePointIndex ? hitPointCache.StrokePen : pointCache.StrokePen;
                     DrawPoint(dc, brush, pen, point);
                 }
             }
