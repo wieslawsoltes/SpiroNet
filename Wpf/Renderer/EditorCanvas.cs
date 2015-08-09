@@ -178,28 +178,44 @@ namespace SpiroNet.Wpf
 
         private void DrawSpiroShapes(DrawingContext dc)
         {
+            var state = SpiroEditor.State;
+
             foreach (var shape in SpiroEditor.Drawing.Shapes)
             {
-                DrawSpiroShape(dc, shape);
+                if (!state.HitSetShapes.Contains(shape))
+                {
+                    DrawSpiroShape(dc, shape, false);
+
+                    if (SpiroEditor.State.DisplayKnots)
+                    {
+                        DrawSpiroKnots(dc, shape, false, -1);
+                    }
+                }
+            }
+
+            for (int i = 0; i < state.HitListShapes.Count; i++)
+            {
+                var shape = state.HitListShapes[i];
+                var index = state.HitListPoints[i];
+                bool isSelected = index == -1;
+
+                DrawSpiroShape(dc, shape, isSelected);
 
                 if (SpiroEditor.State.DisplayKnots)
                 {
-                    DrawSpiroKnots(dc, shape);
+                    DrawSpiroKnots(dc, shape, true, index);
                 }
             }
         }
 
-        private void DrawSpiroShape(DrawingContext dc, SpiroShape shape)
+        private void DrawSpiroShape(DrawingContext dc, SpiroShape shape, bool isSelected)
         {
-            var hitShape = SpiroEditor.State.HitShape;
-            var hitShapePointIndex = SpiroEditor.State.HitShapePointIndex;
-
             string data;
             var result = SpiroEditor.Data.TryGetValue(shape, out data);
             if (result && !string.IsNullOrEmpty(data))
             {
                 var geometry = Geometry.Parse(data);
-                if (shape == hitShape && hitShapePointIndex == -1)
+                if (isSelected)
                 {
                     var cache = FromCache(_hitGeometryStyle);
                     dc.DrawGeometry(
@@ -218,13 +234,10 @@ namespace SpiroNet.Wpf
             }
         }
 
-        private void DrawSpiroKnots(DrawingContext dc, SpiroShape shape)
+        private void DrawSpiroKnots(DrawingContext dc, SpiroShape shape, bool shapeIsSelected, int index)
         {
             var pointCache = FromCache(_pointStyle);
             var hitPointCache = FromCache(_hitPointStyle);
-
-            var hitShape = SpiroEditor.State.HitShape;
-            var hitShapePointIndex = SpiroEditor.State.HitShapePointIndex;
 
             IList<SpiroKnot> knots;
             SpiroEditor.Knots.TryGetValue(shape, out knots);
@@ -233,8 +246,8 @@ namespace SpiroNet.Wpf
                 for (int i = 0; i < knots.Count; i++)
                 {
                     var knot = knots[i];
-                    var brush = shape == hitShape && i == hitShapePointIndex ? hitPointCache.FillBrush : pointCache.FillBrush;
-                    var pen = shape == hitShape && i == hitShapePointIndex ? hitPointCache.StrokePen : pointCache.StrokePen;
+                    var brush = shapeIsSelected && i == index ? hitPointCache.FillBrush : pointCache.FillBrush;
+                    var pen = shapeIsSelected && i == index ? hitPointCache.StrokePen : pointCache.StrokePen;
                     DrawSpiroKnot(dc, brush, pen, knot);
                 }
             }
@@ -243,8 +256,8 @@ namespace SpiroNet.Wpf
                 for (int i = 0; i < shape.Points.Count; i++)
                 {
                     var point = shape.Points[i];
-                    var brush = shape == hitShape && i == hitShapePointIndex ? hitPointCache.FillBrush : pointCache.FillBrush;
-                    var pen = shape == hitShape && i == hitShapePointIndex ? hitPointCache.StrokePen : pointCache.StrokePen;
+                    var brush = shapeIsSelected && i == index ? hitPointCache.FillBrush : pointCache.FillBrush;
+                    var pen = shapeIsSelected && i == index ? hitPointCache.StrokePen : pointCache.StrokePen;
                     DrawSpiroPoint(dc, brush, pen, point);
                 }
             }

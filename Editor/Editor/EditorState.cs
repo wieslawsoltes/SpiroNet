@@ -19,6 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 */
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SpiroNet.Editor
 {
@@ -37,8 +39,10 @@ namespace SpiroNet.Editor
         private SpiroShape _shape;
         private double _hitTreshold;
         private double _hitTresholdSquared;
-        private SpiroShape _hitShape;
-        private int _hitShapePointIndex;
+        private ICollection<SpiroShape> _hitSetShapes;
+        private ICollection<int> _hitSetPoints;
+        private IList<SpiroShape> _hitListShapes;
+        private IList<int> _hitListPoints;
         private bool _isStroked;
         private bool _isFilled;
         private bool _isClosed;
@@ -68,8 +72,10 @@ namespace SpiroNet.Editor
             _shape = null;
             _hitTreshold = 7;
             _hitTresholdSquared = 49;
-            _hitShape = null;
-            _hitShapePointIndex = -1;
+            _hitSetShapes = new HashSet<SpiroShape>();
+            _hitSetPoints = new HashSet<int>();
+            _hitListShapes = new ObservableCollection<SpiroShape>();
+            _hitListPoints = new ObservableCollection<int>();
             _isStroked = true;
             _isFilled = false;
             _isClosed = true;
@@ -144,16 +150,28 @@ namespace SpiroNet.Editor
             set { Update(ref _hitTresholdSquared, value); }
         }
 
-        public SpiroShape HitShape
+        public ICollection<SpiroShape> HitSetShapes
         {
-            get { return _hitShape; }
-            set { Update(ref _hitShape, value); }
+            get { return _hitSetShapes; }
+            set { Update(ref _hitSetShapes, value); }
         }
 
-        public int HitShapePointIndex
+        public ICollection<int> HitSetPoints
         {
-            get { return _hitShapePointIndex; }
-            set { Update(ref _hitShapePointIndex, value); }
+            get { return _hitSetPoints; }
+            set { Update(ref _hitSetPoints, value); }
+        }
+
+        public IList<SpiroShape> HitListShapes
+        {
+            get { return _hitListShapes; }
+            set { Update(ref _hitListShapes, value); }
+        }
+
+        public IList<int> HitListPoints
+        {
+            get { return _hitListPoints; }
+            set { Update(ref _hitListPoints, value); }
         }
 
         public bool IsStroked
