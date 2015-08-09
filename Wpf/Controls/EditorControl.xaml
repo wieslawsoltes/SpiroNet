@@ -48,9 +48,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="180"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
         <Menu Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Background="{x:Null}">
             <MenuItem Header="_File">
@@ -65,50 +65,113 @@
                 <MenuItem Command="{Binding Commands.ExitCommand}" Header="E_xit" InputGestureText="Alt+F4"/>
             </MenuItem>
         </Menu>
-        <Grid Width="160"
-              Grid.Column="0"
-              Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <ListBox x:Name="shapesListBox"
-                     ItemsSource="{Binding Drawing.Shapes}"
-                     VerticalAlignment="Stretch" 
-                     HorizontalContentAlignment="Stretch"
-                     BorderBrush="{x:Null}"
-                     BorderThickness="0"
-                     Margin="4,4,4,2"
-                     Grid.Row="0">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="Shape"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <TextBox x:Name="dataTextBox"
-                     AcceptsReturn="True"
-                     AcceptsTab="True"
-                     IsReadOnly="True"
-                     BorderBrush="{x:Null}"
-                     BorderThickness="0"
-                     Height="240"
-                     VerticalScrollBarVisibility="Auto"
-                     HorizontalScrollBarVisibility="Auto"
-                     Margin="4,2,4,4"
-                     Grid.Row="1">
-                <TextBox.Text>
-                    <MultiBinding Converter="{StaticResource ShapeToDataConverterKey}" FallbackValue="{x:Null}">
-                        <Binding ElementName="shapesListBox" Path="SelectedItem" FallbackValue="{x:Null}"/>
-                        <Binding Path="Data" FallbackValue="{x:Null}"/>
-                    </MultiBinding>
-                </TextBox.Text>
-            </TextBox>
-        </Grid>
+        <TabControl Grid.Column="0" Grid.Row="1" Margin="4,4,4,4">
+            <TabItem Header="Shapes">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ListBox x:Name="shapesListBox"
+                             ItemsSource="{Binding Drawing.Shapes}"
+                             VerticalAlignment="Stretch" 
+                             HorizontalContentAlignment="Stretch"
+                             Margin="4,4,4,4"
+                             Grid.Row="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="Shape"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <TextBox x:Name="dataTextBox"
+                             AcceptsReturn="True"
+                             AcceptsTab="True"
+                             IsReadOnly="True"
+                             Height="240"
+                             VerticalScrollBarVisibility="Auto"
+                             HorizontalScrollBarVisibility="Auto"
+                             Margin="4,4,4,4"
+                             Grid.Row="1">
+                        <TextBox.Text>
+                            <MultiBinding Converter="{StaticResource ShapeToDataConverterKey}" FallbackValue="{x:Null}">
+                                <Binding ElementName="shapesListBox" Path="SelectedItem" FallbackValue="{x:Null}"/>
+                                <Binding Path="Data" FallbackValue="{x:Null}"/>
+                            </MultiBinding>
+                        </TextBox.Text>
+                    </TextBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Guides">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ListBox x:Name="guidesListBox"
+                             ItemsSource="{Binding Drawing.Guides}"
+                             VerticalAlignment="Stretch" 
+                             HorizontalContentAlignment="Stretch"
+                             Margin="4,4,4,4">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="Guide"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Measure">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <StackPanel Margin="4">
+                        <TextBlock Text="Point0:" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBox Text="{Binding Measure.Point0, Mode=OneWay}" 
+                                 TextAlignment="Center"
+                                 IsReadOnly="True"
+                                 BorderBrush="{x:Null}"
+                                 BorderThickness="0"
+                                 Margin="4,0,4,0">
+                        </TextBox>
+                        <TextBlock Text="Point1:" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBox Text="{Binding Measure.Point1, Mode=OneWay}" 
+                                 TextAlignment="Center"
+                                 IsReadOnly="True"
+                                 BorderBrush="{x:Null}"
+                                 BorderThickness="0"
+                                 Margin="4,0,4,0">
+                        </TextBox>
+                        <TextBlock Text="Distance:" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBox Text="{Binding Measure.Distance, Mode=OneWay}" 
+                                 TextAlignment="Center"
+                                 IsReadOnly="True"
+                                 BorderBrush="{x:Null}"
+                                 BorderThickness="0"
+                                 Margin="4,0,4,0">
+                        </TextBox>
+                        <TextBlock Text="Angle:" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBox Text="{Binding Measure.Angle, Mode=OneWay}" 
+                                 TextAlignment="Center"
+                                 IsReadOnly="True"
+                                 BorderBrush="{x:Null}"
+                                 BorderThickness="0"
+                                 Margin="4,0,4,0">
+                        </TextBox>
+                        <TextBlock Text="SnapResult:" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBox Text="{Binding Measure.SnapResult, Mode=OneWay}" 
+                                 TextAlignment="Center"
+                                 IsReadOnly="True"
+                                 BorderBrush="{x:Null}"
+                                 BorderThickness="0"
+                                 Margin="4,0,4,0">
+                        </TextBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
         <ScrollViewer VerticalScrollBarVisibility="Auto" 
                       HorizontalScrollBarVisibility="Auto"
                       Grid.Column="1"
-                      Grid.Row="1">
+                      Grid.Row="1"
+                      Margin="0,4,0,4">
             <local:EditorCanvas x:Name="canvas" 
                                SpiroEditor="{Binding}"
                                Width="{Binding Drawing.Width}" 
@@ -132,7 +195,7 @@
                 </local:EditorCanvas.InputBindings>
             </local:EditorCanvas>
         </ScrollViewer>
-        <TabControl Grid.Column="2" Grid.Row="1" Width="200" Margin="4,0,4,4">
+        <TabControl Grid.Column="2" Grid.Row="1" Margin="4,4,4,4">
             <TabItem Header="State">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                     <StackPanel>
@@ -419,7 +482,7 @@
                              IsReadOnly="False"
                              VerticalScrollBarVisibility="Auto"
                              HorizontalScrollBarVisibility="Auto"
-                             Margin="4,4,4,0"
+                             Margin="4,4,4,4"
                              Grid.Row="0">
                     </TextBox>
                     <Button Content="Run" Command="{Binding Commands.ExecuteScriptCommand}" 
@@ -443,15 +506,17 @@
                         <TextBlock Text="Mouse Right" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="- Finish Shape" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="- Insert Point" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBlock Text="- Reset Measure" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="Mouse Middle:" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="- Remove Shape" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="- Remove Point" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="Guide Tool" FontWeight="Bold" TextAlignment="Center" Margin="4,0,4,0"/>
                         <TextBlock Text="Mouse Left:" TextAlignment="Left" Margin="4,0,4,0"/>
-                        <TextBlock Text="- Begin Line" TextAlignment="Left" Margin="4,0,4,0"/>
-                        <TextBlock Text="- Finish Line" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBlock Text="- Begin Guide" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBlock Text="- Finish Guide" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="Mouse Right" TextAlignment="Left" Margin="4,0,4,0"/>
-                        <TextBlock Text="- Cancel Shape" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBlock Text="- Cancel Guide" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBlock Text="- Reset Measure" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="Mouse Middle:" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="- Remove Guide" TextAlignment="Left" Margin="4,0,4,0"/>
                     </StackPanel>

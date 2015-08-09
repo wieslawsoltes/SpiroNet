@@ -46,15 +46,12 @@ namespace SpiroNet.Editor
         private SpiroPointType _pointType;
 
         private GuidePoint _guidePosition;
-        private GuidePoint _point0;
-        private GuidePoint _point1;
         private bool _isCaptured;
         private double _snapTreshold;
         private GuideSnapMode _snapMode;
         private double _snapPointRadius;
         private GuidePoint _snapPoint;
         private bool _haveSnapPoint;
-        private GuideSnapMode _snapResult;
 
         public EditorState()
         {
@@ -195,18 +192,6 @@ namespace SpiroNet.Editor
             set { Update(ref _guidePosition, value); }
         }
 
-        public GuidePoint Point0
-        {
-            get { return _point0; }
-            set { Update(ref _point0, value); }
-        }
-
-        public GuidePoint Point1
-        {
-            get { return _point1; }
-            set { Update(ref _point1, value); }
-        }
-
         public bool IsCaptured
         {
             get { return _isCaptured; }
@@ -241,12 +226,6 @@ namespace SpiroNet.Editor
         {
             get { return _haveSnapPoint; }
             set { Update(ref _haveSnapPoint, value); }
-        }
-
-        public GuideSnapMode SnapResult
-        {
-            get { return _snapResult; }
-            set { Update(ref _snapResult, value); }
         }
     }
 }

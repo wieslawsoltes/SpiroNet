@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contexts\PsBezierContext.cs" />
+    <Compile Include="Editor\EditorMeasure.cs" />
     <Compile Include="Editor\SpiroEditor.cs" />
     <Compile Include="Editor\EditorTool.cs" />
     <Compile Include="Editor\SpiroKnot.cs" />

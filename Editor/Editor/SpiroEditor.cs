@@ -30,6 +30,7 @@ namespace SpiroNet.Editor
     public class SpiroEditor : ObservableObject
     {
         private EditorState _state = null;
+        private EditorMeasure _measure;
         private EditorCommands _commands = null;
         private Action _invalidate = null;
         private Action _capture = null;
@@ -44,6 +45,12 @@ namespace SpiroNet.Editor
         {
             get { return _state; }
             set { Update(ref _state, value); }
+        }
+
+        public EditorMeasure Measure
+        {
+            get { return _measure; }
+            set { Update(ref _measure, value); }
         }
 
         public EditorCommands Commands
@@ -632,12 +639,12 @@ namespace SpiroNet.Editor
                 _drawing.Guides,
                 _state.SnapMode,
                 _state.SnapTreshold,
-                _state.Point1,
+                _measure.Point1,
                 out snapPoint,
                 out snapResult);
 
             _state.SnapPoint = snapPoint;
-            _state.SnapResult = snapResult;
+            _measure.SnapResult = snapResult;
         }
 
         private bool HitTestForGuideLine(IList<GuideLine> guides, double x, double y, double treshold, out GuideLine hitGuide)
@@ -675,33 +682,33 @@ namespace SpiroNet.Editor
 
             if (_state.IsCaptured)
             {
-                _state.Point1 = new GuidePoint(sx, sy);
+                _measure.Point1 = new GuidePoint(sx, sy);
 
                 TryToSnapToGuideLine();
 
                 if (_state.HaveSnapPoint)
                 {
                     _state.GuidePosition = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-                    _state.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+                    _measure.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
                 }
 
                 _state.IsCaptured = false;
                 _release();
-                _drawing.Guides.Add(new GuideLine(_state.Point0, _state.Point1));
+                _drawing.Guides.Add(new GuideLine(_measure.Point0, _measure.Point1));
                 _invalidate();
             }
             else
             {
-                _state.Point0 = new GuidePoint(sx, sy);
-                _state.Point1 = new GuidePoint(sx, sy);
+                _measure.Point0 = new GuidePoint(sx, sy);
+                _measure.Point1 = new GuidePoint(sx, sy);
 
                 TryToSnapToGuideLine();
 
                 if (_state.HaveSnapPoint)
                 {
                     _state.GuidePosition = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-                    _state.Point0 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-                    _state.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+                    _measure.Point0 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+                    _measure.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
                 }
 
                 _state.IsCaptured = true;
@@ -724,6 +731,15 @@ namespace SpiroNet.Editor
 
         public void GuideRightDown(double x, double y)
         {
+            double sx = _state.EnableSnap && _state.SnapX != 0 ? Snap(x, _state.SnapX) : x;
+            double sy = _state.EnableSnap && _state.SnapY != 0 ? Snap(y, _state.SnapY) : y;
+
+            _measure.Point0 = new GuidePoint(sx, sy);
+            _measure.Point1 = new GuidePoint(sx, sy);
+            _measure.Distance = 0.0;
+            _measure.Angle = 0.0;
+            _measure.SnapResult = GuideSnapMode.None;
+
             _state.IsCaptured = false;
             _release();
             _invalidate();
@@ -735,25 +751,19 @@ namespace SpiroNet.Editor
             double sy = _state.EnableSnap && _state.SnapY != 0 ? Snap(y, _state.SnapY) : y;
 
             _state.GuidePosition = new GuidePoint(sx, sy);
-            _state.Point1 = new GuidePoint(sx, sy);
+            _measure.Point1 = new GuidePoint(sx, sy);
 
             TryToSnapToGuideLine();
 
             if (_state.HaveSnapPoint)
             {
                 _state.GuidePosition = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-                _state.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+                _measure.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
             }
-#if DEBUG
-            double distance = GuideHelpers.Distance(_state.Point0, _state.Point1);
-            double angle = GuideHelpers.LineSegmentAngle(_state.Point0, _state.Point1);
-            Debug.Print("X: {0} Y: {1} D: {2} A: {3}, S: {4}",
-                _state.Point1.X,
-                _state.Point1.Y,
-                distance,
-                angle,
-                _state.SnapResult);
-#endif
+
+            _measure.Distance = GuideHelpers.Distance(_measure.Point0, _measure.Point1);
+            _measure.Angle = GuideHelpers.LineSegmentAngle(_measure.Point0, _measure.Point1);
+
             _invalidate();
         }
 
@@ -765,18 +775,30 @@ namespace SpiroNet.Editor
             if (_state.EnableSnap)
             {
                 _state.GuidePosition = new GuidePoint(sx, sy);
-                _state.Point1 = new GuidePoint(x, y);
+
+                if (_state.Shape == null)
+                    _measure.Point0 = new GuidePoint(x, y);
+
+                _measure.Point1 = new GuidePoint(x, y);
 
                 TryToSnapToGuideLine();
 
                 if (_state.HaveSnapPoint)
                 {
                     _state.GuidePosition = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-                    _state.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+                    _measure.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
 
                     sx = _state.SnapPoint.X;
                     sy = _state.SnapPoint.Y;
                 }
+
+                if (_state.Shape == null)
+                    _measure.Point0 = new GuidePoint(sx, sy);
+
+                _measure.Point1 = new GuidePoint(sx, sy);
+
+                _measure.Distance = GuideHelpers.Distance(_measure.Point0, _measure.Point1);
+                _measure.Angle = GuideHelpers.LineSegmentAngle(_measure.Point0, _measure.Point1);
             }
 
             _startX = sx;
@@ -842,18 +864,11 @@ namespace SpiroNet.Editor
 
             if (_state.EnableSnap)
             {
-                _state.Point1 = new GuidePoint(x, y);
-
-                TryToSnapToGuideLine();
-
-                if (_state.HaveSnapPoint)
-                {
-                    _state.GuidePosition = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-                    _state.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-
-                    sx = _state.SnapPoint.X;
-                    sy = _state.SnapPoint.Y;
-                }
+                _measure.Point0 = new GuidePoint(sx, sy);
+                _measure.Point1 = new GuidePoint(sx, sy);
+                _measure.Distance = 0.0;
+                _measure.Angle = 0.0;
+                _measure.SnapResult = GuideSnapMode.None;
             }
 
             if (_state.Shape != null)
@@ -888,18 +903,23 @@ namespace SpiroNet.Editor
             if (_state.EnableSnap)
             {
                 _state.GuidePosition = new GuidePoint(sx, sy);
-                _state.Point1 = new GuidePoint(x, y);
+                _measure.Point1 = new GuidePoint(x, y);
 
                 TryToSnapToGuideLine();
 
                 if (_state.HaveSnapPoint)
                 {
                     _state.GuidePosition = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-                    _state.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+                    _measure.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
 
                     sx = _state.SnapPoint.X;
                     sy = _state.SnapPoint.Y;
                 }
+
+                _measure.Point1 = new GuidePoint(sx, sy);
+
+                _measure.Distance = GuideHelpers.Distance(_measure.Point0, _measure.Point1);
+                _measure.Angle = GuideHelpers.LineSegmentAngle(_measure.Point0, _measure.Point1);
             }
 
             if (_state.Shape != null)
@@ -975,6 +995,10 @@ namespace SpiroNet.Editor
                         RunSpiro(_state.HitShape);
                         _invalidate();
                     }
+                }
+                else if (_state.Mode == EditorMode.Selected)
+                {
+                    _invalidate();
                 }
             }
         }

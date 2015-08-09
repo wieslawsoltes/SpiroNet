@@ -50,6 +50,7 @@ namespace SpiroNet.Wpf
             _editor = new SpiroEditor()
             {
                 State = new EditorState(),
+                Measure = new EditorMeasure(),
                 Commands = new EditorCommands(),
                 Invalidate = () => canvas.InvalidateVisual(),
                 Capture = () => canvas.CaptureMouse(),
