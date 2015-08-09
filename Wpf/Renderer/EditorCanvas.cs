@@ -57,12 +57,7 @@ namespace SpiroNet.Wpf
             set { SetValue(SpiroEditorProperty, value); }
         }
 
-        public static readonly DependencyProperty SpiroEditorProperty =
-            DependencyProperty.Register(
-                "SpiroEditor",
-                typeof(SpiroEditor),
-                typeof(EditorCanvas),
-                new PropertyMetadata(null));
+        public static readonly DependencyProperty SpiroEditorProperty = DependencyProperty.Register("SpiroEditor", typeof(SpiroEditor), typeof(EditorCanvas), new PropertyMetadata(null));
 
         public EditorCanvas()
         {
@@ -97,8 +92,8 @@ namespace SpiroNet.Wpf
                 new Argb(255, 0, 255, 255),
                 1.0);
             _snapGuideStyle = new BasicStyle(
-                new Argb(192, 0, 255, 255),
-                new Argb(192, 0, 255, 255),
+                new Argb(255, 255, 255, 0),
+                new Argb(255, 255, 255, 0),
                 1.0);
             _snapPointStyle = new BasicStyle(
                 new Argb(255, 255, 255, 0),
@@ -169,8 +164,8 @@ namespace SpiroNet.Wpf
                         DrawGuideLine(
                             dc,
                             FromCache(_newLineStyle),
-                            SpiroEditor.State.Point0,
-                            SpiroEditor.State.Point1);
+                            SpiroEditor.Measure.Point0,
+                            SpiroEditor.Measure.Point1);
                     }
                 }
 
