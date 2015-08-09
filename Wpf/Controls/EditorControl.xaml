@@ -452,6 +452,8 @@
                         <TextBlock Text="- Finish Line" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="Mouse Right" TextAlignment="Left" Margin="4,0,4,0"/>
                         <TextBlock Text="- Cancel Shape" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBlock Text="Mouse Middle:" TextAlignment="Left" Margin="4,0,4,0"/>
+                        <TextBlock Text="- Remove Guide" TextAlignment="Left" Margin="4,0,4,0"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
