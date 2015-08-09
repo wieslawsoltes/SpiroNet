@@ -32,5 +32,10 @@ namespace SpiroNet.Editor
             X = x;
             Y = y;
         }
+
+        public override string ToString()
+        {
+            return string.Concat(X, " ", Y);
+        }
     }
 }
