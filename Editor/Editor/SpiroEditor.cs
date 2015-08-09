@@ -111,9 +111,12 @@ namespace SpiroNet.Editor
                 _invalidate();
             }
 
-            if (_state.HitShape != null && _state.HitShapePointIndex == -1)
+            if (_state.HitListShapes.Count > 0)
             {
-                _state.HitShape.IsStroked = _state.IsStroked;
+                foreach (var shape in _state.HitListShapes)
+                {
+                    shape.IsStroked = _state.IsStroked;
+                }
                 _invalidate();
             }
         }
@@ -128,9 +131,12 @@ namespace SpiroNet.Editor
                 _invalidate();
             }
 
-            if (_state.HitShape != null && _state.HitShapePointIndex == -1)
+            if (_state.HitListShapes.Count > 0)
             {
-                _state.HitShape.IsFilled = _state.IsFilled;
+                foreach (var shape in _state.HitListShapes)
+                {
+                    shape.IsFilled = _state.IsFilled;
+                }
                 _invalidate();
             }
         }
@@ -146,10 +152,13 @@ namespace SpiroNet.Editor
                 _invalidate();
             }
 
-            if (_state.HitShape != null && _state.HitShapePointIndex == -1)
+            if (_state.HitListShapes.Count > 0)
             {
-                _state.HitShape.IsClosed = _state.IsClosed;
-                RunSpiro(_state.HitShape);
+                foreach (var shape in _state.HitListShapes)
+                {
+                    shape.IsClosed = _state.IsClosed;
+                    RunSpiro(shape);
+                }
                 _invalidate();
             }
         }
@@ -165,10 +174,13 @@ namespace SpiroNet.Editor
                 _invalidate();
             }
 
-            if (_state.HitShape != null && _state.HitShapePointIndex == -1)
+            if (_state.HitListShapes.Count > 0)
             {
-                _state.HitShape.IsTagged = _state.IsTagged;
-                RunSpiro(_state.HitShape);
+                foreach (var shape in _state.HitListShapes)
+                {
+                    shape.IsTagged = _state.IsTagged;
+                    RunSpiro(shape);
+                }
                 _invalidate();
             }
         }
@@ -186,11 +198,298 @@ namespace SpiroNet.Editor
             }
 
             // Change selected point type.
-            if (_state.HitShape != null && _state.HitShapePointIndex != -1)
+            if (_state.HitListShapes.Count > 0)
             {
-                SetPointType(_state.HitShape, _state.HitShapePointIndex, type);
-                RunSpiro(_state.HitShape);
+                for (int i = 0; i < _state.HitListShapes.Count; i++)
+                {
+                    if (_state.HitListPoints[i] != -1)
+                    {
+                        SetPointType(_state.HitListShapes[i], _state.HitListPoints[i], type);
+                        RunSpiro(_state.HitListShapes[i]);
+                    }
+                }
             }
+
+            _invalidate();
+        }
+
+        public static bool TryToSnapToGuideLine(IList<GuideLine> guides, GuideSnapMode mode, double treshold, GuidePoint point, out GuidePoint snap, out GuideSnapMode result)
+        {
+            snap = default(GuidePoint);
+            result = default(GuideSnapMode);
+
+            if (guides.Count == 0 || mode == GuideSnapMode.None)
+            {
+                return false;
+            }
+
+            if (mode.HasFlag(GuideSnapMode.Point))
+            {
+                foreach (var guide in guides)
+                {
+                    var distance0 = GuideHelpers.Distance(guide.Point0, point);
+                    if (distance0 < treshold)
+                    {
+                        snap = new GuidePoint(guide.Point0.X, guide.Point0.Y);
+                        result = GuideSnapMode.Point;
+                        return true;
+                    }
+
+                    var distance1 = GuideHelpers.Distance(guide.Point1, point);
+                    if (distance1 < treshold)
+                    {
+                        snap = new GuidePoint(guide.Point1.X, guide.Point1.Y);
+                        result = GuideSnapMode.Point;
+                        return true;
+                    }
+                }
+            }
+
+            if (mode.HasFlag(GuideSnapMode.Middle))
+            {
+                foreach (var guide in guides)
+                {
+                    var middle = GuideHelpers.Middle(guide.Point0, guide.Point1);
+                    var distance = GuideHelpers.Distance(middle, point);
+                    if (distance < treshold)
+                    {
+                        snap = middle;
+                        result = GuideSnapMode.Middle;
+                        return true;
+                    }
+                }
+            }
+
+            if (mode.HasFlag(GuideSnapMode.Nearest))
+            {
+                foreach (var guide in guides)
+                {
+                    var nearest = GuideHelpers.NearestPointOnLine(guide.Point0, guide.Point1, point);
+                    var distance = GuideHelpers.Distance(nearest, point);
+                    if (distance < treshold)
+                    {
+                        snap = nearest;
+                        result = GuideSnapMode.Nearest;
+                        return true;
+                    }
+                }
+            }
+
+            if (mode.HasFlag(GuideSnapMode.Intersection))
+            {
+                foreach (var guide0 in guides)
+                {
+                    foreach (var guide1 in guides)
+                    {
+                        if (guide0 == guide1)
+                            continue;
+
+                        GuidePoint intersection;
+                        if (GuideHelpers.LineLineIntersection(guide0.Point0, guide0.Point1, guide1.Point0, guide1.Point1, out intersection))
+                        {
+                            var distance = GuideHelpers.Distance(intersection, point);
+                            if (distance < treshold)
+                            {
+                                snap = intersection;
+                                result = GuideSnapMode.Intersection;
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            double horizontal = default(double);
+            double vertical = default(double);
+
+            if (mode.HasFlag(GuideSnapMode.Horizontal))
+            {
+                foreach (var guide in guides)
+                {
+                    if (point.Y >= guide.Point0.Y - treshold && point.Y <= guide.Point0.Y + treshold)
+                    {
+                        snap = new GuidePoint(point.X, guide.Point0.Y);
+                        result |= GuideSnapMode.Horizontal;
+                        horizontal = guide.Point0.Y;
+                        break;
+                    }
+
+                    if (point.Y >= guide.Point1.Y - treshold && point.Y <= guide.Point1.Y + treshold)
+                    {
+                        snap = new GuidePoint(point.X, guide.Point1.Y);
+                        result |= GuideSnapMode.Horizontal;
+                        horizontal = guide.Point1.Y;
+                        break;
+                    }
+                }
+            }
+
+            if (mode.HasFlag(GuideSnapMode.Vertical))
+            {
+                foreach (var guide in guides)
+                {
+                    if (point.X >= guide.Point0.X - treshold && point.X <= guide.Point0.X + treshold)
+                    {
+                        snap = new GuidePoint(guide.Point0.X, point.Y);
+                        result |= GuideSnapMode.Vertical;
+                        vertical = guide.Point0.X;
+                        break;
+                    }
+
+                    if (point.X >= guide.Point1.X - treshold && point.X <= guide.Point1.X + treshold)
+                    {
+                        snap = new GuidePoint(guide.Point1.X, point.Y);
+                        result |= GuideSnapMode.Vertical;
+                        vertical = guide.Point1.X;
+                        break;
+                    }
+                }
+            }
+
+            if (result.HasFlag(GuideSnapMode.Horizontal) || result.HasFlag(GuideSnapMode.Vertical))
+            {
+                snap = new GuidePoint(
+                    result.HasFlag(GuideSnapMode.Vertical) ? vertical : point.X,
+                    result.HasFlag(GuideSnapMode.Horizontal) ? horizontal : point.Y);
+                return true;
+            }
+
+            return false;
+        }
+
+        private void TryToSnapToGuideLine()
+        {
+            GuidePoint snapPoint;
+            GuideSnapMode snapResult;
+
+            _state.HaveSnapPoint = TryToSnapToGuideLine(
+                _drawing.Guides,
+                _state.SnapMode,
+                _state.SnapTreshold,
+                _measure.Point1,
+                out snapPoint,
+                out snapResult);
+
+            _state.SnapPoint = snapPoint;
+            _measure.SnapResult = snapResult;
+        }
+
+        private bool HitTestForGuideLine(IList<GuideLine> guides, double x, double y, double treshold, out GuideLine hitGuide)
+        {
+            var point = new GuidePoint(x, y);
+            foreach (var guide in _drawing.Guides)
+            {
+                var nearest = GuideHelpers.NearestPointOnLine(guide.Point0, guide.Point1, point);
+                var distance = GuideHelpers.Distance(nearest, point);
+                if (distance < treshold)
+                {
+                    hitGuide = guide;
+                    return true;
+                }
+            }
+
+            hitGuide = null;
+            return false;
+        }
+
+        private void DeleteGuide(double x, double y)
+        {
+            GuideLine hitGuide;
+            var result = HitTestForGuideLine(_drawing.Guides, x, y, _state.HitTreshold, out hitGuide);
+            if (result)
+            {
+                _drawing.Guides.Remove(hitGuide);
+            }
+        }
+
+        public void GuideLeftDown(double x, double y)
+        {
+            double sx = _state.EnableSnap && _state.SnapX != 0 ? Snap(x, _state.SnapX) : x;
+            double sy = _state.EnableSnap && _state.SnapY != 0 ? Snap(y, _state.SnapY) : y;
+
+            if (_state.IsCaptured)
+            {
+                _measure.Point1 = new GuidePoint(sx, sy);
+
+                TryToSnapToGuideLine();
+
+                if (_state.HaveSnapPoint)
+                {
+                    _state.GuidePosition = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+                    _measure.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+                }
+
+                _state.IsCaptured = false;
+                _release();
+                _drawing.Guides.Add(new GuideLine(_measure.Point0, _measure.Point1));
+                _invalidate();
+            }
+            else
+            {
+                _measure.Point0 = new GuidePoint(sx, sy);
+                _measure.Point1 = new GuidePoint(sx, sy);
+
+                TryToSnapToGuideLine();
+
+                if (_state.HaveSnapPoint)
+                {
+                    _state.GuidePosition = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+                    _measure.Point0 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+                    _measure.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+                }
+
+                _state.IsCaptured = true;
+                _capture();
+                _invalidate();
+            }
+        }
+
+        public void GuideMiddleDown(double x, double y)
+        {
+            if (!_state.IsCaptured
+                && _drawing != null
+                && _drawing.Guides != null
+                && _drawing.Guides.Count > 0)
+            {
+                DeleteGuide(x, y);
+                _invalidate();
+            }
+        }
+
+        public void GuideRightDown(double x, double y)
+        {
+            double sx = _state.EnableSnap && _state.SnapX != 0 ? Snap(x, _state.SnapX) : x;
+            double sy = _state.EnableSnap && _state.SnapY != 0 ? Snap(y, _state.SnapY) : y;
+
+            _measure.Point0 = new GuidePoint(sx, sy);
+            _measure.Point1 = new GuidePoint(sx, sy);
+            _measure.Distance = 0.0;
+            _measure.Angle = 0.0;
+            _measure.SnapResult = GuideSnapMode.None;
+
+            _state.IsCaptured = false;
+            _release();
+            _invalidate();
+        }
+
+        public void GuideMove(double x, double y)
+        {
+            double sx = _state.EnableSnap && _state.SnapX != 0 ? Snap(x, _state.SnapX) : x;
+            double sy = _state.EnableSnap && _state.SnapY != 0 ? Snap(y, _state.SnapY) : y;
+
+            _state.GuidePosition = new GuidePoint(sx, sy);
+            _measure.Point1 = new GuidePoint(sx, sy);
+
+            TryToSnapToGuideLine();
+
+            if (_state.HaveSnapPoint)
+            {
+                _state.GuidePosition = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+                _measure.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+            }
+
+            _measure.Distance = GuideHelpers.Distance(_measure.Point0, _measure.Point1);
+            _measure.Angle = GuideHelpers.LineSegmentAngle(_measure.Point0, _measure.Point1);
 
             _invalidate();
         }
@@ -435,17 +734,20 @@ namespace SpiroNet.Editor
 
         private void Select(SpiroShape hitShape, int hitShapePointIndex)
         {
-            // Select shape.
-            _state.HitShape = hitShape;
-            // Select point.
-            _state.HitShapePointIndex = hitShapePointIndex;
-            // Begin point move.
-            _state.Mode = EditorMode.Move;
+            if (!_state.HitSetShapes.Contains(hitShape))
+            {
+                // Select shape.
+                _state.HitSetShapes.Add(hitShape);
+                _state.HitListShapes.Add(hitShape);
+                // Select point.
+                _state.HitSetPoints.Add(hitShapePointIndex);
+                _state.HitListPoints.Add(hitShapePointIndex);
+            }
 
             // Update point type.
-            if (_state.HitShapePointIndex != -1)
+            if (hitShapePointIndex != -1)
             {
-                _state.PointType = _state.HitShape.Points[_state.HitShapePointIndex].Type;
+                _state.PointType = hitShape.Points[hitShapePointIndex].Type;
             }
 
             _invalidate();
@@ -453,22 +755,23 @@ namespace SpiroNet.Editor
 
         private void Select(SpiroShape hitShape)
         {
-            // Select shape.
-            _state.HitShape = hitShape;
-            // Deselect point.
-            _state.HitShapePointIndex = -1;
-            // Begin shape move.
-            _state.Mode = EditorMode.Move;
+            if (!_state.HitSetShapes.Contains(hitShape))
+            {
+                // Select shape.
+                _state.HitSetShapes.Add(hitShape);
+                _state.HitListShapes.Add(hitShape);
+                // Deselect point.
+                _state.HitSetPoints.Add(-1);
+                _state.HitListPoints.Add(-1);
+            }
 
             // Update shape info.
-            if (_state.HitShape != null)
+            if (hitShape != null)
             {
-                var shape = _state.HitShape;
-                _state.IsStroked = shape.IsStroked;
-                _state.IsFilled = shape.IsFilled;
-                _state.IsClosed = shape.IsClosed;
-                _state.IsTagged = shape.IsTagged;
-                RunSpiro(shape);
+                _state.IsStroked = hitShape.IsStroked;
+                _state.IsFilled = hitShape.IsFilled;
+                _state.IsClosed = hitShape.IsClosed;
+                _state.IsTagged = hitShape.IsTagged;
             }
 
             _invalidate();
@@ -477,292 +780,13 @@ namespace SpiroNet.Editor
         private void Deselect()
         {
             // Deselect shape.
-            _state.HitShape = null;
+            _state.HitSetShapes.Clear();
+            _state.HitListShapes.Clear();
             // Deselect point.
-            _state.HitShapePointIndex = -1;
+            _state.HitSetPoints.Clear();
+            _state.HitListPoints.Clear();
             // Begin edit.
             _state.Mode = EditorMode.Create;
-
-            _invalidate();
-        }
-
-        public static bool TryToSnapToGuideLine(IList<GuideLine> guides, GuideSnapMode mode, double treshold, GuidePoint point, out GuidePoint snap, out GuideSnapMode result)
-        {
-            snap = default(GuidePoint);
-            result = default(GuideSnapMode);
-
-            if (guides.Count == 0 || mode == GuideSnapMode.None)
-            {
-                return false;
-            }
-
-            if (mode.HasFlag(GuideSnapMode.Point))
-            {
-                foreach (var guide in guides)
-                {
-                    var distance0 = GuideHelpers.Distance(guide.Point0, point);
-                    if (distance0 < treshold)
-                    {
-                        snap = new GuidePoint(guide.Point0.X, guide.Point0.Y);
-                        result = GuideSnapMode.Point;
-                        return true;
-                    }
-
-                    var distance1 = GuideHelpers.Distance(guide.Point1, point);
-                    if (distance1 < treshold)
-                    {
-                        snap = new GuidePoint(guide.Point1.X, guide.Point1.Y);
-                        result = GuideSnapMode.Point;
-                        return true;
-                    }
-                }
-            }
-
-            if (mode.HasFlag(GuideSnapMode.Middle))
-            {
-                foreach (var guide in guides)
-                {
-                    var middle = GuideHelpers.Middle(guide.Point0, guide.Point1);
-                    var distance = GuideHelpers.Distance(middle, point);
-                    if (distance < treshold)
-                    {
-                        snap = middle;
-                        result = GuideSnapMode.Middle;
-                        return true;
-                    }
-                }
-            }
-
-            if (mode.HasFlag(GuideSnapMode.Nearest))
-            {
-                foreach (var guide in guides)
-                {
-                    var nearest = GuideHelpers.NearestPointOnLine(guide.Point0, guide.Point1, point);
-                    var distance = GuideHelpers.Distance(nearest, point);
-                    if (distance < treshold)
-                    {
-                        snap = nearest;
-                        result = GuideSnapMode.Nearest;
-                        return true;
-                    }
-                }
-            }
-
-            if (mode.HasFlag(GuideSnapMode.Intersection))
-            {
-                foreach (var guide0 in guides)
-                {
-                    foreach (var guide1 in guides)
-                    {
-                        if (guide0 == guide1)
-                            continue;
-
-                        GuidePoint intersection;
-                        if (GuideHelpers.LineLineIntersection(guide0.Point0, guide0.Point1, guide1.Point0, guide1.Point1, out intersection))
-                        {
-                            var distance = GuideHelpers.Distance(intersection, point);
-                            if (distance < treshold)
-                            {
-                                snap = intersection;
-                                result = GuideSnapMode.Intersection;
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-
-            double horizontal = default(double);
-            double vertical = default(double);
-
-            if (mode.HasFlag(GuideSnapMode.Horizontal))
-            {
-                foreach (var guide in guides)
-                {
-                    if (point.Y >= guide.Point0.Y - treshold && point.Y <= guide.Point0.Y + treshold)
-                    {
-                        snap = new GuidePoint(point.X, guide.Point0.Y);
-                        result |= GuideSnapMode.Horizontal;
-                        horizontal = guide.Point0.Y;
-                        break;
-                    }
-
-                    if (point.Y >= guide.Point1.Y - treshold && point.Y <= guide.Point1.Y + treshold)
-                    {
-                        snap = new GuidePoint(point.X, guide.Point1.Y);
-                        result |= GuideSnapMode.Horizontal;
-                        horizontal = guide.Point1.Y;
-                        break;
-                    }
-                }
-            }
-
-            if (mode.HasFlag(GuideSnapMode.Vertical))
-            {
-                foreach (var guide in guides)
-                {
-                    if (point.X >= guide.Point0.X - treshold && point.X <= guide.Point0.X + treshold)
-                    {
-                        snap = new GuidePoint(guide.Point0.X, point.Y);
-                        result |= GuideSnapMode.Vertical;
-                        vertical = guide.Point0.X;
-                        break;
-                    }
-
-                    if (point.X >= guide.Point1.X - treshold && point.X <= guide.Point1.X + treshold)
-                    {
-                        snap = new GuidePoint(guide.Point1.X, point.Y);
-                        result |= GuideSnapMode.Vertical;
-                        vertical = guide.Point1.X;
-                        break;
-                    }
-                }
-            }
-
-            if (result.HasFlag(GuideSnapMode.Horizontal) || result.HasFlag(GuideSnapMode.Vertical))
-            {
-                snap = new GuidePoint(
-                    result.HasFlag(GuideSnapMode.Vertical) ? vertical : point.X,
-                    result.HasFlag(GuideSnapMode.Horizontal) ? horizontal : point.Y);
-                return true;
-            }
-
-            return false;
-        }
-
-        private void TryToSnapToGuideLine()
-        {
-            GuidePoint snapPoint;
-            GuideSnapMode snapResult;
-
-            _state.HaveSnapPoint = TryToSnapToGuideLine(
-                _drawing.Guides,
-                _state.SnapMode,
-                _state.SnapTreshold,
-                _measure.Point1,
-                out snapPoint,
-                out snapResult);
-
-            _state.SnapPoint = snapPoint;
-            _measure.SnapResult = snapResult;
-        }
-
-        private bool HitTestForGuideLine(IList<GuideLine> guides, double x, double y, double treshold, out GuideLine hitGuide)
-        {
-            var point = new GuidePoint(x, y);
-            foreach (var guide in _drawing.Guides)
-            {
-                var nearest = GuideHelpers.NearestPointOnLine(guide.Point0, guide.Point1, point);
-                var distance = GuideHelpers.Distance(nearest, point);
-                if (distance < treshold)
-                {
-                    hitGuide = guide;
-                    return true;
-                }
-            }
-
-            hitGuide = null;
-            return false;
-        }
-
-        private void DeleteGuide(double x, double y)
-        {
-            GuideLine hitGuide;
-            var result = HitTestForGuideLine(_drawing.Guides, x, y, _state.HitTreshold, out hitGuide);
-            if (result)
-            {
-                _drawing.Guides.Remove(hitGuide);
-            }
-        }
-
-        public void GuideLeftDown(double x, double y)
-        {
-            double sx = _state.EnableSnap && _state.SnapX != 0 ? Snap(x, _state.SnapX) : x;
-            double sy = _state.EnableSnap && _state.SnapY != 0 ? Snap(y, _state.SnapY) : y;
-
-            if (_state.IsCaptured)
-            {
-                _measure.Point1 = new GuidePoint(sx, sy);
-
-                TryToSnapToGuideLine();
-
-                if (_state.HaveSnapPoint)
-                {
-                    _state.GuidePosition = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-                    _measure.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-                }
-
-                _state.IsCaptured = false;
-                _release();
-                _drawing.Guides.Add(new GuideLine(_measure.Point0, _measure.Point1));
-                _invalidate();
-            }
-            else
-            {
-                _measure.Point0 = new GuidePoint(sx, sy);
-                _measure.Point1 = new GuidePoint(sx, sy);
-
-                TryToSnapToGuideLine();
-
-                if (_state.HaveSnapPoint)
-                {
-                    _state.GuidePosition = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-                    _measure.Point0 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-                    _measure.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-                }
-
-                _state.IsCaptured = true;
-                _capture();
-                _invalidate();
-            }
-        }
-
-        public void GuideMiddleDown(double x, double y)
-        {
-            if (!_state.IsCaptured
-                && _drawing != null 
-                && _drawing.Guides != null
-                && _drawing.Guides.Count > 0)
-            {
-                DeleteGuide(x, y);
-                _invalidate();
-            }
-        }
-
-        public void GuideRightDown(double x, double y)
-        {
-            double sx = _state.EnableSnap && _state.SnapX != 0 ? Snap(x, _state.SnapX) : x;
-            double sy = _state.EnableSnap && _state.SnapY != 0 ? Snap(y, _state.SnapY) : y;
-
-            _measure.Point0 = new GuidePoint(sx, sy);
-            _measure.Point1 = new GuidePoint(sx, sy);
-            _measure.Distance = 0.0;
-            _measure.Angle = 0.0;
-            _measure.SnapResult = GuideSnapMode.None;
-
-            _state.IsCaptured = false;
-            _release();
-            _invalidate();
-        }
-
-        public void GuideMove(double x, double y)
-        {
-            double sx = _state.EnableSnap && _state.SnapX != 0 ? Snap(x, _state.SnapX) : x;
-            double sy = _state.EnableSnap && _state.SnapY != 0 ? Snap(y, _state.SnapY) : y;
-
-            _state.GuidePosition = new GuidePoint(sx, sy);
-            _measure.Point1 = new GuidePoint(sx, sy);
-
-            TryToSnapToGuideLine();
-
-            if (_state.HaveSnapPoint)
-            {
-                _state.GuidePosition = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-                _measure.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
-            }
-
-            _measure.Distance = GuideHelpers.Distance(_measure.Point0, _measure.Point1);
-            _measure.Angle = GuideHelpers.LineSegmentAngle(_measure.Point0, _measure.Point1);
 
             _invalidate();
         }
@@ -814,6 +838,8 @@ namespace SpiroNet.Editor
                 if (result)
                 {
                     Select(hitShape, hitShapePointIndex);
+                    // Begin point move.
+                    _state.Mode = EditorMode.Move;
                     return;
                 }
                 else
@@ -822,10 +848,12 @@ namespace SpiroNet.Editor
                     if (HitTestForShape(_drawing.Shapes, x, y, _state.HitTreshold, out hitShape, out hitShapePointIndex))
                     {
                         Select(hitShape);
+                        // Begin point move.
+                        _state.Mode = EditorMode.Move;
                         return;
                     }
 
-                    if (_state.HitShape != null)
+                    if (_state.HitListShapes.Count > 0)
                     {
                         Deselect();
                         return;
@@ -888,7 +916,7 @@ namespace SpiroNet.Editor
                     return;
                 }
 
-                if (_state.HitShape != null)
+                if (_state.HitListShapes.Count > 0)
                 {
                     Deselect();
                 }
@@ -936,65 +964,60 @@ namespace SpiroNet.Editor
             {
                 if (_state.Mode == EditorMode.Create)
                 {
+                    // Dehover shape and dehover point.
+                    Deselect();
+
                     SpiroShape hitShape;
                     int hitShapePointIndex;
                     var result = HitTestForPoint(_drawing.Shapes, x, y, _state.HitTresholdSquared, out hitShape, out hitShapePointIndex);
                     if (result)
                     {
-                        // Hover shape.
-                        _state.HitShape = hitShape;
-                        // Hover point.
-                        _state.HitShapePointIndex = hitShapePointIndex;
-
-                        _invalidate();
+                        // Hover shape and point.
+                        Select(hitShape, hitShapePointIndex);
                     }
                     else
                     {
                         if (HitTestForShape(_drawing.Shapes, x, y, _state.HitTreshold, out hitShape, out hitShapePointIndex))
                         {
-                            // Hover shape.
-                            _state.HitShape = hitShape;
-                            // Dehover point.
-                            _state.HitShapePointIndex = -1;
+                            // Hover shape and dehover point.
+                            Select(hitShape, -1);
                         }
-                        else
-                        {
-                            // Dehover shape.
-                            _state.HitShape = null;
-                            // Dehover point.
-                            _state.HitShapePointIndex = -1;
-                        }
-
-                        _invalidate();
                     }
                 }
                 else if (_state.Mode == EditorMode.Move)
                 {
-                    // Move selected shape.
-                    if (_state.HitShape != null && _state.HitShapePointIndex == -1)
-                    {
-                        // Calculate move offset.
-                        double dx = sx - _startX;
-                        double dy = sy - _startY;
-                        // Update start position.
-                        _startX = sx;
-                        _startY = sy;
-                        // Move all shape points.
-                        for (int i = 0; i < _state.HitShape.Points.Count; i++)
-                            SetPointPositionDelta(_state.HitShape, i, dx, dy);
+                    // Calculate move offset.
+                    double dx = sx - _startX;
+                    double dy = sy - _startY;
+                    // Update start position.
+                    _startX = sx;
+                    _startY = sy;
 
-                        RunSpiro(_state.HitShape);
-                        _invalidate();
+                    for (int i = 0; i < _state.HitListShapes.Count; i++)
+                    {
+                        var shape = _state.HitListShapes[i];
+                        var index = _state.HitListPoints[i];
+
+                        // Move selected shape.
+                        if (index == -1)
+                        {
+                            // Move all shape shape points.
+                            for (int j = 0; j < shape.Points.Count; j++)
+                            {
+                                SetPointPositionDelta(shape, j, dx, dy);
+                            }
+                            RunSpiro(shape);
+                        }
+
+                        // Move selected point.
+                        if (index != -1)
+                        {
+                            SetPointPosition(shape, index, sx, sy);
+                            RunSpiro(shape);
+                        }
                     }
 
-                    // Move selected point.
-                    if (_state.HitShapePointIndex != -1)
-                    {
-                        SetPointPosition(_state.HitShape, _state.HitShapePointIndex, sx, sy);
-
-                        RunSpiro(_state.HitShape);
-                        _invalidate();
-                    }
+                    _invalidate();
                 }
                 else if (_state.Mode == EditorMode.Selected)
                 {
@@ -1079,6 +1102,8 @@ namespace SpiroNet.Editor
 
         public void NewDrawing()
         {
+            Deselect();
+
             var drawing = new SpiroDrawing()
             {
                 Width = _drawing.Width,
@@ -1092,6 +1117,8 @@ namespace SpiroNet.Editor
 
         public void OpenDrawing(string path)
         {
+            Deselect();
+
             using (var f = System.IO.File.OpenText(path))
             {
                 var json = f.ReadToEnd();
@@ -1116,6 +1143,8 @@ namespace SpiroNet.Editor
 
         public void OpenPlate(string path)
         {
+            Deselect();
+
             using (var f = System.IO.File.OpenText(path))
             {
                 var plate = f.ReadToEnd();

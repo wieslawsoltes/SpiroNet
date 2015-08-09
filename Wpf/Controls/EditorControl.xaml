@@ -469,13 +469,50 @@
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
+            <TabItem Header="Selected">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="50*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="50*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Shapes:" TextAlignment="Left" Foreground="Black" Margin="4,4,4,0" Grid.Row="0"/>
+                    <ListBox x:Name="selectedShapesListBox"
+                             ItemsSource="{Binding State.HitListShapes}"
+                             VerticalAlignment="Stretch" 
+                             HorizontalContentAlignment="Stretch"
+                             Margin="4,4,4,4"
+                             Grid.Row="1">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="Shape"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <TextBlock Text="Points:" TextAlignment="Left" Foreground="Black" Margin="4,4,4,0" Grid.Row="2"/>
+                    <ListBox x:Name="selectedPointsListBox"
+                             ItemsSource="{Binding State.HitListPoints}"
+                             VerticalAlignment="Stretch" 
+                             HorizontalContentAlignment="Stretch"
+                             Margin="4,4,4,4"
+                             Grid.Row="3">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
             <TabItem Header="Script">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Script/plate:" TextAlignment="Left" Foreground="Black" Margin="4,4,4,0"/>
+                    <TextBlock Text="Script/plate:" TextAlignment="Left" Foreground="Black" Margin="4,4,4,0" Grid.Row="0"/>
                     <TextBox x:Name="scriptTextBox"
                              AcceptsReturn="True"
                              AcceptsTab="True"
@@ -483,12 +520,12 @@
                              VerticalScrollBarVisibility="Auto"
                              HorizontalScrollBarVisibility="Auto"
                              Margin="4,4,4,4"
-                             Grid.Row="0">
+                             Grid.Row="1">
                     </TextBox>
                     <Button Content="Run" Command="{Binding Commands.ExecuteScriptCommand}" 
                             CommandParameter="{Binding ElementName=scriptTextBox, Path=Text}" 
                             Margin="4,4,4,4"
-                            Grid.Row="1">
+                            Grid.Row="2">
                     </Button>
                 </Grid>
             </TabItem>
