@@ -374,10 +374,10 @@ namespace SpiroNet.Editor
             _measure.SnapResult = snapResult;
         }
 
-        private bool HitTestForGuideLine(IList<GuideLine> guides, double x, double y, double treshold, out GuideLine hitGuide)
+        private static bool HitTestForGuideLine(IList<GuideLine> guides, double x, double y, double treshold, out GuideLine hitGuide)
         {
             var point = new GuidePoint(x, y);
-            foreach (var guide in _drawing.Guides)
+            foreach (var guide in guides)
             {
                 var nearest = GuideHelpers.NearestPointOnLine(guide.Point0, guide.Point1, point);
                 var distance = GuideHelpers.Distance(nearest, point);
@@ -463,9 +463,18 @@ namespace SpiroNet.Editor
 
             _measure.Point0 = new GuidePoint(sx, sy);
             _measure.Point1 = new GuidePoint(sx, sy);
+
+            TryToSnapToGuideLine();
+
+            if (_state.HaveSnapPoint)
+            {
+                _state.GuidePosition = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+                _measure.Point0 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+                _measure.Point1 = new GuidePoint(_state.SnapPoint.X, _state.SnapPoint.Y);
+            }
+
             _measure.Distance = 0.0;
             _measure.Angle = 0.0;
-            _measure.SnapResult = GuideSnapMode.None;
 
             _state.IsCaptured = false;
             _release();
@@ -837,6 +846,7 @@ namespace SpiroNet.Editor
                 var result = HitTestForPoint(_drawing.Shapes, x, y, _state.HitTresholdSquared, out hitShape, out hitShapePointIndex);
                 if (result)
                 {
+                    Deselect();
                     Select(hitShape, hitShapePointIndex);
                     // Begin point move.
                     _state.Mode = EditorMode.Move;
@@ -980,7 +990,7 @@ namespace SpiroNet.Editor
                         if (HitTestForShape(_drawing.Shapes, x, y, _state.HitTreshold, out hitShape, out hitShapePointIndex))
                         {
                             // Hover shape and dehover point.
-                            Select(hitShape, -1);
+                            Select(hitShape);
                         }
                     }
                 }
