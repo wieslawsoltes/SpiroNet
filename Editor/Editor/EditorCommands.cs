@@ -37,6 +37,8 @@ namespace SpiroNet.Editor
 
         public ICommand ExitCommand { get; set; }
 
+        public ICommand DeleteCommand { get; set; }
+
         public ICommand IsStrokedCommand { get; set; }
 
         public ICommand IsFilledCommand { get; set; }

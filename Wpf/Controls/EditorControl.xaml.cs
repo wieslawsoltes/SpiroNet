@@ -72,6 +72,7 @@ namespace SpiroNet.Wpf
             _editor.Commands.SaveAsCommand = Command.Create(SaveAs);
             _editor.Commands.ExportCommand = Command.Create(Export);
             _editor.Commands.ExitCommand = Command.Create(Exit);
+            _editor.Commands.DeleteCommand = Command.Create(_editor.Delete);
             _editor.Commands.IsStrokedCommand = Command.Create(_editor.ToggleIsStroked);
             _editor.Commands.IsFilledCommand = Command.Create(_editor.ToggleIsFilled);
             _editor.Commands.IsClosedCommand = Command.Create(_editor.ToggleIsClosed);

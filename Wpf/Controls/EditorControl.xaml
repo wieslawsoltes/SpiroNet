@@ -171,7 +171,8 @@
                       HorizontalScrollBarVisibility="Auto"
                       Grid.Column="1"
                       Grid.Row="1"
-                      Margin="0,4,0,4">
+                      Margin="0,4,0,4"
+                      Focusable="False">
             <local:EditorCanvas x:Name="canvas" 
                                SpiroEditor="{Binding}"
                                Width="{Binding Drawing.Width}" 
@@ -180,6 +181,7 @@
                                Focusable="True"
                                FocusVisualStyle="{x:Null}">
                 <local:EditorCanvas.InputBindings>
+                    <KeyBinding Command="{Binding Commands.DeleteCommand}" Key="Delete" Modifiers=""/>
                     <KeyBinding Command="{Binding Commands.IsStrokedCommand}" Key="K" Modifiers=""/>
                     <KeyBinding Command="{Binding Commands.IsFilledCommand}" Key="F" Modifiers=""/>
                     <KeyBinding Command="{Binding Commands.IsClosedCommand}" Key="D" Modifiers=""/>

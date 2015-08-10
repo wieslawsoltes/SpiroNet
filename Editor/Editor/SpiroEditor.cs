@@ -741,6 +741,21 @@ namespace SpiroNet.Editor
             }
         }
 
+        public void Delete()
+        {
+            for (int i = 0; i < _state.HitListShapes.Count; i++)
+            {
+                var shape = _state.HitListShapes[i];
+                var index = _state.HitListPoints[i];
+                if (index == -1)
+                    RemoveShape(shape);
+                else
+                    RemovePoint(shape, index);
+            }
+
+            Deselect();
+        }
+
         private void Select(SpiroShape hitShape, int hitShapePointIndex)
         {
             if (!_state.HitSetShapes.Contains(hitShape))
