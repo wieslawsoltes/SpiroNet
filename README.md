@@ -4,7 +4,7 @@ The .NET C# port of [libspiro](https://github.com/fontforge/libspiro) - conversi
 
 ## Introduction
 
-For libspiro introduction please see [libspiro project page](https://github.com/fontforge/libspiro).
+For libspiro introduction please see [libspiro project page](https://github.com/fontforge/libspiro). There is also GUI version using libspiro written in C#/WPF for Windows.
 
 ## Usage
 
