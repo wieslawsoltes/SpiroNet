@@ -1127,6 +1127,8 @@ namespace SpiroNet.Editor
 
         public void LoadDrawing(SpiroDrawing drawing)
         {
+            Deselect();
+
             Drawing = drawing;
             Data = new Dictionary<SpiroShape, string>();
             Knots = new Dictionary<SpiroShape, IList<SpiroKnot>>();
@@ -1139,52 +1141,20 @@ namespace SpiroNet.Editor
             _invalidate();
         }
 
-        public void NewDrawing()
+        public SpiroDrawing FromPlateString(string plate)
         {
-            Deselect();
-
-            var drawing = new SpiroDrawing()
-            {
-                Width = _drawing.Width,
-                Height = _drawing.Height,
-                Shapes = new ObservableCollection<SpiroShape>(),
-                Guides = new ObservableCollection<GuideLine>()
-            };
-
-            LoadDrawing(drawing);
-        }
-
-        public void OpenDrawing(string json)
-        {
-            Deselect();
-
-            var drawing = JsonSerializer.Deserialize<SpiroDrawing>(json);
-
-            LoadDrawing(drawing);
-        }
-
-        public void OpenPlate(string plate)
-        {
-            Deselect();
-
             var shapes = SpiroPlate.ToShapes(plate);
             if (shapes != null)
             {
-                var drawing = new SpiroDrawing()
+                return new SpiroDrawing()
                 {
                     Width = _drawing.Width,
                     Height = _drawing.Height,
                     Shapes = shapes,
                     Guides = _drawing.Guides
                 };
-
-                LoadDrawing(drawing);
             }
-        }
-
-        public string ToDrawingString()
-        {
-            return JsonSerializer.Serialize(_drawing);
+            return null;
         }
 
         public string ToPlateString()
