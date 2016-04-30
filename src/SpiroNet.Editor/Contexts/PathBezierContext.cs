@@ -33,6 +33,7 @@ namespace SpiroNet.Editor
     /// </remarks>
     public class PathBezierContext : IBezierContext
     {
+        private static CultureInfo ToStringCulture = new CultureInfo("en-GB");
         private bool _needToClose = false;
         private StringBuilder _sb = new StringBuilder();
         private IList<SpiroKnot> _knots = new List<SpiroKnot>();
@@ -44,7 +45,7 @@ namespace SpiroNet.Editor
         /// <returns></returns>
         private static string Format(double value)
         {
-            return value.ToString(CultureInfo.GetCultureInfo("en-GB"));
+            return value.ToString(ToStringCulture);
         }
 
         /// <summary>

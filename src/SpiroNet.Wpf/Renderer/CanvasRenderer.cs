@@ -26,7 +26,7 @@ using System.Windows.Media;
 
 namespace SpiroNet.Wpf
 {
-    public class EditorCanvas : Canvas
+    public class CanvasRenderer : Canvas
     {
         private static Geometry LeftKnot = Geometry.Parse("M0,-4 A 4,4 0 0 0 0,4");
         private static Geometry RightKnot = Geometry.Parse("M0,-4 A 4,4 0 0 1 0,4");
@@ -53,9 +53,9 @@ namespace SpiroNet.Wpf
             set { SetValue(SpiroEditorProperty, value); }
         }
 
-        public static readonly DependencyProperty SpiroEditorProperty = DependencyProperty.Register("SpiroEditor", typeof(SpiroEditor), typeof(EditorCanvas), new PropertyMetadata(null));
+        public static readonly DependencyProperty SpiroEditorProperty = DependencyProperty.Register("SpiroEditor", typeof(SpiroEditor), typeof(CanvasRenderer), new PropertyMetadata(null));
 
-        public EditorCanvas()
+        public CanvasRenderer()
         {
             InitializeStyles();
         }

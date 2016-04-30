@@ -552,8 +552,8 @@ namespace SpiroNet.Editor
             }
             catch (Exception ex)
             {
-                Debug.Print(ex.Message);
-                Debug.Print(ex.StackTrace);
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
 
             return false;
@@ -622,8 +622,8 @@ namespace SpiroNet.Editor
                 }
                 catch (Exception ex)
                 {
-                    Debug.Print(ex.Message);
-                    Debug.Print(ex.StackTrace);
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
                     continue;
                 }
 
@@ -1026,7 +1026,7 @@ namespace SpiroNet.Editor
                         // Move selected shape.
                         if (index == -1)
                         {
-                            // Move all shape shape points.
+                            // Move all shape points.
                             for (int j = 0; j < shape.Points.Count; j++)
                             {
                                 SetPointPositionDelta(shape, j, dx, dy);
@@ -1058,7 +1058,7 @@ namespace SpiroNet.Editor
                 case EditorTool.None:
                     break;
                 case EditorTool.Spiro:
-                    SpiroLeftDown(x , y);
+                    SpiroLeftDown(x, y);
                     break;
                 case EditorTool.Guide:
                     GuideLeftDown(x, y);
@@ -1125,34 +1125,7 @@ namespace SpiroNet.Editor
             }
         }
 
-        public void NewDrawing()
-        {
-            Deselect();
-
-            var drawing = new SpiroDrawing()
-            {
-                Width = _drawing.Width,
-                Height = _drawing.Height,
-                Shapes = new ObservableCollection<SpiroShape>(),
-                Guides = new ObservableCollection<GuideLine>()
-            };
-
-            OpenDrawing(drawing);
-        }
-
-        public void OpenDrawing(string path)
-        {
-            Deselect();
-
-            using (var f = System.IO.File.OpenText(path))
-            {
-                var json = f.ReadToEnd();
-                var drawing = JsonSerializer.Deserialize<SpiroDrawing>(json);
-                OpenDrawing(drawing);
-            }
-        }
-
-        public void OpenDrawing(SpiroDrawing drawing)
+        public void LoadDrawing(SpiroDrawing drawing)
         {
             Drawing = drawing;
             Data = new Dictionary<SpiroShape, string>();
@@ -1166,111 +1139,117 @@ namespace SpiroNet.Editor
             _invalidate();
         }
 
-        public void OpenPlate(string path)
+        public void NewDrawing()
         {
             Deselect();
 
-            using (var f = System.IO.File.OpenText(path))
+            var drawing = new SpiroDrawing()
             {
-                var plate = f.ReadToEnd();
-                var shapes = SpiroPlate.ToShapes(plate);
-                if (shapes != null)
+                Width = _drawing.Width,
+                Height = _drawing.Height,
+                Shapes = new ObservableCollection<SpiroShape>(),
+                Guides = new ObservableCollection<GuideLine>()
+            };
+
+            LoadDrawing(drawing);
+        }
+
+        public void OpenDrawing(string json)
+        {
+            Deselect();
+
+            var drawing = JsonSerializer.Deserialize<SpiroDrawing>(json);
+
+            LoadDrawing(drawing);
+        }
+
+        public void OpenPlate(string plate)
+        {
+            Deselect();
+
+            var shapes = SpiroPlate.ToShapes(plate);
+            if (shapes != null)
+            {
+                var drawing = new SpiroDrawing()
                 {
-                    var drawing = new SpiroDrawing()
-                    {
-                        Width = _drawing.Width,
-                        Height = _drawing.Height,
-                        Shapes = shapes,
-                        Guides = _drawing.Guides
-                    };
+                    Width = _drawing.Width,
+                    Height = _drawing.Height,
+                    Shapes = shapes,
+                    Guides = _drawing.Guides
+                };
 
-                    OpenDrawing(drawing);
-                }
+                LoadDrawing(drawing);
             }
         }
 
-        public void SaveAsDrawing(string path)
+        public string ToDrawingString()
         {
-            using (var f = System.IO.File.CreateText(path))
-            {
-                var json = JsonSerializer.Serialize(_drawing);
-                f.Write(json);
-            }
+            return JsonSerializer.Serialize(_drawing);
         }
 
-        public void SaveAsPlate(string path)
+        public string ToPlateString()
         {
-            using (var f = System.IO.File.CreateText(path))
-            {
-                var plate = SpiroPlate.FromShapes(_drawing.Shapes);
-                f.Write(plate);
-            }
+            return SpiroPlate.FromShapes(_drawing.Shapes);
         }
 
-        public void ExportAsSvg(string path)
+        public string ToSvgString()
         {
-            using (var f = System.IO.File.CreateText(path))
-            {
-                var sb = new StringBuilder();
-                var suffix = Environment.NewLine + "           ";
+            var sb = new StringBuilder();
+            var suffix = Environment.NewLine + "           ";
 
-                sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
+            sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
+            sb.AppendLine(
+                string.Format(
+                    "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"{0}\" height=\"{1}\">",
+                    _drawing.Width,
+                    _drawing.Height));
+
+            foreach (var shape in _drawing.Shapes)
+            {
                 sb.AppendLine(
                     string.Format(
-                        "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"{0}\" height=\"{1}\">",
-                        _drawing.Width,
-                        _drawing.Height));
-
-                foreach (var shape in _drawing.Shapes)
-                {
-                    sb.AppendLine(
-                        string.Format(
-                            "  <path style=\"{0};{1}\"",
-                            shape.IsStroked ? "stroke:#000000;stroke-opacity:1;stroke-width:2" : "stroke:none",
-                            shape.IsFilled ? "fill:#808080;fill-opacity:0.5" : "fill:none"));
-                    sb.AppendLine(
-                        string.Format(
-                            "        d=\"{0}\"/>",
-                            Data[shape].Replace(Environment.NewLine, suffix)));
-                }
-
-                sb.AppendLine("</svg>");
-
-                f.Write(sb);
+                        "  <path style=\"{0};{1}\"",
+                        shape.IsStroked ? "stroke:#000000;stroke-opacity:1;stroke-width:2" : "stroke:none",
+                        shape.IsFilled ? "fill:#808080;fill-opacity:0.5" : "fill:none"));
+                sb.AppendLine(
+                    string.Format(
+                        "        d=\"{0}\"/>",
+                        Data[shape].Replace(Environment.NewLine, suffix)));
             }
+
+            sb.AppendLine("</svg>");
+
+            return sb.ToString();
         }
 
-        public void ExportAsPs(string path)
+        public string ToPsString()
         {
-            using (var f = System.IO.File.CreateText(path))
+            var sb = new StringBuilder();
+
+            sb.Append(PsBezierContext.PsProlog);
+            sb.Append(string.Format(PsBezierContext.PsSize, _drawing.Width, _drawing.Height));
+
+            foreach (var shape in _drawing.Shapes)
             {
-                var sb = new StringBuilder();
+                var bc = new PsBezierContext();
 
-                sb.Append(PsBezierContext.PsProlog);
-                sb.Append(string.Format(PsBezierContext.PsSize, _drawing.Width, _drawing.Height));
-
-                foreach (var shape in _drawing.Shapes)
+                try
                 {
-                    var bc = new PsBezierContext();
-
-                    try
+                    if (TryToRunSpiro(shape, bc))
                     {
-                        if (TryToRunSpiro(shape, bc))
-                        {
-                            sb.Append(bc);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.Print(ex.Message);
-                        Debug.Print(ex.StackTrace);
+                        sb.Append(bc);
                     }
                 }
-
-                sb.Append(PsBezierContext.PsPostlog);
-
-                f.Write(sb);
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
+                }
             }
+
+            sb.Append(PsBezierContext.PsPostlog);
+
+            return sb.ToString();
         }
 
         public void ExecuteScript(string script)

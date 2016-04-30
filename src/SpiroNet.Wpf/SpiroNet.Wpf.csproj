@@ -59,7 +59,7 @@
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Converters\ShapeToDataConverter.cs" />
     <Compile Include="Renderer\BasicStyleCache.cs" />
-    <Compile Include="Renderer\EditorCanvas.cs" />
+    <Compile Include="Renderer\CanvasRenderer.cs" />
     <Compile Include="Controls\EditorControl.xaml.cs">
       <DependentUpon>EditorControl.xaml</DependentUpon>
     </Compile>
@@ -109,11 +109,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SpiroNet.Editor\SpiroNet.Editor.csproj">
-      <Project>{887f25bc-71b2-434a-ad45-092780df9eaf}</Project>
+      <Project>{4f0e9e3e-da95-40b2-8fde-22902388e90a}</Project>
       <Name>SpiroNet.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="..\SpiroNet\SpiroNet.csproj">
-      <Project>{6f958fc2-ebc4-4ddb-9550-1742db599c3d}</Project>
+      <Project>{b2deab02-f231-4aa9-8879-0fd73096c60d}</Project>
       <Name>SpiroNet</Name>
     </ProjectReference>
   </ItemGroup>

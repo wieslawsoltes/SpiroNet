@@ -37,7 +37,17 @@ namespace SpiroNet.Wpf
         {
             InitializeComponent();
 
-            // Editor initialization.
+            InitializeEditor();
+            InitializeCanvas();
+            InitializeSnapMode();
+
+            DataContext = _editor;
+
+            Loaded += SpiroControl_Loaded;
+        }
+
+        private void InitializeEditor()
+        {
             _editor = new SpiroEditor()
             {
                 State = new EditorState(),
@@ -70,22 +80,18 @@ namespace SpiroNet.Wpf
             _editor.Commands.IsTaggedCommand = Command.Create(_editor.ToggleIsTagged);
             _editor.Commands.PointTypeCommand = Command<string>.Create(_editor.TogglePointType);
             _editor.Commands.ExecuteScriptCommand = Command<string>.Create(ExecuteScript);
+        }
 
-            // Canvas initialization.
+        private void InitializeCanvas()
+        {
             canvas.PreviewMouseDown += Canvas_PreviewMouseDown;
             canvas.PreviewMouseLeftButtonDown += Canvas_PreviewMouseLeftButtonDown;
             canvas.PreviewMouseLeftButtonUp += Canvas_PreviewMouseLeftButtonUp;
             canvas.PreviewMouseRightButtonDown += Canvas_PreviewMouseRightButtonDown;
             canvas.PreviewMouseMove += Canvas_PreviewMouseMove;
-
-            InitSnapMode();
-
-            DataContext = _editor;
-
-            Loaded += SpiroControl_Loaded;
         }
 
-        private void InitSnapMode()
+        private void InitializeSnapMode()
         {
             snapModePoint.Click += (sender, e) => UpdateSnapMode();
             snapModeMiddle.Click += (sender, e) => UpdateSnapMode();
@@ -149,11 +155,11 @@ namespace SpiroNet.Wpf
             }
             catch (Exception ex)
             {
-                Debug.Print(ex.Message);
-                Debug.Print(ex.StackTrace);
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
         }
-        
+
         private void Canvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             canvas.Focus();
@@ -165,8 +171,8 @@ namespace SpiroNet.Wpf
             }
             catch (Exception ex)
             {
-                Debug.Print(ex.Message);
-                Debug.Print(ex.StackTrace);
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
         }
 
@@ -180,8 +186,8 @@ namespace SpiroNet.Wpf
             }
             catch (Exception ex)
             {
-                Debug.Print(ex.Message);
-                Debug.Print(ex.StackTrace);
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
         }
 
@@ -196,8 +202,8 @@ namespace SpiroNet.Wpf
             }
             catch (Exception ex)
             {
-                Debug.Print(ex.Message);
-                Debug.Print(ex.StackTrace);
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
         }
 
@@ -212,8 +218,8 @@ namespace SpiroNet.Wpf
             }
             catch (Exception ex)
             {
-                Debug.Print(ex.Message);
-                Debug.Print(ex.StackTrace);
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
         }
 
@@ -232,23 +238,27 @@ namespace SpiroNet.Wpf
             {
                 try
                 {
+                    var path = dlg.FileName;
+
                     switch (dlg.FilterIndex)
                     {
+                        default:
                         case 1:
-                            _editor.OpenDrawing(dlg.FileName);
+                            {
+                                OpenDrawing(path);
+                            }
                             break;
                         case 2:
-                            _editor.OpenPlate(dlg.FileName);
-                            break;
-                        default:
-                            _editor.OpenDrawing(dlg.FileName);
+                            {
+                                OpenPlate(path);
+                            }
                             break;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Debug.Print(ex.Message);
-                    Debug.Print(ex.StackTrace);
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
                 }
             }
         }
@@ -264,23 +274,27 @@ namespace SpiroNet.Wpf
             {
                 try
                 {
+                    var path = dlg.FileName;
+
                     switch (dlg.FilterIndex)
                     {
+                        default:
                         case 1:
-                            _editor.SaveAsDrawing(dlg.FileName);
+                            {
+                                SaveAsDrawing(path);
+                            }
                             break;
                         case 2:
-                            _editor.SaveAsPlate(dlg.FileName);
-                            break;
-                        default:
-                            _editor.SaveAsDrawing(dlg.FileName);
+                            {
+                                SaveAsPlate(path);
+                            }
                             break;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Debug.Print(ex.Message);
-                    Debug.Print(ex.StackTrace);
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
                 }
             }
         }
@@ -296,24 +310,130 @@ namespace SpiroNet.Wpf
             {
                 try
                 {
+                    var path = dlg.FileName;
+
                     switch (dlg.FilterIndex)
                     {
+                        default:
                         case 1:
-                            _editor.ExportAsSvg(dlg.FileName);
+                            {
+                                ExportAsSvg(path);
+                            }
                             break;
                         case 2:
-                            _editor.ExportAsPs(dlg.FileName);
-                            break;
-                        default:
-                            _editor.ExportAsSvg(dlg.FileName);
+                            {
+                                ExportAsPs(path);
+                            }
                             break;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Debug.Print(ex.Message);
-                    Debug.Print(ex.StackTrace);
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
                 }
+            }
+        }
+
+        private void OpenDrawing(string path)
+        {
+            try
+            {
+                using (var f = System.IO.File.OpenText(path))
+                {
+                    string json = f.ReadToEnd();
+                    _editor.OpenDrawing(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
+        }
+
+        private void OpenPlate(string path)
+        {
+            try
+            {
+                using (var f = System.IO.File.OpenText(path))
+                {
+                    string plate = f.ReadToEnd();
+                    _editor.OpenPlate(plate);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
+        }
+
+        private void SaveAsDrawing(string path)
+        {
+            try
+            {
+                using (var f = System.IO.File.CreateText(path))
+                {
+                    var json = _editor.ToDrawingString();
+                    f.Write(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
+        }
+
+        private void SaveAsPlate(string path)
+        {
+            try
+            {
+                using (var f = System.IO.File.CreateText(path))
+                {
+                    string plate = _editor.ToPlateString();
+                    f.Write(plate);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
+        }
+
+        private void ExportAsSvg(string path)
+        {
+            try
+            {
+                using (var f = System.IO.File.CreateText(path))
+                {
+                    string svg = _editor.ToSvgString();
+                    f.Write(svg);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
+        }
+
+        private void ExportAsPs(string path)
+        {
+            try
+            {
+                using (var f = System.IO.File.CreateText(path))
+                {
+                    string ps = _editor.ToPsString();
+                    f.Write(ps);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
         }
 
@@ -325,8 +445,8 @@ namespace SpiroNet.Wpf
             }
             catch (Exception ex)
             {
-                Debug.Print(ex.Message);
-                Debug.Print(ex.StackTrace);
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
         }
 

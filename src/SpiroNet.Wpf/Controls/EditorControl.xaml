@@ -173,14 +173,14 @@
                       Grid.Row="1"
                       Margin="0,4,0,4"
                       Focusable="False">
-            <local:EditorCanvas x:Name="canvas" 
-                               SpiroEditor="{Binding}"
-                               Width="{Binding Drawing.Width}" 
-                               Height="{Binding Drawing.Height}" 
-                               Background="DarkGray"
-                               Focusable="True"
-                               FocusVisualStyle="{x:Null}">
-                <local:EditorCanvas.InputBindings>
+            <local:CanvasRenderer x:Name="canvas" 
+                                  SpiroEditor="{Binding}"
+                                  Width="{Binding Drawing.Width}" 
+                                  Height="{Binding Drawing.Height}" 
+                                  Background="DarkGray"
+                                  Focusable="True"
+                                  FocusVisualStyle="{x:Null}">
+                <local:CanvasRenderer.InputBindings>
                     <KeyBinding Command="{Binding Commands.DeleteCommand}" Key="Delete" Modifiers=""/>
                     <KeyBinding Command="{Binding Commands.IsStrokedCommand}" Key="K" Modifiers=""/>
                     <KeyBinding Command="{Binding Commands.IsFilledCommand}" Key="F" Modifiers=""/>
@@ -194,8 +194,8 @@
                     <KeyBinding Command="{Binding Commands.PointTypeCommand}" CommandParameter="End" Key="Z" Modifiers=""/>
                     <KeyBinding Command="{Binding Commands.PointTypeCommand}" CommandParameter="OpenContour" Key="OemOpenBrackets" Modifiers="Shift"/>
                     <KeyBinding Command="{Binding Commands.PointTypeCommand}" CommandParameter="EndOpenContour" Key="OemCloseBrackets" Modifiers="Shift"/>
-                </local:EditorCanvas.InputBindings>
-            </local:EditorCanvas>
+                </local:CanvasRenderer.InputBindings>
+            </local:CanvasRenderer>
         </ScrollViewer>
         <TabControl Grid.Column="2" Grid.Row="1" Margin="4,4,4,4">
             <TabItem Header="State">

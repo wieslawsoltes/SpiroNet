@@ -29,9 +29,11 @@ namespace SpiroNet.Editor
 {
     public static class SpiroPlate
     {
+        private static CultureInfo ToStringCulture = new CultureInfo("en-GB");
+
         private static string Format(double value)
         {
-            return value.ToString(CultureInfo.GetCultureInfo("en-GB"));
+            return value.ToString(ToStringCulture);
         }
 
         public static string FromShapes(IList<SpiroShape> shapes)
@@ -114,8 +116,8 @@ namespace SpiroNet.Editor
         private static SpiroControlPoint NewPoint(SpiroPointType type, string x, string y)
         {
             var point = new SpiroControlPoint();
-            point.X = double.Parse(x, CultureInfo.GetCultureInfo("en-GB").NumberFormat);
-            point.Y = double.Parse(y, CultureInfo.GetCultureInfo("en-GB").NumberFormat);
+            point.X = double.Parse(x, ToStringCulture.NumberFormat);
+            point.Y = double.Parse(y, ToStringCulture.NumberFormat);
             point.Type = type;
             return point;
         }

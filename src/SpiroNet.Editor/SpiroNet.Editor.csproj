@@ -1,17 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{887F25BC-71B2-434A-AD45-092780DF9EAF}</ProjectGuid>
+    <ProjectGuid>{4F0E9E3E-DA95-40B2-8FDE-22902388E90A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SpiroNet.Editor</RootNamespace>
     <AssemblyName>SpiroNet.Editor</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,39 +34,32 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\SpiroNet\SpiroNet.csproj">
+      <Project>{b2deab02-f231-4aa9-8879-0fd73096c60d}</Project>
+      <Name>SpiroNet</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contexts\HitTestBezierContext.cs" />
+    <Compile Include="Contexts\PathBezierContext.cs" />
     <Compile Include="Contexts\PsBezierContext.cs" />
-    <Compile Include="Editor\EditorMeasure.cs" />
-    <Compile Include="Editor\SpiroEditor.cs" />
-    <Compile Include="Editor\EditorTool.cs" />
-    <Compile Include="Editor\SpiroKnot.cs" />
     <Compile Include="Editor\EditorCommands.cs" />
+    <Compile Include="Editor\EditorMeasure.cs" />
     <Compile Include="Editor\EditorMode.cs" />
     <Compile Include="Editor\EditorState.cs" />
-    <Compile Include="Editor\GuideLine.cs" />
+    <Compile Include="Editor\EditorTool.cs" />
     <Compile Include="Editor\GuideHelpers.cs" />
+    <Compile Include="Editor\GuideLine.cs" />
     <Compile Include="Editor\GuidePoint.cs" />
     <Compile Include="Editor\GuideSnapMode.cs" />
+    <Compile Include="Editor\SpiroDrawing.cs" />
+    <Compile Include="Editor\SpiroEditor.cs" />
+    <Compile Include="Editor\SpiroKnot.cs" />
+    <Compile Include="Editor\SpiroPlate.cs" />
+    <Compile Include="Editor\SpiroShape.cs" />
     <Compile Include="Json\JsonSerializer.cs" />
     <Compile Include="Json\ObservableCollectionContractResolver.cs" />
-    <Compile Include="Contexts\PathBezierContext.cs" />
-    <Compile Include="Editor\SpiroDrawing.cs" />
-    <Compile Include="Contexts\HitTestBezierContext.cs" />
-    <Compile Include="Editor\SpiroShape.cs" />
-    <Compile Include="Editor\SpiroPlate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Style\Argb.cs" />
     <Compile Include="Style\BasicStyle.cs" />
@@ -71,15 +67,15 @@
     <Compile Include="Util\ObservableObject.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SpiroNet\SpiroNet.csproj">
-      <Project>{6f958fc2-ebc4-4ddb-9550-1742db599c3d}</Project>
-      <Name>SpiroNet</Name>
-    </ProjectReference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -18,8 +18,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
+using System.Resources;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("SpiroNet")]
 [assembly: AssemblyDescription("")]
@@ -29,8 +29,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © Wiesław Šoltés 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
-[assembly: ComVisible(false)]
-[assembly: Guid("6f958fc2-ebc4-4ddb-9550-1742db599c3d")]
+[assembly: NeutralResourcesLanguage("en")]
 
 [assembly: AssemblyVersion("0.5.*")]

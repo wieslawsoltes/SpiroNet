@@ -18,10 +18,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Newtonsoft.Json.Serialization;
+using System.Reflection;
 
 namespace SpiroNet.Editor
 {
@@ -29,7 +30,7 @@ namespace SpiroNet.Editor
     {
         public override JsonContract ResolveContract(Type type)
         {
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IList<>))
+            if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IList<>))
             {
                 return base.ResolveContract(typeof(ObservableCollection<>).MakeGenericType(type.GenericTypeArguments[0]));
             }

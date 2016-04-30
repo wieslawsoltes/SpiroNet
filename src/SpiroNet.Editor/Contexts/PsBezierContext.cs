@@ -26,6 +26,8 @@ namespace SpiroNet.Editor
 {
     public class PsBezierContext : IBezierContext
     {
+        private static CultureInfo ToStringCulture = new CultureInfo("en-GB");
+
         private struct PsState
         {
             public bool isOpen;
@@ -54,7 +56,7 @@ namespace SpiroNet.Editor
 
         private static string Format(double value)
         {
-            return value.ToString(CultureInfo.GetCultureInfo("en-GB"));
+            return value.ToString(ToStringCulture);
         }
 
         public string GetData()
