@@ -20,8 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 */
 using System;
-using System.Globalization;
-using System.Text;
 
 namespace SpiroNet.Editor
 {
