@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 */
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SpiroNet.Editor
 {
@@ -66,6 +67,23 @@ namespace SpiroNet.Editor
         {
             get { return _guides; }
             set { Update(ref _guides, value); }
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="SpiroDrawing"/> instance.
+        /// </summary>
+        /// <param name="width">The drawing width</param>
+        /// <param name="height"></param>
+        /// <returns>The new instance of the <see cref="SpiroDrawing"/>.</returns>
+        public static SpiroDrawing Create(double width, double height)
+        {
+            return new SpiroDrawing()
+            {
+                Width = width,
+                Height = height,
+                Shapes = new ObservableCollection<SpiroShape>(),
+                Guides = new ObservableCollection<GuideLine>(),
+            };
         }
     }
 }
