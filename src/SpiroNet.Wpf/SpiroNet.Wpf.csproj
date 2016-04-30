@@ -36,10 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -62,8 +58,6 @@
     </ApplicationDefinition>
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Converters\ShapeToDataConverter.cs" />
-    <Compile Include="Json\JsonSerializer.cs" />
-    <Compile Include="Json\ObservableCollectionContractResolver.cs" />
     <Compile Include="Renderer\BasicStyleCache.cs" />
     <Compile Include="Renderer\CanvasRenderer.cs" />
     <Compile Include="Controls\EditorControl.xaml.cs">
@@ -104,7 +98,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -118,6 +111,10 @@
     <ProjectReference Include="..\SpiroNet.Editor\SpiroNet.Editor.csproj">
       <Project>{4f0e9e3e-da95-40b2-8fde-22902388e90a}</Project>
       <Name>SpiroNet.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SpiroNet.Json\SpiroNet.Json.csproj">
+      <Project>{ddaf7fa6-7ee3-4cf8-9800-25a2c9387afc}</Project>
+      <Name>SpiroNet.Json</Name>
     </ProjectReference>
     <ProjectReference Include="..\SpiroNet\SpiroNet.csproj">
       <Project>{b2deab02-f231-4aa9-8879-0fd73096c60d}</Project>

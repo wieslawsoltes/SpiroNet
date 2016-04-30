@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Editor
+SpiroNet.Json
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or

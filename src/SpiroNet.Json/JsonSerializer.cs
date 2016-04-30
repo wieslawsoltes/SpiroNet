@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Editor
+SpiroNet.Json
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@ using Newtonsoft.Json;
 
 namespace SpiroNet.Json
 {
-    internal static class JsonSerializer
+    public static class JsonSerializer
     {
         public static string Serialize<T>(T obj) where T : class
         {
