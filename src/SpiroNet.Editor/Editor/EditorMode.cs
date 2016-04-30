@@ -21,11 +21,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 namespace SpiroNet.Editor
 {
-    public enum EditorMode 
-    { 
-        None, 
-        Create, 
-        Move, 
-        Selected 
+    public enum EditorMode
+    {
+        None,
+        Create,
+        Move,
+        Selected
     }
 }

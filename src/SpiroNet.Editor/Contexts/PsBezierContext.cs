@@ -48,7 +48,7 @@ namespace SpiroNet.Editor
             "1 -1 scale\n" +
             "0 -{1} translate\n"; // {0} = height
 
-        public const string PsPostlog = 
+        public const string PsPostlog =
             "stroke\n" +
             "showpage\n";
 
@@ -102,10 +102,10 @@ namespace SpiroNet.Editor
             double x2, y2;
             x0 = _state.x;
             y0 = _state.y;
-            x1 = xm + (1.0/ 3) * (x0 - xm);
-            y1 = ym + (1.0/ 3) * (y0 - ym);
-            x2 = xm + (1.0/ 3) * (x3 - xm);
-            y2 = ym + (1.0/ 3) * (y3 - ym);
+            x1 = xm + (1.0 / 3) * (x0 - xm);
+            y1 = ym + (1.0 / 3) * (y0 - ym);
+            x2 = xm + (1.0 / 3) * (x3 - xm);
+            y2 = ym + (1.0 / 3) * (y3 - ym);
             _state.sb.Append(string.Format("{0} {1} {2} {3} {4} {5} c\n", Format(x1), Format(y1), Format(x2), Format(y2), Format(x3), Format(y3)));
             _state.x = x3;
             _state.y = y3;

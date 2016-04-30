@@ -124,13 +124,13 @@ namespace SpiroNet.Editor
             get { return _snapX; }
             set { Update(ref _snapX, value); }
         }
-        
+
         public double SnapY
         {
             get { return _snapY; }
             set { Update(ref _snapY, value); }
         }
-        
+
         public bool EnableSnap
         {
             get { return _enableSnap; }
