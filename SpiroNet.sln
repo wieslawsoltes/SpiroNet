@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet", "Spiro\SpiroNet.csproj", "{6F958FC2-EBC4-4DDB-9550-1742DB599C3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet", "src\SpiroNet\SpiroNet.csproj", "{6F958FC2-EBC4-4DDB-9550-1742DB599C3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Wpf", "Wpf\SpiroNet.Wpf.csproj", "{D06A68AB-E369-4EC5-860F-04F54D29077F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Wpf", "src\SpiroNet.Wpf\SpiroNet.Wpf.csproj", "{D06A68AB-E369-4EC5-860F-04F54D29077F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Editor", "Editor\SpiroNet.Editor.csproj", "{887F25BC-71B2-434A-AD45-092780DF9EAF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Editor", "src\SpiroNet.Editor\SpiroNet.Editor.csproj", "{887F25BC-71B2-434A-AD45-092780DF9EAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

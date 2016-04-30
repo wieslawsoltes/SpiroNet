@@ -108,16 +108,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Editor\SpiroNet.Editor.csproj">
+    <ProjectReference Include="..\SpiroNet.Editor\SpiroNet.Editor.csproj">
       <Project>{887f25bc-71b2-434a-ad45-092780df9eaf}</Project>
       <Name>SpiroNet.Editor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Spiro\SpiroNet.csproj">
+    <ProjectReference Include="..\SpiroNet\SpiroNet.csproj">
       <Project>{6f958fc2-ebc4-4ddb-9550-1742db599c3d}</Project>
       <Name>SpiroNet</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
