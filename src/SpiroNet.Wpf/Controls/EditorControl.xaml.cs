@@ -245,14 +245,10 @@ namespace SpiroNet.Wpf
                     {
                         default:
                         case 1:
-                            {
-                                OpenDrawing(path);
-                            }
+                            OpenDrawing(path);
                             break;
                         case 2:
-                            {
-                                OpenPlate(path);
-                            }
+                            OpenPlate(path);
                             break;
                     }
                 }
@@ -281,14 +277,10 @@ namespace SpiroNet.Wpf
                     {
                         default:
                         case 1:
-                            {
-                                SaveAsDrawing(path);
-                            }
+                            SaveAsDrawing(path);
                             break;
                         case 2:
-                            {
-                                SaveAsPlate(path);
-                            }
+                            SaveAsPlate(path);
                             break;
                     }
                 }
@@ -317,14 +309,10 @@ namespace SpiroNet.Wpf
                     {
                         default:
                         case 1:
-                            {
-                                ExportAsSvg(path);
-                            }
+                            ExportAsSvg(path);
                             break;
                         case 2:
-                            {
-                                ExportAsPs(path);
-                            }
+                            ExportAsPs(path);
                             break;
                     }
                 }
