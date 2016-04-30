@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 */
 using SpiroNet.Editor;
+using SpiroNet.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -330,7 +331,11 @@ namespace SpiroNet.Wpf
                 using (var f = System.IO.File.OpenText(path))
                 {
                     string json = f.ReadToEnd();
-                    _editor.OpenDrawing(json);
+                    var drawing = JsonSerializer.Deserialize<SpiroDrawing>(json);
+                    if (drawing != null)
+                    {
+                        _editor.LoadDrawing(drawing);
+                    }
                 }
             }
             catch (Exception ex)
@@ -347,7 +352,11 @@ namespace SpiroNet.Wpf
                 using (var f = System.IO.File.OpenText(path))
                 {
                     string plate = f.ReadToEnd();
-                    _editor.OpenPlate(plate);
+                    var drawing = _editor.FromPlateString(plate);
+                    if (drawing != null)
+                    {
+                        _editor.LoadDrawing(drawing);
+                    }
                 }
             }
             catch (Exception ex)
@@ -363,7 +372,7 @@ namespace SpiroNet.Wpf
             {
                 using (var f = System.IO.File.CreateText(path))
                 {
-                    var json = _editor.ToDrawingString();
+                    var json = JsonSerializer.Serialize(_editor.Drawing);
                     f.Write(json);
                 }
             }
