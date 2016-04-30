@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 */
 using SpiroNet.Editor;
-using SpiroNet.Json;
+using SpiroNet.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,11 +29,11 @@ using System.Windows.Input;
 
 namespace SpiroNet.Wpf
 {
-    public partial class EditorControl : UserControl
+    public partial class EditorView : UserControl
     {
-        private SpiroEditor _editor;
+        private EditorViewModel _vm;
 
-        public EditorControl()
+        public EditorView()
         {
             InitializeComponent();
 
@@ -41,18 +41,19 @@ namespace SpiroNet.Wpf
             InitializeCanvas();
             InitializeSnapMode();
 
-            DataContext = _editor;
+            DataContext = _vm;
 
             Loaded += SpiroControl_Loaded;
         }
 
         private void InitializeEditor()
         {
-            _editor = new SpiroEditor()
+            _vm = new EditorViewModel();
+
+            _vm.Editor = new SpiroEditor()
             {
                 State = new EditorState(),
                 Measure = new EditorMeasure(),
-                Commands = new EditorCommands(),
                 Invalidate = () => canvas.InvalidateVisual(),
                 Capture = () => canvas.CaptureMouse(),
                 Release = () => canvas.ReleaseMouseCapture(),
@@ -61,19 +62,19 @@ namespace SpiroNet.Wpf
                 Knots = new Dictionary<SpiroShape, IList<SpiroKnot>>()
             };
 
-            _editor.Commands.InvalidateCommand = Command.Create(_editor.Invalidate);
-            _editor.Commands.NewCommand = Command.Create(New);
-            _editor.Commands.OpenCommand = Command.Create(Open);
-            _editor.Commands.SaveAsCommand = Command.Create(SaveAs);
-            _editor.Commands.ExportCommand = Command.Create(Export);
-            _editor.Commands.ExitCommand = Command.Create(Exit);
-            _editor.Commands.DeleteCommand = Command.Create(_editor.Delete);
-            _editor.Commands.IsStrokedCommand = Command.Create(_editor.ToggleIsStroked);
-            _editor.Commands.IsFilledCommand = Command.Create(_editor.ToggleIsFilled);
-            _editor.Commands.IsClosedCommand = Command.Create(_editor.ToggleIsClosed);
-            _editor.Commands.IsTaggedCommand = Command.Create(_editor.ToggleIsTagged);
-            _editor.Commands.PointTypeCommand = Command<string>.Create(_editor.TogglePointType);
-            _editor.Commands.ExecuteScriptCommand = Command<string>.Create(_editor.ExecuteScript);
+            _vm.InvalidateCommand = Command.Create(_vm.Editor.Invalidate);
+            _vm.NewCommand = Command.Create(New);
+            _vm.OpenCommand = Command.Create(Open);
+            _vm.SaveAsCommand = Command.Create(SaveAs);
+            _vm.ExportCommand = Command.Create(Export);
+            _vm.ExitCommand = Command.Create(Exit);
+            _vm.DeleteCommand = Command.Create(_vm.Editor.Delete);
+            _vm.IsStrokedCommand = Command.Create(_vm.Editor.ToggleIsStroked);
+            _vm.IsFilledCommand = Command.Create(_vm.Editor.ToggleIsFilled);
+            _vm.IsClosedCommand = Command.Create(_vm.Editor.ToggleIsClosed);
+            _vm.IsTaggedCommand = Command.Create(_vm.Editor.ToggleIsTagged);
+            _vm.PointTypeCommand = Command<string>.Create(_vm.Editor.TogglePointType);
+            _vm.ExecuteScriptCommand = Command<string>.Create(_vm.Editor.ExecuteScript);
         }
 
         private void InitializeCanvas()
@@ -94,45 +95,45 @@ namespace SpiroNet.Wpf
             snapModeHorizontal.Click += (sender, e) => UpdateSnapMode();
             snapModeVertical.Click += (sender, e) => UpdateSnapMode();
 
-            snapModePoint.IsChecked = _editor.State.SnapMode.HasFlag(GuideSnapMode.Point);
-            snapModeMiddle.IsChecked = _editor.State.SnapMode.HasFlag(GuideSnapMode.Middle);
-            snapModeNearest.IsChecked = _editor.State.SnapMode.HasFlag(GuideSnapMode.Nearest);
-            snapModeIntersection.IsChecked = _editor.State.SnapMode.HasFlag(GuideSnapMode.Intersection);
-            snapModeHorizontal.IsChecked = _editor.State.SnapMode.HasFlag(GuideSnapMode.Horizontal);
-            snapModeVertical.IsChecked = _editor.State.SnapMode.HasFlag(GuideSnapMode.Vertical);
+            snapModePoint.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Point);
+            snapModeMiddle.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Middle);
+            snapModeNearest.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Nearest);
+            snapModeIntersection.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Intersection);
+            snapModeHorizontal.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Horizontal);
+            snapModeVertical.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Vertical);
         }
 
         private void UpdateSnapMode()
         {
             if (snapModePoint.IsChecked == true)
-                _editor.State.SnapMode |= GuideSnapMode.Point;
+                _vm.Editor.State.SnapMode |= GuideSnapMode.Point;
             else
-                _editor.State.SnapMode &= ~GuideSnapMode.Point;
+                _vm.Editor.State.SnapMode &= ~GuideSnapMode.Point;
 
             if (snapModeMiddle.IsChecked == true)
-                _editor.State.SnapMode |= GuideSnapMode.Middle;
+                _vm.Editor.State.SnapMode |= GuideSnapMode.Middle;
             else
-                _editor.State.SnapMode &= ~GuideSnapMode.Middle;
+                _vm.Editor.State.SnapMode &= ~GuideSnapMode.Middle;
 
             if (snapModeNearest.IsChecked == true)
-                _editor.State.SnapMode |= GuideSnapMode.Nearest;
+                _vm.Editor.State.SnapMode |= GuideSnapMode.Nearest;
             else
-                _editor.State.SnapMode &= ~GuideSnapMode.Nearest;
+                _vm.Editor.State.SnapMode &= ~GuideSnapMode.Nearest;
 
             if (snapModeIntersection.IsChecked == true)
-                _editor.State.SnapMode |= GuideSnapMode.Intersection;
+                _vm.Editor.State.SnapMode |= GuideSnapMode.Intersection;
             else
-                _editor.State.SnapMode &= ~GuideSnapMode.Intersection;
+                _vm.Editor.State.SnapMode &= ~GuideSnapMode.Intersection;
 
             if (snapModeHorizontal.IsChecked == true)
-                _editor.State.SnapMode |= GuideSnapMode.Horizontal;
+                _vm.Editor.State.SnapMode |= GuideSnapMode.Horizontal;
             else
-                _editor.State.SnapMode &= ~GuideSnapMode.Horizontal;
+                _vm.Editor.State.SnapMode &= ~GuideSnapMode.Horizontal;
 
             if (snapModeVertical.IsChecked == true)
-                _editor.State.SnapMode |= GuideSnapMode.Vertical;
+                _vm.Editor.State.SnapMode |= GuideSnapMode.Vertical;
             else
-                _editor.State.SnapMode &= ~GuideSnapMode.Vertical;
+                _vm.Editor.State.SnapMode &= ~GuideSnapMode.Vertical;
         }
 
         private void Canvas_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -144,7 +145,7 @@ namespace SpiroNet.Wpf
             {
                 if (e.ChangedButton == MouseButton.Middle)
                 {
-                    _editor.MiddleDown(point.X, point.Y);
+                    _vm.Editor.MiddleDown(point.X, point.Y);
                 }
             }
             catch (Exception ex)
@@ -161,7 +162,7 @@ namespace SpiroNet.Wpf
 
             try
             {
-                _editor.LeftDown(point.X, point.Y);
+                _vm.Editor.LeftDown(point.X, point.Y);
             }
             catch (Exception ex)
             {
@@ -176,7 +177,7 @@ namespace SpiroNet.Wpf
 
             try
             {
-                _editor.LeftUp(point.X, point.Y);
+                _vm.Editor.LeftUp(point.X, point.Y);
             }
             catch (Exception ex)
             {
@@ -192,7 +193,7 @@ namespace SpiroNet.Wpf
 
             try
             {
-                _editor.RightDown(point.X, point.Y);
+                _vm.Editor.RightDown(point.X, point.Y);
             }
             catch (Exception ex)
             {
@@ -208,7 +209,7 @@ namespace SpiroNet.Wpf
 
             try
             {
-                _editor.Move(point.X, point.Y);
+                _vm.Editor.Move(point.X, point.Y);
             }
             catch (Exception ex)
             {
@@ -226,7 +227,7 @@ namespace SpiroNet.Wpf
         {
             var drawing = SpiroDrawing.Create(600, 600);
 
-            _editor.LoadDrawing(drawing);
+            _vm.Editor.LoadDrawing(drawing);
         }
 
         private void Open()
@@ -245,10 +246,10 @@ namespace SpiroNet.Wpf
                     {
                         default:
                         case 1:
-                            OpenDrawing(path);
+                            _vm.OpenDrawing(path);
                             break;
                         case 2:
-                            OpenPlate(path);
+                            _vm.OpenPlate(path);
                             break;
                     }
                 }
@@ -277,10 +278,10 @@ namespace SpiroNet.Wpf
                     {
                         default:
                         case 1:
-                            SaveAsDrawing(path);
+                            _vm.SaveAsDrawing(path);
                             break;
                         case 2:
-                            SaveAsPlate(path);
+                            _vm.SaveAsPlate(path);
                             break;
                     }
                 }
@@ -309,10 +310,10 @@ namespace SpiroNet.Wpf
                     {
                         default:
                         case 1:
-                            ExportAsSvg(path);
+                            _vm.ExportAsSvg(path);
                             break;
                         case 2:
-                            ExportAsPs(path);
+                            _vm.ExportAsPs(path);
                             break;
                     }
                 }
@@ -321,116 +322,6 @@ namespace SpiroNet.Wpf
                     Debug.WriteLine(ex.Message);
                     Debug.WriteLine(ex.StackTrace);
                 }
-            }
-        }
-
-        private void OpenDrawing(string path)
-        {
-            try
-            {
-                using (var f = System.IO.File.OpenText(path))
-                {
-                    string json = f.ReadToEnd();
-                    var drawing = JsonSerializer.Deserialize<SpiroDrawing>(json);
-                    if (drawing != null)
-                    {
-                        _editor.LoadDrawing(drawing);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
-            }
-        }
-
-        private void OpenPlate(string path)
-        {
-            try
-            {
-                using (var f = System.IO.File.OpenText(path))
-                {
-                    string plate = f.ReadToEnd();
-                    var drawing = _editor.FromPlateString(plate);
-                    if (drawing != null)
-                    {
-                        _editor.LoadDrawing(drawing);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
-            }
-        }
-
-        private void SaveAsDrawing(string path)
-        {
-            try
-            {
-                using (var f = System.IO.File.CreateText(path))
-                {
-                    var json = JsonSerializer.Serialize(_editor.Drawing);
-                    f.Write(json);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
-            }
-        }
-
-        private void SaveAsPlate(string path)
-        {
-            try
-            {
-                using (var f = System.IO.File.CreateText(path))
-                {
-                    string plate = _editor.ToPlateString();
-                    f.Write(plate);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
-            }
-        }
-
-        private void ExportAsSvg(string path)
-        {
-            try
-            {
-                using (var f = System.IO.File.CreateText(path))
-                {
-                    string svg = _editor.ToSvgString();
-                    f.Write(svg);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
-            }
-        }
-
-        private void ExportAsPs(string path)
-        {
-            try
-            {
-                using (var f = System.IO.File.CreateText(path))
-                {
-                    string ps = _editor.ToPsString();
-                    f.Write(ps);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
             }
         }
 

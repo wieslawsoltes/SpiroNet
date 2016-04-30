@@ -31,7 +31,6 @@ namespace SpiroNet.Editor
     {
         private EditorState _state = null;
         private EditorMeasure _measure;
-        private EditorCommands _commands = null;
         private Action _invalidate = null;
         private Action _capture = null;
         private Action _release = null;
@@ -51,12 +50,6 @@ namespace SpiroNet.Editor
         {
             get { return _measure; }
             set { Update(ref _measure, value); }
-        }
-
-        public EditorCommands Commands
-        {
-            get { return _commands; }
-            set { Update(ref _commands, value); }
         }
 
         public Action Invalidate
