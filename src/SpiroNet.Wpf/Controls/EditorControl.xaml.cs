@@ -79,7 +79,7 @@ namespace SpiroNet.Wpf
             _editor.Commands.IsClosedCommand = Command.Create(_editor.ToggleIsClosed);
             _editor.Commands.IsTaggedCommand = Command.Create(_editor.ToggleIsTagged);
             _editor.Commands.PointTypeCommand = Command<string>.Create(_editor.TogglePointType);
-            _editor.Commands.ExecuteScriptCommand = Command<string>.Create(ExecuteScript);
+            _editor.Commands.ExecuteScriptCommand = Command<string>.Create(_editor.ExecuteScript);
         }
 
         private void InitializeCanvas()
@@ -429,19 +429,6 @@ namespace SpiroNet.Wpf
                     string ps = _editor.ToPsString();
                     f.Write(ps);
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
-            }
-        }
-
-        private void ExecuteScript(string script)
-        {
-            try
-            {
-                _editor.ExecuteScript(script);
             }
             catch (Exception ex)
             {

@@ -1254,16 +1254,24 @@ namespace SpiroNet.Editor
 
         public void ExecuteScript(string script)
         {
-            var shapes = SpiroPlate.ToShapes(script);
-            if (shapes != null)
+            try
             {
-                foreach (var shape in shapes)
+                var shapes = SpiroPlate.ToShapes(script);
+                if (shapes != null)
                 {
-                    _drawing.Shapes.Add(shape);
-                    RunSpiro(shape);
-                }
+                    foreach (var shape in shapes)
+                    {
+                        _drawing.Shapes.Add(shape);
+                        RunSpiro(shape);
+                    }
 
-                _invalidate();
+                    _invalidate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
         }
     }
