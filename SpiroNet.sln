@@ -1,13 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet", "Spiro\SpiroNet.csproj", "{6F958FC2-EBC4-4DDB-9550-1742DB599C3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Wpf", "src\SpiroNet.Wpf\SpiroNet.Wpf.csproj", "{D06A68AB-E369-4EC5-860F-04F54D29077F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Wpf", "Wpf\SpiroNet.Wpf.csproj", "{D06A68AB-E369-4EC5-860F-04F54D29077F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet", "src\SpiroNet\SpiroNet.csproj", "{B2DEAB02-F231-4AA9-8879-0FD73096C60D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Editor", "Editor\SpiroNet.Editor.csproj", "{887F25BC-71B2-434A-AD45-092780DF9EAF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Editor", "src\SpiroNet.Editor\SpiroNet.Editor.csproj", "{4F0E9E3E-DA95-40B2-8FDE-22902388E90A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Json", "src\SpiroNet.Json\SpiroNet.Json.csproj", "{DDAF7FA6-7EE3-4CF8-9800-25A2C9387AFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.ViewModels", "src\SpiroNet.ViewModels\SpiroNet.ViewModels.csproj", "{A4CD560C-4567-4889-AC1A-FE03E15FF75E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +19,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6F958FC2-EBC4-4DDB-9550-1742DB599C3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F958FC2-EBC4-4DDB-9550-1742DB599C3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6F958FC2-EBC4-4DDB-9550-1742DB599C3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F958FC2-EBC4-4DDB-9550-1742DB599C3D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D06A68AB-E369-4EC5-860F-04F54D29077F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D06A68AB-E369-4EC5-860F-04F54D29077F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D06A68AB-E369-4EC5-860F-04F54D29077F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D06A68AB-E369-4EC5-860F-04F54D29077F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{887F25BC-71B2-434A-AD45-092780DF9EAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{887F25BC-71B2-434A-AD45-092780DF9EAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{887F25BC-71B2-434A-AD45-092780DF9EAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{887F25BC-71B2-434A-AD45-092780DF9EAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2DEAB02-F231-4AA9-8879-0FD73096C60D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2DEAB02-F231-4AA9-8879-0FD73096C60D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2DEAB02-F231-4AA9-8879-0FD73096C60D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2DEAB02-F231-4AA9-8879-0FD73096C60D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F0E9E3E-DA95-40B2-8FDE-22902388E90A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F0E9E3E-DA95-40B2-8FDE-22902388E90A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F0E9E3E-DA95-40B2-8FDE-22902388E90A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F0E9E3E-DA95-40B2-8FDE-22902388E90A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDAF7FA6-7EE3-4CF8-9800-25A2C9387AFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDAF7FA6-7EE3-4CF8-9800-25A2C9387AFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDAF7FA6-7EE3-4CF8-9800-25A2C9387AFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDAF7FA6-7EE3-4CF8-9800-25A2C9387AFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4CD560C-4567-4889-AC1A-FE03E15FF75E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4CD560C-4567-4889-AC1A-FE03E15FF75E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4CD560C-4567-4889-AC1A-FE03E15FF75E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4CD560C-4567-4889-AC1A-FE03E15FF75E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

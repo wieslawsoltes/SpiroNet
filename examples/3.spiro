@@ -1,0 +1,408 @@
+{
+  "$id": "1",
+  "$type": "SpiroNet.Editor.SpiroDrawing, SpiroNet.Editor",
+  "Width": 600.0,
+  "Height": 600.0,
+  "Shapes": [
+    {
+      "$id": "2",
+      "$type": "SpiroNet.Editor.SpiroShape, SpiroNet.Editor",
+      "IsStroked": true,
+      "IsFilled": false,
+      "IsClosed": true,
+      "IsTagged": false,
+      "Points": [
+        {
+          "$id": "3",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 180.0,
+          "Y": 150.0,
+          "Type": 111
+        },
+        {
+          "$id": "4",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 240.0,
+          "Y": 150.0,
+          "Type": 118
+        },
+        {
+          "$id": "5",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 300.0,
+          "Y": 150.0,
+          "Type": 111
+        },
+        {
+          "$id": "6",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 352.5,
+          "Y": 195.0,
+          "Type": 91
+        },
+        {
+          "$id": "7",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 352.5,
+          "Y": 277.5,
+          "Type": 99
+        },
+        {
+          "$id": "8",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 352.5,
+          "Y": 360.0,
+          "Type": 99
+        },
+        {
+          "$id": "9",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 240.0,
+          "Y": 360.0,
+          "Type": 111
+        },
+        {
+          "$id": "10",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 127.5,
+          "Y": 360.0,
+          "Type": 99
+        },
+        {
+          "$id": "11",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 127.5,
+          "Y": 277.5,
+          "Type": 99
+        },
+        {
+          "$id": "12",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 127.5,
+          "Y": 195.0,
+          "Type": 93
+        }
+      ]
+    },
+    {
+      "$id": "13",
+      "$type": "SpiroNet.Editor.SpiroShape, SpiroNet.Editor",
+      "IsStroked": true,
+      "IsFilled": false,
+      "IsClosed": true,
+      "IsTagged": false,
+      "Points": [
+        {
+          "$id": "14",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 75.0,
+          "Y": 150.0,
+          "Type": 118
+        },
+        {
+          "$id": "15",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 127.5,
+          "Y": 105.0,
+          "Type": 91
+        },
+        {
+          "$id": "16",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 240.0,
+          "Y": 35.0,
+          "Type": 111
+        },
+        {
+          "$id": "17",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 352.5,
+          "Y": 105.0,
+          "Type": 93
+        },
+        {
+          "$id": "18",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 405.0,
+          "Y": 150.0,
+          "Type": 118
+        },
+        {
+          "$id": "19",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 405.0,
+          "Y": 195.0,
+          "Type": 91
+        },
+        {
+          "$id": "20",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 405.0,
+          "Y": 277.5,
+          "Type": 111
+        },
+        {
+          "$id": "21",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 405.0,
+          "Y": 360.0,
+          "Type": 93
+        },
+        {
+          "$id": "22",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 405.0,
+          "Y": 405.0,
+          "Type": 118
+        },
+        {
+          "$id": "23",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 352.5,
+          "Y": 420.0,
+          "Type": 91
+        },
+        {
+          "$id": "24",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 240.0,
+          "Y": 477.0,
+          "Type": 111
+        },
+        {
+          "$id": "25",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 127.5,
+          "Y": 420.0,
+          "Type": 93
+        },
+        {
+          "$id": "26",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 75.0,
+          "Y": 405.0,
+          "Type": 118
+        },
+        {
+          "$id": "27",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 75.0,
+          "Y": 360.0,
+          "Type": 91
+        },
+        {
+          "$id": "28",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 75.0,
+          "Y": 277.5,
+          "Type": 111
+        },
+        {
+          "$id": "29",
+          "$type": "SpiroNet.SpiroControlPoint, SpiroNet",
+          "X": 75.0,
+          "Y": 195.0,
+          "Type": 93
+        }
+      ]
+    }
+  ],
+  "Guides": [
+    {
+      "$id": "30",
+      "$type": "SpiroNet.Editor.GuideLine, SpiroNet.Editor",
+      "Point0": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 60.0,
+        "Y": 150.0
+      },
+      "Point1": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 420.0,
+        "Y": 150.0
+      }
+    },
+    {
+      "$id": "31",
+      "$type": "SpiroNet.Editor.GuideLine, SpiroNet.Editor",
+      "Point0": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 75.0,
+        "Y": 135.0
+      },
+      "Point1": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 75.0,
+        "Y": 420.0
+      }
+    },
+    {
+      "$id": "32",
+      "$type": "SpiroNet.Editor.GuideLine, SpiroNet.Editor",
+      "Point0": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 405.0,
+        "Y": 135.0
+      },
+      "Point1": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 405.0,
+        "Y": 420.0
+      }
+    },
+    {
+      "$id": "33",
+      "$type": "SpiroNet.Editor.GuideLine, SpiroNet.Editor",
+      "Point0": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 60.0,
+        "Y": 405.0
+      },
+      "Point1": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 420.0,
+        "Y": 405.0
+      }
+    },
+    {
+      "$id": "34",
+      "$type": "SpiroNet.Editor.GuideLine, SpiroNet.Editor",
+      "Point0": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 75.0,
+        "Y": 105.0
+      },
+      "Point1": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 180.0,
+        "Y": 105.0
+      }
+    },
+    {
+      "$id": "35",
+      "$type": "SpiroNet.Editor.GuideLine, SpiroNet.Editor",
+      "Point0": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 405.0,
+        "Y": 105.0
+      },
+      "Point1": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 300.0,
+        "Y": 105.0
+      }
+    },
+    {
+      "$id": "36",
+      "$type": "SpiroNet.Editor.GuideLine, SpiroNet.Editor",
+      "Point0": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 240.0,
+        "Y": 150.0
+      },
+      "Point1": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 240.0,
+        "Y": 405.0
+      }
+    },
+    {
+      "$id": "37",
+      "$type": "SpiroNet.Editor.GuideLine, SpiroNet.Editor",
+      "Point0": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 75.0,
+        "Y": 277.5
+      },
+      "Point1": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 405.0,
+        "Y": 277.5
+      }
+    },
+    {
+      "$id": "38",
+      "$type": "SpiroNet.Editor.GuideLine, SpiroNet.Editor",
+      "Point0": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 75.0,
+        "Y": 195.0
+      },
+      "Point1": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 405.0,
+        "Y": 195.0
+      }
+    },
+    {
+      "$id": "39",
+      "$type": "SpiroNet.Editor.GuideLine, SpiroNet.Editor",
+      "Point0": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 75.0,
+        "Y": 360.0
+      },
+      "Point1": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 405.0,
+        "Y": 360.0
+      }
+    },
+    {
+      "$id": "40",
+      "$type": "SpiroNet.Editor.GuideLine, SpiroNet.Editor",
+      "Point0": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 75.0,
+        "Y": 420.0
+      },
+      "Point1": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 180.0,
+        "Y": 420.0
+      }
+    },
+    {
+      "$id": "41",
+      "$type": "SpiroNet.Editor.GuideLine, SpiroNet.Editor",
+      "Point0": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 405.0,
+        "Y": 420.0
+      },
+      "Point1": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 300.0,
+        "Y": 420.0
+      }
+    },
+    {
+      "$id": "42",
+      "$type": "SpiroNet.Editor.GuideLine, SpiroNet.Editor",
+      "Point0": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 127.5,
+        "Y": 105.0
+      },
+      "Point1": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 127.5,
+        "Y": 420.0
+      }
+    },
+    {
+      "$id": "43",
+      "$type": "SpiroNet.Editor.GuideLine, SpiroNet.Editor",
+      "Point0": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 352.5,
+        "Y": 105.0
+      },
+      "Point1": {
+        "$type": "SpiroNet.Editor.GuidePoint, SpiroNet.Editor",
+        "X": 352.5,
+        "Y": 420.0
+      }
+    }
+  ]
+}
