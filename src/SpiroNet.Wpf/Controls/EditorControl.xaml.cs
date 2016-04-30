@@ -56,13 +56,7 @@ namespace SpiroNet.Wpf
                 Invalidate = () => canvas.InvalidateVisual(),
                 Capture = () => canvas.CaptureMouse(),
                 Release = () => canvas.ReleaseMouseCapture(),
-                Drawing = new SpiroDrawing()
-                {
-                    Width = 600,
-                    Height = 600,
-                    Shapes = new ObservableCollection<SpiroShape>(),
-                    Guides = new ObservableCollection<GuideLine>(),
-                },
+                Drawing = SpiroDrawing.Create(600, 600),
                 Data = new Dictionary<SpiroShape, string>(),
                 Knots = new Dictionary<SpiroShape, IList<SpiroKnot>>()
             };
