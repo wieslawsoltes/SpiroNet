@@ -58,18 +58,6 @@ namespace SpiroNet.Editor
             set { Update(ref _invalidate, value); }
         }
 
-        public Action Capture
-        {
-            get { return _capture; }
-            set { Update(ref _capture, value); }
-        }
-
-        public Action Release
-        {
-            get { return _release; }
-            set { Update(ref _release, value); }
-        }
-
         public SpiroDrawing Drawing
         {
             get { return _drawing; }
