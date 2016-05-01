@@ -66,7 +66,7 @@ namespace SpiroNet.Editor
 
             _snapX = 15.0;
             _snapY = 15.0;
-            _enableSnap = false;
+            _enableSnap = true;
 
             _shape = null;
             _hitTreshold = 7;
