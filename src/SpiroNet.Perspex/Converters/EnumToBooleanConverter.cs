@@ -18,8 +18,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
+using Perspex;
+using Perspex.Markup;
+using System;
+using System.Globalization;
 
 namespace SpiroNet.Perspex
 {
+    public class EnumToBooleanConverter : IValueConverter
+    {
+        public static EnumToBooleanConverter Instance = new EnumToBooleanConverter();
 
+        public object Convert(object value, Type targetType, object param, CultureInfo culture)
+        {
+            return value.Equals(param);
+        }
+
+        public object ConvertBack(object value, Type targetType, object param, CultureInfo culture)
+        {
+            return (bool)value ? param : PerspexProperty.UnsetValue;
+        }
+    }
 }
