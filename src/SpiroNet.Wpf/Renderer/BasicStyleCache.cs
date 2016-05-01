@@ -33,12 +33,7 @@ namespace SpiroNet.Wpf
 
         public static Brush ToBrush(Argb color)
         {
-            return new SolidColorBrush(
-                Color.FromArgb(
-                    color.A,
-                    color.R,
-                    color.G,
-                    color.B));
+            return new SolidColorBrush(Color.FromArgb(color.A, color.R, color.G, color.B));
         }
 
         public BasicStyleCache(BasicStyle style)
