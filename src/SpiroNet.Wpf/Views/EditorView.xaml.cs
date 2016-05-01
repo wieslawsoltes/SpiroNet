@@ -43,7 +43,7 @@ namespace SpiroNet.Wpf.Views
 
             DataContext = _vm;
 
-            Loaded += SpiroControl_Loaded;
+            Loaded += EditorView_Loaded;
         }
 
         private void InitializeEditor()
@@ -55,8 +55,6 @@ namespace SpiroNet.Wpf.Views
                 State = new EditorState(),
                 Measure = new EditorMeasure(),
                 Invalidate = () => canvas.InvalidateVisual(),
-                Capture = () => canvas.CaptureMouse(),
-                Release = () => canvas.ReleaseMouseCapture(),
                 Drawing = SpiroDrawing.Create(600, 600),
                 Data = new Dictionary<SpiroShape, string>(),
                 Knots = new Dictionary<SpiroShape, IList<SpiroKnot>>()
@@ -218,7 +216,7 @@ namespace SpiroNet.Wpf.Views
             }
         }
 
-        private void SpiroControl_Loaded(object sender, RoutedEventArgs e)
+        private void EditorView_Loaded(object sender, RoutedEventArgs e)
         {
             canvas.Focus();
         }

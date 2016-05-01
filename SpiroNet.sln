@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Json", "src\SpiroN
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.ViewModels", "src\SpiroNet.ViewModels\SpiroNet.ViewModels.csproj", "{A4CD560C-4567-4889-AC1A-FE03E15FF75E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Perspex", "src\SpiroNet.Perspex\SpiroNet.Perspex.csproj", "{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{A4CD560C-4567-4889-AC1A-FE03E15FF75E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4CD560C-4567-4889-AC1A-FE03E15FF75E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4CD560C-4567-4889-AC1A-FE03E15FF75E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
