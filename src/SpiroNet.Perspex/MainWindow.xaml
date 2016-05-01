@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:SpiroNet.Perspex;assembly=SpiroNet.Perspex"
         xmlns:views="clr-namespace:SpiroNet.Perspex.Views;assembly=SpiroNet.Perspex"
-        Height="720" Width="1040"
+        Title="SpiroNet.Perspex" Height="720" Width="1040"
         Background="White"
         UseLayoutRounding="True">
     <views:EditorView/>
