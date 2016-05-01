@@ -71,6 +71,7 @@ namespace SpiroNet.Wpf.Views
             _vm.IsFilledCommand = Command.Create(_vm.Editor.ToggleIsFilled);
             _vm.IsClosedCommand = Command.Create(_vm.Editor.ToggleIsClosed);
             _vm.IsTaggedCommand = Command.Create(_vm.Editor.ToggleIsTagged);
+            _vm.ToolCommand = Command<string>.Create(_vm.Editor.ToggleTool);
             _vm.PointTypeCommand = Command<string>.Create(_vm.Editor.TogglePointType);
             _vm.ExecuteScriptCommand = Command<string>.Create(_vm.Editor.ExecuteScript);
         }
