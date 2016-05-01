@@ -31,7 +31,7 @@ namespace SpiroNet.Wpf
         public double Thickness { get; private set; }
         public double HalfThickness { get; private set; }
 
-        public static SolidColorBrush ToBrush(Argb color)
+        public static Brush ToBrush(Argb color)
         {
             return new SolidColorBrush(
                 Color.FromArgb(
