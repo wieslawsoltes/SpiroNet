@@ -21,6 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 using Perspex;
 using Perspex.Logging.Serilog;
 using Serilog;
+using System;
+using System.Diagnostics;
 
 namespace SpiroNet.Perspex
 {
@@ -28,8 +30,16 @@ namespace SpiroNet.Perspex
     {
         private static void Main(string[] args)
         {
-            InitializeLogging();
-            new App().UseWin32().UseDirect2D().LoadFromXaml().Start();
+            try
+            {
+                InitializeLogging();
+                new App().UseWin32().UseDirect2D().LoadFromXaml().Start();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
         }
 
         private static void InitializeLogging()
