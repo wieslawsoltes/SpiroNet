@@ -1,0 +1,10 @@
+﻿<UserControl x:Class="SpiroNet.Perspex.Views.EditorControl"
+             xmlns="https://github.com/perspex"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:SpiroNet.Perspex;assembly=SpiroNet.Perspex"
+             xmlns:spiro="clr-namespace:SpiroNet;assembly=SpiroNet"
+             xmlns:editor="clr-namespace:SpiroNet.Editor;assembly=SpiroNet.Editor"
+             Background="White"
+             UseLayoutRounding="True">
+
+</UserControl>
