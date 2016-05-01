@@ -32,8 +32,6 @@ namespace SpiroNet.Editor
         private EditorState _state = null;
         private EditorMeasure _measure;
         private Action _invalidate = null;
-        private Action _capture = null;
-        private Action _release = null;
         private SpiroDrawing _drawing = null;
         private IDictionary<SpiroShape, string> _data = null;
         private IDictionary<SpiroShape, IList<SpiroKnot>> _knots = null;
@@ -401,7 +399,6 @@ namespace SpiroNet.Editor
                 }
 
                 _state.IsCaptured = false;
-                _release();
                 _drawing.Guides.Add(new GuideLine(_measure.Point0, _measure.Point1));
                 _invalidate();
             }
@@ -420,7 +417,6 @@ namespace SpiroNet.Editor
                 }
 
                 _state.IsCaptured = true;
-                _capture();
                 _invalidate();
             }
         }
@@ -458,7 +454,6 @@ namespace SpiroNet.Editor
             _measure.Angle = 0.0;
 
             _state.IsCaptured = false;
-            _release();
             _invalidate();
         }
 
