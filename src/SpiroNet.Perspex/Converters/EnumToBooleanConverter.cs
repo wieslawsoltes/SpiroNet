@@ -29,14 +29,22 @@ namespace SpiroNet.Perspex
     {
         public static EnumToBooleanConverter Instance = new EnumToBooleanConverter();
 
-        public object Convert(object value, Type targetType, object param, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value.Equals(param);
+            if (value != null)
+            {
+                return value.Equals(parameter);
+            }
+            return PerspexProperty.UnsetValue;
         }
 
-        public object ConvertBack(object value, Type targetType, object param, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (bool)value ? param : PerspexProperty.UnsetValue;
+            if (value != null)
+            {
+                return (bool)value ? parameter : PerspexProperty.UnsetValue;
+            }
+            return PerspexProperty.UnsetValue;
         }
     }
 }
