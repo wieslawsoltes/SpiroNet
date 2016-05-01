@@ -52,6 +52,8 @@ namespace SpiroNet.ViewModels
 
         public ICommand IsTaggedCommand { get; set; }
 
+        public ICommand ToolCommand { get; set; }
+
         public ICommand PointTypeCommand { get; set; }
 
         public ICommand ExecuteScriptCommand { get; set; }
