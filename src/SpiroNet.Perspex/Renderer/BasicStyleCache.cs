@@ -31,7 +31,7 @@ namespace SpiroNet.Perspex
         public double Thickness { get; private set; }
         public double HalfThickness { get; private set; }
 
-        public static SolidColorBrush ToBrush(Argb color)
+        public static IBrush ToBrush(Argb color)
         {
             return new SolidColorBrush(
                 Color.FromArgb(
