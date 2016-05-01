@@ -185,6 +185,9 @@
                     <KeyBinding Command="{Binding IsFilledCommand}" Key="F" Modifiers=""/>
                     <KeyBinding Command="{Binding IsClosedCommand}" Key="D" Modifiers=""/>
                     <KeyBinding Command="{Binding IsTaggedCommand}" Key="T" Modifiers=""/>
+                    <KeyBinding Command="{Binding ToolCommand}" CommandParameter="None" Key="N" Modifiers=""/>
+                    <KeyBinding Command="{Binding ToolCommand}" CommandParameter="Guide" Key="G" Modifiers=""/>
+                    <KeyBinding Command="{Binding ToolCommand}" CommandParameter="Spiro" Key="S" Modifiers=""/>
                     <KeyBinding Command="{Binding PointTypeCommand}" CommandParameter="Corner" Key="V" Modifiers=""/>
                     <KeyBinding Command="{Binding PointTypeCommand}" CommandParameter="G4" Key="O" Modifiers=""/>
                     <KeyBinding Command="{Binding PointTypeCommand}" CommandParameter="G2" Key="C" Modifiers=""/>
@@ -203,21 +206,24 @@
                         <GroupBox Header="Tool" Margin="4,2,4,2">
                             <StackPanel>
                                 <RadioButton IsChecked="{Binding Path=Editor.State.Tool, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static editor:EditorTool.None}}"
-                                             Command="{Binding InvalidateCommand}"
+                                             Command="{Binding ToolCommand}"
+                                             CommandParameter="None"
                                              VerticalContentAlignment="Center"
-                                             Content="None" 
+                                             Content="None            n" 
                                              Margin="1">
                                 </RadioButton>
                                 <RadioButton IsChecked="{Binding Path=Editor.State.Tool, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static editor:EditorTool.Guide}}"
-                                             Command="{Binding InvalidateCommand}"
+                                             Command="{Binding ToolCommand}"
+                                             CommandParameter="Guide"
                                              VerticalContentAlignment="Center"
-                                             Content="Guide" 
+                                             Content="Guide           g" 
                                              Margin="1">
                                 </RadioButton>
                                 <RadioButton IsChecked="{Binding Path=Editor.State.Tool, Converter={StaticResource EnumToBooleanConverterKey}, ConverterParameter={x:Static editor:EditorTool.Spiro}}"
-                                             Command="{Binding InvalidateCommand}"
+                                             Command="{Binding ToolCommand}"
+                                             CommandParameter="Spiro"
                                              VerticalContentAlignment="Center"
-                                             Content="Spiro" 
+                                             Content="Spiro           s" 
                                              Margin="1">
                                 </RadioButton>
                             </StackPanel>
