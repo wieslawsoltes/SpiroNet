@@ -18,8 +18,48 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
+using Perspex.Media;
+using SpiroNet.Editor;
 
 namespace SpiroNet.Perspex
 {
+    public class BasicStyleCache
+    {
+        public IBrush FillBrush { get; private set; }
+        public IBrush StrokeBrush { get; private set; }
+        public Pen StrokePen { get; private set; }
+        public double Thickness { get; private set; }
+        public double HalfThickness { get; private set; }
 
+        public static SolidColorBrush ToBrush(Argb color)
+        {
+            return new SolidColorBrush(
+                Color.FromArgb(
+                    color.A,
+                    color.R,
+                    color.G,
+                    color.B));
+        }
+
+        public BasicStyleCache(BasicStyle style)
+        {
+            if (style == null)
+                return;
+
+            Thickness = style.Thickness;
+            HalfThickness = Thickness / 2.0;
+
+            if (style.Fill != null)
+            {
+                FillBrush = ToBrush(style.Fill);
+            }
+
+            if (style.Stroke != null)
+            {
+                StrokeBrush = ToBrush(style.Stroke);
+
+                StrokePen = new Pen(StrokeBrush, Thickness);
+            }
+        }
+    }
 }
