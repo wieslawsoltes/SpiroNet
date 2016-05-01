@@ -164,6 +164,13 @@ namespace SpiroNet.Editor
             }
         }
 
+        public void ToggleTool(string value)
+        {
+            var tool = (EditorTool)Enum.Parse(typeof(EditorTool), value);
+            _state.Tool = tool;
+            _invalidate();
+        }
+
         public void TogglePointType(string value)
         {
             var type = (SpiroPointType)Enum.Parse(typeof(SpiroPointType), value);
