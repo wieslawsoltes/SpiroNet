@@ -17,12 +17,16 @@ build:
 after_build:
 - cmd: >-
     7z a SpiroNet-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\SpiroNet\bin\%CONFIGURATION%\*
+    
+    7z a SpiroNet.Editor-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\SpiroNet.Editor\bin\%CONFIGURATION%\*
 
     7z a SpiroNet.Perspex-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\SpiroNet.Perspex\bin\%CONFIGURATION%\*
 
     7z a SpiroNet.Wpf-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\SpiroNet.Wpf\bin\%CONFIGURATION%\*
 
     appveyor PushArtifact SpiroNet-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip
+
+    appveyor PushArtifact SpiroNet.Editor-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip
 
     appveyor PushArtifact SpiroNet.Perspex-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip
 
