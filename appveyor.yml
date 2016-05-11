@@ -1,0 +1,45 @@
+version: 0.1.{build}
+skip_tags: true
+os: Visual Studio 2015
+configuration:
+- Debug
+- Release
+before_build:
+- cmd: >-
+    git submodule update --init
+
+    appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+
+    restore.cmd
+build:
+  project: SpiroNet.sln
+  verbosity: minimal
+after_build:
+- cmd: >-
+    7z a SpiroNet-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\SpiroNet\bin\%CONFIGURATION%\*
+
+    7z a SpiroNet.Perspex-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\SpiroNet.Perspex\bin\%CONFIGURATION%\*
+
+    7z a SpiroNet.Wpf-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\SpiroNet.Wpf\bin\%CONFIGURATION%\*
+
+    appveyor PushArtifact SpiroNet-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip
+
+    appveyor PushArtifact SpiroNet.Perspex-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip
+
+    appveyor PushArtifact SpiroNet.Wpf-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip
+deploy:
+- provider: GitHub
+  tag: $(appveyor_build_version)
+  release: $(appveyor_build_version)
+  auth_token:
+    secure: 6jHUhHqAmyx5NOZWctCi0A72lGgaGxhT5tRWnBNMz1JYHOgg1PEID1DFEG1jiQeO
+  artifact: /.*\.zip/
+  prerelease: true
+  on:
+    branch: master
+notifications:
+- provider: Webhook
+  url: https://webhooks.gitter.im/e/b9db9a3f441ac5f721e2
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: true
