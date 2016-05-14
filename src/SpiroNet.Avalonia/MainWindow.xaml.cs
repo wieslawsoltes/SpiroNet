@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 */
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
 
 namespace SpiroNet.Avalonia
 {
@@ -33,7 +34,7 @@ namespace SpiroNet.Avalonia
 
         private void InitializeComponent()
         {
-            this.LoadFromXaml();
+            AvaloniaXamlLoader.Load(this);
         }
     }
 }
