@@ -1,0 +1,10 @@
+﻿<Window x:Class="SpiroNet.Avalonia.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:SpiroNet.Avalonia;assembly=SpiroNet.Avalonia"
+        xmlns:views="clr-namespace:SpiroNet.Avalonia.Views;assembly=SpiroNet.Avalonia"
+        Title="SpiroNet.Avalonia" Height="720" Width="1040"
+        Background="White"
+        UseLayoutRounding="True">
+    <views:EditorView/>
+</Window>

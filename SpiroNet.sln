@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Json", "src\SpiroN
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.ViewModels", "src\SpiroNet.ViewModels\SpiroNet.ViewModels.csproj", "{A4CD560C-4567-4889-AC1A-FE03E15FF75E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Perspex", "src\SpiroNet.Perspex\SpiroNet.Perspex.csproj", "{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Avalonia", "src\SpiroNet.Avalonia\SpiroNet.Avalonia.csproj", "{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

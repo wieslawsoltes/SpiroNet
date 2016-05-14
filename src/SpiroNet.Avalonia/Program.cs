@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Perspex
+SpiroNet.Avalonia
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -18,33 +18,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using Perspex;
-using Perspex.Markup;
+using Avalonia;
+using Avalonia.Logging.Serilog;
+using Serilog;
 using System;
-using System.Globalization;
+using System.Diagnostics;
 
-namespace SpiroNet.Perspex
+namespace SpiroNet.Avalonia
 {
-    public class EnumToBooleanConverter : IValueConverter
+    internal class Program
     {
-        public static EnumToBooleanConverter Instance = new EnumToBooleanConverter();
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        private static void Main(string[] args)
         {
-            if (value != null)
+            try
             {
-                return value.Equals(parameter);
+                InitializeLogging();
+                new App().UseWin32().UseDirect2D().LoadFromXaml().Start();
             }
-            return PerspexProperty.UnsetValue;
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        private static void InitializeLogging()
         {
-            if (value != null)
-            {
-                return (bool)value ? parameter : PerspexProperty.UnsetValue;
-            }
-            return PerspexProperty.UnsetValue;
+#if DEBUG
+            SerilogLogger.Initialize(new LoggerConfiguration()
+                .MinimumLevel.Warning()
+                .WriteTo.Trace(outputTemplate: "{Area}: {Message}")
+                .CreateLogger());
+#endif
         }
     }
 }

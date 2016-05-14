@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Perspex
+SpiroNet.Avalonia
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -18,33 +18,33 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using Perspex.Markup;
-using SpiroNet.Editor;
+using Avalonia;
+using Avalonia.Markup;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 
-namespace SpiroNet.Perspex
+namespace SpiroNet.Avalonia
 {
-    internal class ShapeToDataConverter : IMultiValueConverter
+    public class EnumToBooleanConverter : IValueConverter
     {
-        public static ShapeToDataConverter Instance = new ShapeToDataConverter();
+        public static EnumToBooleanConverter Instance = new EnumToBooleanConverter();
 
-        public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values == null || values.Count != 2)
-                return null;
+            if (value != null)
+            {
+                return value.Equals(parameter);
+            }
+            return AvaloniaProperty.UnsetValue;
+        }
 
-            var shape = values[0] as SpiroShape;
-            var dict = values[1] as IDictionary<SpiroShape, string>;
-            if (shape == null || dict == null)
-                return null;
-
-            string data;
-            if (!dict.TryGetValue(shape, out data))
-                return null;
-
-            return data;
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value != null)
+            {
+                return (bool)value ? parameter : AvaloniaProperty.UnsetValue;
+            }
+            return AvaloniaProperty.UnsetValue;
         }
     }
 }

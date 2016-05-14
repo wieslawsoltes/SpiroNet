@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Perspex
+SpiroNet.Avalonia
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -18,10 +18,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using Perspex;
-using Perspex.Controls;
-using Perspex.Input;
-using Perspex.Markup.Xaml;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Markup.Xaml;
 using SpiroNet.Editor;
 using SpiroNet.ViewModels;
 using System;
@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace SpiroNet.Perspex.Views
+namespace SpiroNet.Avalonia.Views
 {
     public class EditorView : UserControl
     {
@@ -70,7 +70,7 @@ namespace SpiroNet.Perspex.Views
 
         private void InitializeComponent()
         {
-            PerspexXamlLoader.Load(this);
+            AvaloniaXamlLoader.Load(this);
         }
 
         private void InitializeEditor()

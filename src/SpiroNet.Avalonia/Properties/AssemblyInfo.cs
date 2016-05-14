@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Perspex
+SpiroNet.Avalonia
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -18,22 +18,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using Perspex;
-using Perspex.Controls;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
-namespace SpiroNet.Perspex
-{
-    public class MainWindow : Window
-    {
-        public MainWindow()
-        {
-            this.InitializeComponent();
-            this.AttachDevTools();
-        }
+[assembly: AssemblyTitle("SpiroNet.Avalonia")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("SpiroNet.Avalonia")]
+[assembly: AssemblyCopyright("Copyright © Wiesław Šoltés 2015")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
-        private void InitializeComponent()
-        {
-            this.LoadFromXaml();
-        }
-    }
-}
+[assembly: ComVisible(false)]
+[assembly: Guid("b8db18eb-3be1-4344-812e-5b3b22d969a3")]
+
+[assembly: AssemblyVersion("1.0.*")]
