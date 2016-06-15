@@ -18,7 +18,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Logging.Serilog;
 using Serilog;
@@ -35,8 +34,7 @@ namespace SpiroNet.Avalonia
             {
                 InitializeLogging();
                 AppBuilder.Configure<App>()
-                    .UseWin32()
-                    .UseDirect2D1()
+                    .UsePlatformDetect()
                     .Start<MainWindow>();
             }
             catch (Exception ex)
