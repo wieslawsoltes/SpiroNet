@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Wpf", "src\SpiroNet.Wpf\SpiroNet.Wpf.csproj", "{D06A68AB-E369-4EC5-860F-04F54D29077F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet", "src\SpiroNet\SpiroNet.csproj", "{B2DEAB02-F231-4AA9-8879-0FD73096C60D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Editor", "src\SpiroNet.Editor\SpiroNet.Editor.csproj", "{4F0E9E3E-DA95-40B2-8FDE-22902388E90A}"
@@ -13,7 +11,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Json", "src\SpiroN
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.ViewModels", "src\SpiroNet.ViewModels\SpiroNet.ViewModels.csproj", "{A4CD560C-4567-4889-AC1A-FE03E15FF75E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Avalonia", "src\SpiroNet.Avalonia\SpiroNet.Avalonia.csproj", "{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{14839D79-4183-4D13-A0C3-6E396D51FA9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Avalonia", "samples\SpiroNet.Avalonia\SpiroNet.Avalonia.csproj", "{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Wpf", "samples\SpiroNet.Wpf\SpiroNet.Wpf.csproj", "{D06A68AB-E369-4EC5-860F-04F54D29077F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{945E10EB-994A-4B19-884C-35B203D1991B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,5 +52,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D06A68AB-E369-4EC5-860F-04F54D29077F} = {945E10EB-994A-4B19-884C-35B203D1991B}
+		{B2DEAB02-F231-4AA9-8879-0FD73096C60D} = {14839D79-4183-4D13-A0C3-6E396D51FA9B}
+		{4F0E9E3E-DA95-40B2-8FDE-22902388E90A} = {14839D79-4183-4D13-A0C3-6E396D51FA9B}
+		{DDAF7FA6-7EE3-4CF8-9800-25A2C9387AFC} = {14839D79-4183-4D13-A0C3-6E396D51FA9B}
+		{A4CD560C-4567-4889-AC1A-FE03E15FF75E} = {14839D79-4183-4D13-A0C3-6E396D51FA9B}
+		{B8DB18EB-3BE1-4344-812E-5B3B22D969A3} = {945E10EB-994A-4B19-884C-35B203D1991B}
 	EndGlobalSection
 EndGlobal
