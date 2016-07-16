@@ -1,7 +1,8 @@
 # SpiroNet
 
-[![Build status](https://ci.appveyor.com/api/projects/status/vq16ocwrjj95ak6t?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/spironet)
 [![Gitter](https://badges.gitter.im/wieslawsoltes/SpiroNet.svg)](https://gitter.im/wieslawsoltes/SpiroNet?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Build status](https://ci.appveyor.com/api/projects/status/vq16ocwrjj95ak6t?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/spironet)
+[![Build Status](https://travis-ci.org/wieslawsoltes/SpiroNet.svg?branch=master)](https://travis-ci.org/wieslawsoltes/SpiroNet)
 
 The .NET C# port of [libspiro](https://github.com/fontforge/libspiro) - conversion between spiro control points and bezier's
 
