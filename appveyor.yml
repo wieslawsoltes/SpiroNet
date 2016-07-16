@@ -20,9 +20,9 @@ after_build:
     
     7z a SpiroNet.Editor-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\SpiroNet.Editor\bin\%CONFIGURATION%\*
 
-    7z a SpiroNet.Avalonia-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\SpiroNet.Avalonia\bin\%CONFIGURATION%\*
+    7z a SpiroNet.Avalonia-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\samples\SpiroNet.Avalonia\bin\%CONFIGURATION%\*
 
-    7z a SpiroNet.Wpf-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\SpiroNet.Wpf\bin\%CONFIGURATION%\*
+    7z a SpiroNet.Wpf-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\samples\SpiroNet.Wpf\bin\%CONFIGURATION%\*
 
     appveyor PushArtifact SpiroNet-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip
 
