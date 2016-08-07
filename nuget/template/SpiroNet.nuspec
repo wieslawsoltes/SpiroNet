@@ -10,6 +10,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>The .NET C# port of libspiro - conversion between spiro control points and bezier's.</description>
     <copyright>Copyright 2016</copyright>
-    <tags>Spiro LibSpiro SpiroNet Graphics Bezier Geometry Editor Design Avalonia WPF</tags>
+    <tags>Spiro LibSpiro SpiroNet Graphics Bezier Spline Splines Curve Path Geometry Editor Design Avalonia WPF</tags>
   </metadata>
 </package>
