@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Avalonia
+SpiroNet.Wpf
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -18,22 +18,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Media;
-using SpiroNet.Editor;
-using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
-namespace SpiroNet.Avalonia
+namespace SpiroNet.Editor.Wpf.Renderer
 {
     public class CanvasRenderer : Canvas
     {
-        private static Geometry LeftKnot = StreamGeometry.Parse("M0,-4 A 4,4 0 0 0 0,4");
-        private static Geometry RightKnot = StreamGeometry.Parse("M0,-4 A 4,4 0 0 1 0,4");
-        private static Geometry EndKnot = StreamGeometry.Parse("M-3.5,-3.5 L3.5,3.5 M-3.5,3.5 L3.5,-3.5");
-        private static Geometry EndOpenContourKnot = StreamGeometry.Parse("M-3.5,-3.5 L0,0 -3.5,3.5");
-        private static Geometry OpenContourKnot = StreamGeometry.Parse("M3.5,-3.5 L0,0 3.5,3.5");
+        private static Geometry LeftKnot = Geometry.Parse("M0,-4 A 4,4 0 0 0 0,4");
+        private static Geometry RightKnot = Geometry.Parse("M0,-4 A 4,4 0 0 1 0,4");
+        private static Geometry EndKnot = Geometry.Parse("M-3.5,-3.5 L3.5,3.5 M-3.5,3.5 L3.5,-3.5");
+        private static Geometry EndOpenContourKnot = Geometry.Parse("M-3.5,-3.5 L0,0 -3.5,3.5");
+        private static Geometry OpenContourKnot = Geometry.Parse("M3.5,-3.5 L0,0 3.5,3.5");
 
         private IDictionary<BasicStyle, BasicStyleCache> _cache;
 
@@ -50,12 +48,11 @@ namespace SpiroNet.Avalonia
 
         public SpiroEditor SpiroEditor
         {
-            get { return GetValue(SpiroEditorProperty); }
+            get { return (SpiroEditor)GetValue(SpiroEditorProperty); }
             set { SetValue(SpiroEditorProperty, value); }
         }
 
-        public static readonly AvaloniaProperty<SpiroEditor> SpiroEditorProperty =
-            AvaloniaProperty.Register<CanvasRenderer, SpiroEditor>("SpiroEditor");
+        public static readonly DependencyProperty SpiroEditorProperty = DependencyProperty.Register("SpiroEditor", typeof(SpiroEditor), typeof(CanvasRenderer), new PropertyMetadata(null));
 
         public CanvasRenderer()
         {
@@ -119,15 +116,15 @@ namespace SpiroNet.Avalonia
             return value;
         }
 
-        public override void Render(DrawingContext context)
+        protected override void OnRender(DrawingContext dc)
         {
-            base.Render(context);
+            base.OnRender(dc);
 
             if (SpiroEditor != null && SpiroEditor.Drawing != null)
             {
                 if (SpiroEditor.Drawing.Guides != null && SpiroEditor.State.DisplayGuides)
                 {
-                    DrawGuides(context);
+                    DrawGuides(dc);
                 }
 
                 var state = SpiroEditor.State;
@@ -137,12 +134,12 @@ namespace SpiroNet.Avalonia
                         || (state.Tool == EditorTool.Guide && state.IsCaptured)
                         || (state.Tool == EditorTool.Guide && state.HaveSnapPoint))
                     {
-                        DrawHorizontalGuide(context,
+                        DrawHorizontalGuide(dc,
                             FromCache(state.HaveSnapPoint ? _snapGuideStyle : _guideStyle),
                             state.GuidePosition,
                             SpiroEditor.Drawing.Width);
 
-                        DrawVerticalGuide(context,
+                        DrawVerticalGuide(dc,
                             FromCache(state.HaveSnapPoint ? _snapGuideStyle : _guideStyle),
                             state.GuidePosition,
                             SpiroEditor.Drawing.Height);
@@ -151,7 +148,7 @@ namespace SpiroNet.Avalonia
                     if (state.Tool == EditorTool.Guide && state.HaveSnapPoint)
                     {
                         DrawGuidePoint(
-                            context,
+                            dc,
                             FromCache(_snapPointStyle),
                             SpiroEditor.State.SnapPoint,
                             SpiroEditor.State.SnapPointRadius);
@@ -160,7 +157,7 @@ namespace SpiroNet.Avalonia
                     if (state.Tool == EditorTool.Guide && state.IsCaptured)
                     {
                         DrawGuideLine(
-                            context,
+                            dc,
                             FromCache(_newLineStyle),
                             SpiroEditor.Measure.Point0,
                             SpiroEditor.Measure.Point1);
@@ -169,7 +166,7 @@ namespace SpiroNet.Avalonia
 
                 if (SpiroEditor.Drawing.Shapes != null)
                 {
-                    DrawSpiroShapes(context);
+                    DrawSpiroShapes(dc);
                 }
             }
         }
@@ -212,7 +209,7 @@ namespace SpiroNet.Avalonia
             var result = SpiroEditor.Data.TryGetValue(shape, out data);
             if (result && !string.IsNullOrEmpty(data))
             {
-                var geometry = StreamGeometry.Parse(data);
+                var geometry = Geometry.Parse(data);
                 if (isSelected)
                 {
                     var cache = FromCache(_hitGeometryStyle);
@@ -261,88 +258,65 @@ namespace SpiroNet.Avalonia
             }
         }
 
-        private void DrawSpiroKnot(DrawingContext dc, IBrush brush, Pen pen, SpiroKnot knot)
+        private void DrawSpiroKnot(DrawingContext dc, Brush brush, Pen pen, SpiroKnot knot)
         {
             switch (knot.Type)
             {
                 case SpiroPointType.Corner:
-                    dc.FillRectangle(brush, new Rect(knot.X - 3.5, knot.Y - 3.5, 7, 7));
+                    dc.DrawRectangle(brush, null, new Rect(knot.X - 3.5, knot.Y - 3.5, 7, 7));
                     break;
                 case SpiroPointType.G4:
-                    FillEllipse(dc, brush, new GuidePoint(knot.X, knot.Y), 3.5, 3.5);
+                    dc.DrawEllipse(brush, null, new Point(knot.X, knot.Y), 3.5, 3.5);
                     break;
                 case SpiroPointType.G2:
-                    {
-                        var rm = Rotation(ToRadians(knot.Theta), new Vector(knot.X, knot.Y));
-                        var rt = dc.PushPreTransform(rm);
-                        dc.FillRectangle(brush, new Rect(knot.X - 1.5, knot.Y - 3.5, 3, 7));
-                        rt.Dispose();
-                    }
+                    dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
+                    dc.DrawRectangle(brush, null, new Rect(knot.X - 1.5, knot.Y - 3.5, 3, 7));
+                    dc.Pop();
                     break;
                 case SpiroPointType.Left:
-                    {
-                        var rm = Rotation(ToRadians(knot.Theta), new Vector(knot.X, knot.Y));
-                        var tm = Translate(knot.X, knot.Y);
-                        var rt = dc.PushPreTransform(rm);
-                        var tt = dc.PushPreTransform(tm);
-                        dc.DrawGeometry(brush, null, LeftKnot);
-                        tt.Dispose();
-                        rt.Dispose();
-                    }
+                    dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
+                    dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
+                    dc.DrawGeometry(brush, null, LeftKnot);
+                    dc.Pop();
+                    dc.Pop();
                     break;
                 case SpiroPointType.Right:
-                    {
-                        var rm = Rotation(ToRadians(knot.Theta), new Vector(knot.X, knot.Y));
-                        var tm = Translate(knot.X, knot.Y);
-                        var rt = dc.PushPreTransform(rm);
-                        var tt = dc.PushPreTransform(tm);
-                        dc.DrawGeometry(brush, null, RightKnot);
-                        tt.Dispose();
-                        rt.Dispose();
-                    }
+                    dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
+                    dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
+                    dc.DrawGeometry(brush, null, RightKnot);
+                    dc.Pop();
+                    dc.Pop();
                     break;
                 case SpiroPointType.End:
-                    {
-                        var rm = Rotation(ToRadians(knot.Theta), new Vector(knot.X, knot.Y));
-                        var tm = Translate(knot.X, knot.Y);
-                        var rt = dc.PushPreTransform(rm);
-                        var tt = dc.PushPreTransform(tm);
-                        dc.DrawGeometry(null, pen, EndKnot);
-                        tt.Dispose();
-                        rt.Dispose();
-                    }
+                    dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
+                    dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
+                    dc.DrawGeometry(null, pen, EndKnot);
+                    dc.Pop();
+                    dc.Pop();
                     break;
                 case SpiroPointType.OpenContour:
-                    {
-                        var rm = Rotation(ToRadians(knot.Theta), new Vector(knot.X, knot.Y));
-                        var tm = Translate(knot.X, knot.Y);
-                        var rt = dc.PushPreTransform(rm);
-                        var tt = dc.PushPreTransform(tm);
-                        dc.DrawGeometry(null, pen, OpenContourKnot);
-                        tt.Dispose();
-                        rt.Dispose();
-                    }
+                    dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
+                    dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
+                    dc.DrawGeometry(null, pen, OpenContourKnot);
+                    dc.Pop();
+                    dc.Pop();
                     break;
                 case SpiroPointType.EndOpenContour:
-                    {
-                        var rm = Rotation(ToRadians(knot.Theta), new Vector(knot.X, knot.Y));
-                        var tm = Translate(knot.X, knot.Y);
-                        var rt = dc.PushPreTransform(rm);
-                        var tt = dc.PushPreTransform(tm);
-                        dc.DrawGeometry(null, pen, EndOpenContourKnot);
-                        tt.Dispose();
-                        rt.Dispose();
-                    }
+                    dc.PushTransform(new RotateTransform(knot.Theta, knot.X, knot.Y));
+                    dc.PushTransform(new TranslateTransform(knot.X, knot.Y));
+                    dc.DrawGeometry(null, pen, EndOpenContourKnot);
+                    dc.Pop();
+                    dc.Pop();
                     break;
             }
         }
 
-        private void DrawSpiroPoint(DrawingContext dc, IBrush brush, Pen pen, SpiroControlPoint point)
+        private void DrawSpiroPoint(DrawingContext dc, Brush brush, Pen pen, SpiroControlPoint point)
         {
             switch (point.Type)
             {
                 case SpiroPointType.Corner:
-                    dc.FillRectangle(brush, new Rect(point.X - 3.5, point.Y - 3.5, 7, 7));
+                    dc.DrawRectangle(brush, null, new Rect(point.X - 3.5, point.Y - 3.5, 7, 7));
                     break;
                 case SpiroPointType.G4:
                 case SpiroPointType.G2:
@@ -351,10 +325,9 @@ namespace SpiroNet.Avalonia
                 case SpiroPointType.End:
                 case SpiroPointType.OpenContour:
                 case SpiroPointType.EndOpenContour:
-                    var tm = Translate(point.X, point.Y);
-                    var tt = dc.PushPreTransform(tm);
+                    dc.PushTransform(new TranslateTransform(point.X, point.Y));
                     dc.DrawGeometry(null, pen, EndKnot);
-                    tt.Dispose();
+                    dc.Pop();
                     break;
             }
         }
@@ -369,12 +342,18 @@ namespace SpiroNet.Avalonia
 
         private void DrawGuidePoint(DrawingContext dc, BasicStyleCache cache, GuidePoint point, double radius)
         {
-            FillEllipse(dc, cache.FillBrush, point, radius, radius);
+            dc.DrawEllipse(cache.FillBrush, null, new Point(point.X, point.Y), radius, radius);
         }
 
         private void DrawGuideLine(DrawingContext dc, BasicStyleCache cache, GuidePoint point0, GuidePoint point1)
         {
+            var gs = new GuidelineSet(
+                new double[] { point0.X + cache.HalfThickness, point1.X + cache.HalfThickness },
+                new double[] { point0.Y + cache.HalfThickness, point1.Y + cache.HalfThickness });
+            gs.Freeze();
+            dc.PushGuidelineSet(gs);
             dc.DrawLine(cache.StrokePen, new Point(point0.X, point0.Y), new Point(point1.X, point1.Y));
+            dc.Pop();
         }
 
         private void DrawHorizontalGuide(DrawingContext dc, BasicStyleCache cache, GuidePoint point, double width)
@@ -389,34 +368,6 @@ namespace SpiroNet.Avalonia
             var point0 = new GuidePoint(point.X, 0);
             var point1 = new GuidePoint(point.X, height);
             DrawGuideLine(dc, cache, point0, point1);
-        }
-
-        private static void FillEllipse(DrawingContext dc, IBrush brush, GuidePoint point, double radiusX, double radiusY)
-        {
-            var g = new EllipseGeometry(new Rect(point.X - radiusX, point.Y - radiusY, 2.0 * radiusX, 2.0 * radiusY));
-            dc.DrawGeometry(brush, null, g);
-        }
-
-        private static double ToRadians(double degrees)
-        {
-            return degrees * Math.PI / 180.0;
-        }
-
-        private static Matrix Translate(double offsetX, double offsetY)
-        {
-            return new Matrix(1.0, 0.0, 0.0, 1.0, offsetX, offsetY);
-        }
-
-        private static Matrix Rotation(double radians)
-        {
-            double cos = Math.Cos(radians);
-            double sin = Math.Sin(radians);
-            return new Matrix(cos, sin, -sin, cos, 0, 0);
-        }
-
-        private static Matrix Rotation(double angle, Vector center)
-        {
-            return Translate(-center.X, -center.Y) * Rotation(angle) * Translate(center.X, center.Y);
         }
     }
 }

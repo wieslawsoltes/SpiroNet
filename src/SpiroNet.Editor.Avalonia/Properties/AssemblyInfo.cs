@@ -1,5 +1,6 @@
-﻿/*
-SpiroNet
+﻿
+/*
+SpiroNet.Editor.Avalonia
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -18,12 +19,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using System.Resources;
+using System.Runtime.InteropServices;
 using System.Reflection;
 
-[assembly: AssemblyTitle("SpiroNet")]
+[assembly: AssemblyTitle("SpiroNet.Editor.Avalonia")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("SpiroNet")]
+[assembly: AssemblyProduct("SpiroNet.Editor.Avalonia")]
 [assembly: AssemblyCulture("")]
-[assembly: NeutralResourcesLanguage("en")]
+[assembly: ComVisible(false)]
+[assembly: Guid("8fc66fee-a5d3-4973-a1b6-122c083cef43")]

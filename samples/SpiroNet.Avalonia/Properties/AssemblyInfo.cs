@@ -24,13 +24,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SpiroNet.Avalonia")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SpiroNet.Avalonia")]
-[assembly: AssemblyCopyright("Copyright © Wiesław Šoltés 2015")]
-[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
 [assembly: ComVisible(false)]
 [assembly: Guid("b8db18eb-3be1-4344-812e-5b3b22d969a3")]
-
-[assembly: AssemblyVersion("1.0.*")]

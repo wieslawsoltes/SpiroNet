@@ -24,13 +24,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SpiroNet.ViewModels")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SpiroNet.ViewModels")]
-[assembly: AssemblyCopyright("Copyright © Wiesław Šoltés 2015")]
-[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
 [assembly: ComVisible(false)]
 [assembly: Guid("a4cd560c-4567-4889-ac1a-fe03e15ff75e")]
-
-[assembly: AssemblyVersion("1.0.*")]

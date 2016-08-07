@@ -24,11 +24,6 @@ using System.Reflection;
 [assembly: AssemblyTitle("SpiroNet.Json")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SpiroNet.Json")]
-[assembly: AssemblyCopyright("Copyright © Wiesław Šoltés 2015")]
-[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
-
-[assembly: AssemblyVersion("1.0.*")]

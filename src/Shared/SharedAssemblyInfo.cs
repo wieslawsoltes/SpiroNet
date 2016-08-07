@@ -1,6 +1,6 @@
-ï»¿/*
-SpiroNet
-Copyright (C) 2015 WiesÅ‚aw Å oltÃ©s
+/*
+SpiroNet.Avalonia
+Copyright (C) 2015 Wies³aw Šoltés
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -18,12 +18,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using System.Resources;
 using System.Reflection;
 
-[assembly: AssemblyTitle("SpiroNet")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("SpiroNet")]
-[assembly: AssemblyCulture("")]
-[assembly: NeutralResourcesLanguage("en")]
+[assembly: AssemblyCompany("Wies³aw Šoltés")]
+[assembly: AssemblyCopyright("Copyright © Wies³aw Šoltés 2015")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyVersion("0.6.0")]
+[assembly: AssemblyFileVersion("0.6.0")]
+[assembly: AssemblyInformationalVersion("0.6.0")]

@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Wpf
+SpiroNet.Avalonia
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -18,20 +18,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using SpiroNet.Editor;
-using System.Windows.Media;
+using Avalonia.Media;
 
-namespace SpiroNet.Wpf
+namespace SpiroNet.Editor.Avalonia.Renderer
 {
     public class BasicStyleCache
     {
-        public Brush FillBrush { get; private set; }
-        public Brush StrokeBrush { get; private set; }
+        public IBrush FillBrush { get; private set; }
+        public IBrush StrokeBrush { get; private set; }
         public Pen StrokePen { get; private set; }
         public double Thickness { get; private set; }
         public double HalfThickness { get; private set; }
 
-        public static Brush ToBrush(Argb color)
+        public static IBrush ToBrush(Argb color)
         {
             return new SolidColorBrush(Color.FromArgb(color.A, color.R, color.G, color.B));
         }
@@ -47,16 +46,13 @@ namespace SpiroNet.Wpf
             if (style.Fill != null)
             {
                 FillBrush = ToBrush(style.Fill);
-                FillBrush.Freeze();
             }
 
             if (style.Stroke != null)
             {
                 StrokeBrush = ToBrush(style.Stroke);
-                StrokeBrush.Freeze();
 
                 StrokePen = new Pen(StrokeBrush, Thickness);
-                StrokePen.Freeze();
             }
         }
     }

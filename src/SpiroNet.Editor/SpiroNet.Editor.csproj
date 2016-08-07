@@ -41,6 +41,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Contexts\HitTestBezierContext.cs" />
     <Compile Include="Contexts\PathBezierContext.cs" />
     <Compile Include="Contexts\PsBezierContext.cs" />

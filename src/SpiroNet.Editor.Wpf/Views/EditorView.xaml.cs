@@ -27,7 +27,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace SpiroNet.Wpf.Views
+namespace SpiroNet.Editor.Wpf.Views
 {
     public partial class EditorView : UserControl
     {

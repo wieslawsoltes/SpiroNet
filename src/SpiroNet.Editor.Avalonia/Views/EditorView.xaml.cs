@@ -22,14 +22,13 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
-using SpiroNet.Editor;
 using SpiroNet.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace SpiroNet.Avalonia.Views
+namespace SpiroNet.Editor.Avalonia.Views
 {
     public class EditorView : UserControl
     {

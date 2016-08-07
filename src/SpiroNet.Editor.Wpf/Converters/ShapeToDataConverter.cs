@@ -18,13 +18,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using SpiroNet.Editor;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace SpiroNet.Wpf
+namespace SpiroNet.Editor.Wpf.Converters
 {
     internal class ShapeToDataConverter : IMultiValueConverter
     {

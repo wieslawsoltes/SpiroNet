@@ -37,6 +37,9 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="BandMatrix.cs" />
     <Compile Include="IBezierContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

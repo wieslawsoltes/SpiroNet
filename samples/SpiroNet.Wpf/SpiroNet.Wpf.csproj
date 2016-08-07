@@ -56,12 +56,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters\EnumToBooleanConverter.cs" />
-    <Compile Include="Converters\ShapeToDataConverter.cs" />
-    <Compile Include="Renderer\BasicStyleCache.cs" />
-    <Compile Include="Renderer\CanvasRenderer.cs" />
-    <Compile Include="Views\EditorView.xaml.cs">
-      <DependentUpon>EditorView.xaml</DependentUpon>
+    <Compile Include="..\..\src\Shared\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -75,10 +71,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\EditorView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -108,6 +100,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\SpiroNet.Editor.Wpf\SpiroNet.Editor.Wpf.csproj">
+      <Project>{435b7914-aede-4085-b192-7ed68ed0c813}</Project>
+      <Name>SpiroNet.Editor.Wpf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\SpiroNet.Editor\SpiroNet.Editor.csproj">
       <Project>{4f0e9e3e-da95-40b2-8fde-22902388e90a}</Project>
       <Name>SpiroNet.Editor</Name>

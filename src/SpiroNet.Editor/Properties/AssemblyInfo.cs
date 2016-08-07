@@ -24,11 +24,6 @@ using System.Reflection;
 [assembly: AssemblyTitle("SpiroNet.Editor")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SpiroNet.Editor")]
-[assembly: AssemblyCopyright("Copyright © Wiesław Šoltés 2015")]
-[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
-
-[assembly: AssemblyVersion("1.0.*")]

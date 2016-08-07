@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Avalonia
+SpiroNet.Wpf
 Copyright (C) 2015 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -18,33 +18,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using Avalonia;
-using Avalonia.Markup;
 using System;
 using System.Globalization;
+using System.Windows.Data;
 
-namespace SpiroNet.Avalonia
+namespace SpiroNet.Editor.Wpf.Converters
 {
     public class EnumToBooleanConverter : IValueConverter
     {
-        public static EnumToBooleanConverter Instance = new EnumToBooleanConverter();
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object param, CultureInfo culture)
         {
-            if (value != null)
-            {
-                return value.Equals(parameter);
-            }
-            return AvaloniaProperty.UnsetValue;
+            return value.Equals(param);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object param, CultureInfo culture)
         {
-            if (value != null)
-            {
-                return (bool)value ? parameter : AvaloniaProperty.UnsetValue;
-            }
-            return AvaloniaProperty.UnsetValue;
+            return (bool)value ? param : Binding.DoNothing;
         }
     }
 }

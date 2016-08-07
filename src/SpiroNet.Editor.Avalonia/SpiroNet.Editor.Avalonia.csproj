@@ -4,18 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <ProjectGuid>{8FC66FEE-A5D3-4973-A1B6-122C083CEF43}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SpiroNet.Avalonia</RootNamespace>
-    <AssemblyName>SpiroNet.Avalonia</AssemblyName>
+    <RootNamespace>SpiroNet.Editor.Avalonia</RootNamespace>
+    <AssemblyName>SpiroNet.Editor.Avalonia</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,16 +22,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Avalonia.Animation, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -43,10 +36,6 @@
     </Reference>
     <Reference Include="Avalonia.Base, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Avalonia.0.4.0\lib\portable-windows8+net45\Avalonia.Base.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Avalonia.Cairo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Avalonia.Desktop.0.4.0\lib\net45\Avalonia.Cairo.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Avalonia.Controls, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -59,14 +48,6 @@
     </Reference>
     <Reference Include="Avalonia.Diagnostics, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Avalonia.0.4.0\lib\portable-windows8+net45\Avalonia.Diagnostics.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Avalonia.Direct2D1, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Avalonia.Desktop.0.4.0\lib\net45\Avalonia.Direct2D1.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Avalonia.Gtk, Version=1.0.6062.14569, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Avalonia.Desktop.0.4.0\lib\net45\Avalonia.Gtk.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Avalonia.HtmlRenderer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -113,28 +94,12 @@
       <HintPath>..\..\packages\Avalonia.0.4.0\lib\portable-windows8+net45\Avalonia.Themes.Default.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Avalonia.Win32, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Avalonia.Desktop.0.4.0\lib\net45\Avalonia.Win32.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Serilog, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Serilog.1.5.14\lib\net45\Serilog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Serilog.FullNetFx, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Serilog.1.5.14\lib\net45\Serilog.FullNetFx.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SharpDX, Version=3.0.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SharpDX.3.0.2\lib\net45\SharpDX.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SharpDX.Direct2D1, Version=3.0.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SharpDX.Direct2D1.3.0.2\lib\net45\SharpDX.Direct2D1.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SharpDX.DXGI, Version=3.0.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SharpDX.DXGI.3.0.2\lib\net45\SharpDX.DXGI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -173,52 +138,43 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\src\Shared\SharedAssemblyInfo.cs">
+    <Compile Include="..\Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="Converters\EnumToBooleanConverter.cs" />
+    <Compile Include="Converters\ShapeToDataConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderer\BasicStyleCache.cs" />
+    <Compile Include="Renderer\CanvasRenderer.cs" />
+    <Compile Include="Views\EditorView.xaml.cs">
+      <DependentUpon>EditorView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <EmbeddedResource Include="Views\EditorView.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\SpiroNet.Editor.Avalonia\SpiroNet.Editor.Avalonia.csproj">
-      <Project>{8fc66fee-a5d3-4973-a1b6-122c083cef43}</Project>
-      <Name>SpiroNet.Editor.Avalonia</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\SpiroNet.Editor\SpiroNet.Editor.csproj">
+    <ProjectReference Include="..\SpiroNet.Editor\SpiroNet.Editor.csproj">
       <Project>{4f0e9e3e-da95-40b2-8fde-22902388e90a}</Project>
       <Name>SpiroNet.Editor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\SpiroNet.Json\SpiroNet.Json.csproj">
+    <ProjectReference Include="..\SpiroNet.Json\SpiroNet.Json.csproj">
       <Project>{ddaf7fa6-7ee3-4cf8-9800-25a2c9387afc}</Project>
       <Name>SpiroNet.Json</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\SpiroNet.ViewModels\SpiroNet.ViewModels.csproj">
+    <ProjectReference Include="..\SpiroNet.ViewModels\SpiroNet.ViewModels.csproj">
       <Project>{a4cd560c-4567-4889-ac1a-fe03e15ff75e}</Project>
       <Name>SpiroNet.ViewModels</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\SpiroNet\SpiroNet.csproj">
+    <ProjectReference Include="..\SpiroNet\SpiroNet.csproj">
       <Project>{b2deab02-f231-4aa9-8879-0fd73096c60d}</Project>
       <Name>SpiroNet</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MainWindow.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="App.xaml" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
