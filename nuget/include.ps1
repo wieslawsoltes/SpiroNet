@@ -1,0 +1,1 @@
+$Packages = @("SpiroNet", "SpiroNet.Editor", "SpiroNet.Json", "SpiroNet.ViewModels", "SpiroNet.Editor.Avalonia", "SpiroNet.Editor.Wpf")
