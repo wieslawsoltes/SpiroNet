@@ -1,36 +1,30 @@
-version: 0.5.{build}
+version: 0.6.{build}
 skip_tags: true
 os: Visual Studio 2015
-configuration:
-- Debug
-- Release
+configuration: Release
+environment:
+  myget_key:
+    secure: xhYvrWYPHdNI+mQD+f4Zu3baL7fqW+nO/hYXJdN070Lej8wpa6gfrLi1NGtnQlAs
+nuget:
+  disable_publish_on_pr: true
 before_build:
-- cmd: >-
-    git submodule update --init
-
-    appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-
-    restore.cmd
+- cmd: restore.cmd
 build:
   project: SpiroNet.sln
   verbosity: minimal
 after_build:
 - cmd: >-
-    7z a SpiroNet-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\SpiroNet\bin\%CONFIGURATION%\*
-    
-    7z a SpiroNet.Editor-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\SpiroNet.Editor\bin\%CONFIGURATION%\*
-
     7z a SpiroNet.Avalonia-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\samples\SpiroNet.Avalonia\bin\%CONFIGURATION%\*
 
     7z a SpiroNet.Wpf-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\samples\SpiroNet.Wpf\bin\%CONFIGURATION%\*
 
-    appveyor PushArtifact SpiroNet-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip
-
-    appveyor PushArtifact SpiroNet.Editor-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip
-
     appveyor PushArtifact SpiroNet.Avalonia-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip
 
     appveyor PushArtifact SpiroNet.Wpf-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip
+after_test:
+- ps: nuget\build-appveyor.ps1
+artifacts:
+  - path: nuget\*.nupkg
 deploy:
 - provider: GitHub
   tag: $(appveyor_build_version)
