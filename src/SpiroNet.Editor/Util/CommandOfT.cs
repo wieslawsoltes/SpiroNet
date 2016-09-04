@@ -23,7 +23,7 @@ using System.Windows.Input;
 
 namespace SpiroNet.Editor
 {
-    public class Command : ICommand
+    public class Command<T> : ICommand where T : class
     {
         public event EventHandler CanExecuteChanged;
 
@@ -32,10 +32,10 @@ namespace SpiroNet.Editor
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private Action _execute;
-        private Func<bool> _canExecute;
+        private Action<T> _execute;
+        private Func<T, bool> _canExecute;
 
-        public Command(Action execute, Func<bool> canExecute = null)
+        public Command(Action<T> execute, Func<T, bool> canExecute = null)
         {
             _execute = execute;
             _canExecute = canExecute;
@@ -45,19 +45,19 @@ namespace SpiroNet.Editor
         {
             if (_canExecute == null)
                 return true;
-            return _canExecute();
+            return _canExecute(parameter as T);
         }
 
         public void Execute(object parameter)
         {
             if (_execute == null)
                 return;
-            _execute();
+            _execute(parameter as T);
         }
 
-        public static ICommand Create(Action execute, Func<bool> canExecute = null)
+        public static ICommand Create(Action<T> execute, Func<T, bool> canExecute = null)
         {
-            return new Command(execute, canExecute);
+            return new Command<T>(execute, canExecute);
         }
     }
 }

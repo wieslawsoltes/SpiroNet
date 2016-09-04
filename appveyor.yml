@@ -1,43 +1,28 @@
-version: 0.6.1.{build}
-skip_tags: true
-os: Visual Studio 2015
-configuration: Release
+image: Visual Studio 2015
+platform:
+- Any CPU
+configuration:
+- Release
 environment:
-  myget_key:
+  NUGET_API_KEY:
+    secure: iSkm19DNdKOLxxCvHiaKikWXy25ZMwGBKpv+EgEprliGl0qX5HtKohLmwJsLnx5O
+  NUGET_API_URL: https://www.nuget.org/api/v2/package
+  MYGET_API_KEY:
     secure: xhYvrWYPHdNI+mQD+f4Zu3baL7fqW+nO/hYXJdN070Lej8wpa6gfrLi1NGtnQlAs
-nuget:
-  disable_publish_on_pr: true
+  MYGET_API_URL: https://www.myget.org/F/spironet-nightly/api/v2/package
 before_build:
-- cmd: restore.cmd
-build:
-  project: SpiroNet.sln
-  verbosity: minimal
-after_build:
-- cmd: >-
-    7z a SpiroNet.Avalonia-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\samples\SpiroNet.Avalonia\bin\%CONFIGURATION%\*
-
-    7z a SpiroNet.Wpf-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\samples\SpiroNet.Wpf\bin\%CONFIGURATION%\*
-
-    appveyor PushArtifact SpiroNet.Avalonia-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip
-
-    appveyor PushArtifact SpiroNet.Wpf-%CONFIGURATION%-%APPVEYOR_BUILD_VERSION%.zip
-after_test:
-- ps: nuget\build-appveyor.ps1
-artifacts:
-  - path: nuget\*.nupkg
-deploy:
-- provider: GitHub
-  tag: $(appveyor_build_version)
-  release: $(appveyor_build_version)
-  auth_token:
-    secure: 6jHUhHqAmyx5NOZWctCi0A72lGgaGxhT5tRWnBNMz1JYHOgg1PEID1DFEG1jiQeO
-  artifact: /.*\.zip/
-  prerelease: true
-  on:
-    branch: master
+- cmd: git submodule update --init
+build_script:
+- ps: .\build.ps1 -Target "AppVeyor" -Platform "$env:platform" -Configuration "$env:configuration"
+test: off
 notifications:
 - provider: Webhook
-  url: https://webhooks.gitter.im/e/b9db9a3f441ac5f721e2
+  url: https://webhooks.gitter.im/e/3211907a32bb8b42a441
+  method: POST
   on_build_success: true
   on_build_failure: true
   on_build_status_changed: true
+artifacts:
+  - path: artifacts\test-results\*.xml
+  - path: artifacts\nuget\*.nupkg
+  - path: artifacts\zip\*.zip

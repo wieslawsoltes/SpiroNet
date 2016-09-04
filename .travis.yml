@@ -4,12 +4,13 @@ os:
   - osx
 mono:
   - latest
-solution: SpiroNet.mono.sln
-before_install:
-  - mkdir -p .nuget
-  - wget -O .nuget/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y gtk-sharp2 ; fi
-  - mono .nuget/nuget.exe restore SpiroNet.mono.sln
 script:
-  - xbuild /p:Configuration=Release SpiroNet.mono.sln
+  - ./build.sh --target "Travis" --platform "Mono" --configuration "Release"
+notifications:
+  email: false
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/214f3a64f2683a8a948a
+    on_success: change
+    on_failure: always
+    on_start: never

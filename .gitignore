@@ -215,3 +215,14 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 *.userprefs
+
+#docfx
+_site
+api
+
+#################
+## Cake
+#################
+tools/
+.nuget
+artifacts/

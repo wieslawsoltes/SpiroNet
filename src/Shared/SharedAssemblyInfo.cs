@@ -1,6 +1,6 @@
-/*
+Ôªø/*
 SpiroNet.Avalonia
-Copyright (C) 2015 Wies≥aw äoltÈs
+Copyright (C) 2015 Wies≈Çaw ≈†olt√©s
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -20,9 +20,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 */
 using System.Reflection;
 
-[assembly: AssemblyCompany("Wies≥aw äoltÈs")]
-[assembly: AssemblyCopyright("Copyright © Wies≥aw äoltÈs 2015")]
+[assembly: AssemblyCompany("Wies≈Çaw ≈†olt√©s")]
+[assembly: AssemblyCopyright("Copyright ¬© Wies≈Çaw ≈†olt√©s 2015")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyVersion("0.6.0")]
-[assembly: AssemblyFileVersion("0.6.0")]
-[assembly: AssemblyInformationalVersion("0.6.0")]
+[assembly: AssemblyVersion("0.6.1")]
+[assembly: AssemblyFileVersion("0.6.1")]
+[assembly: AssemblyInformationalVersion("0.6.1")]

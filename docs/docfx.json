@@ -5,7 +5,11 @@
         {
           "files": [
             "/src/SpiroNet/SpiroNet.csproj",
-            "/src/SpiroNet.Editor/SpiroNet.Editor.csproj"
+            "/src/SpiroNet.Editor/SpiroNet.Editor.csproj",
+            "/src/SpiroNet.Json/SpiroNet.Json.csproj",
+            "/src/SpiroNet.ViewModels/SpiroNet.ViewModels.csproj",
+            "/src/SpiroNet.Editor.Avalonia/SpiroNet.Editor.Avalonia.csproj",
+            "/src/SpiroNet.Editor.Wpf/SpiroNet.Editor.Wpf.csproj"
           ],
           "exclude": [ "**/bin/**", "**/obj/**" ], 
           "cwd": ".."

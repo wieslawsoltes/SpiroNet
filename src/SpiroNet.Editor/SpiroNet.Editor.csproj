@@ -64,6 +64,7 @@
     <Compile Include="Style\Argb.cs" />
     <Compile Include="Style\BasicStyle.cs" />
     <Compile Include="Util\Command.cs" />
+    <Compile Include="Util\CommandOfT.cs" />
     <Compile Include="Util\ObservableObject.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
