@@ -178,7 +178,7 @@ var nuspecNuGetSpiroNet = new NuGetPackSettings()
     NoPackageAnalysis = true,
     Description = "The .NET C# port of libspiro - conversion between spiro control points and bezier's.",
     Copyright = "Copyright 2016",
-    Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design", "Avalonia", "WPF" },
+    Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design" },
     Files = new []
     {
         new NuSpecContent { Source = "src/SpiroNet/bin/" + dirSuffix + "/SpiroNet.dll", Target = "lib/portable-windows8+net45" },
@@ -201,7 +201,7 @@ var nuspecNuGetSpiroNetEditor = new NuGetPackSettings()
     NoPackageAnalysis = true,
     Description = "The .NET C# port of libspiro - conversion between spiro control points and bezier's.",
     Copyright = "Copyright 2016",
-    Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design", "Avalonia", "WPF" },
+    Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design" },
     Dependencies = new []
     {
         new NuSpecDependency { Id = "SpiroNet", Version = version }
@@ -227,7 +227,7 @@ var nuspecNuGetSpiroNetJson = new NuGetPackSettings()
     NoPackageAnalysis = true,
     Description = "The .NET C# port of libspiro - conversion between spiro control points and bezier's.",
     Copyright = "Copyright 2016",
-    Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design", "Avalonia", "WPF" },
+    Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design" },
     Dependencies = new []
     {
         new NuSpecDependency { Id = "SpiroNet", Version = version },
@@ -254,7 +254,7 @@ var nuspecNuGetSpiroNetViewModels = new NuGetPackSettings()
     NoPackageAnalysis = true,
     Description = "The .NET C# port of libspiro - conversion between spiro control points and bezier's.",
     Copyright = "Copyright 2016",
-    Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design", "Avalonia", "WPF" },
+    Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design" },
     Dependencies = new []
     {
         new NuSpecDependency { Id = "SpiroNet", Version = version },
@@ -282,7 +282,7 @@ var nuspecNuGetSpiroNetEditorWpf = new NuGetPackSettings()
     NoPackageAnalysis = true,
     Description = "The .NET C# port of libspiro - conversion between spiro control points and bezier's.",
     Copyright = "Copyright 2016",
-    Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design", "Avalonia", "WPF" },
+    Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design", "WPF" },
     Dependencies = new []
     {
         new NuSpecDependency { Id = "SpiroNet.ViewModels", Version = version }
@@ -308,7 +308,7 @@ var nuspecNuGetSpiroNetEditorAvalonia = new NuGetPackSettings()
     NoPackageAnalysis = true,
     Description = "The .NET C# port of libspiro - conversion between spiro control points and bezier's.",
     Copyright = "Copyright 2016",
-    Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design", "Avalonia", "WPF" },
+    Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design", "Avalonia" },
     Dependencies = new []
     {
         new NuSpecDependency { Id = "SpiroNet.ViewModels", Version = version },
