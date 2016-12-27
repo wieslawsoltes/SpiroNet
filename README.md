@@ -101,3 +101,5 @@ Console.WriteLine("Success: {0} ", success);
 ## License
 
 SpiroNet is licensed under the [GPL-3.0 license](COPYING).
+
+Original license and patent grant is included in [README by Raph Levien](README-RaphLevien) for ppedit.
