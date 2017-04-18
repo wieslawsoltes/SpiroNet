@@ -8,6 +8,7 @@
 [![NuGet](https://img.shields.io/nuget/v/SpiroNet.svg)](https://www.nuget.org/packages/SpiroNet)
 [![MyGet](https://img.shields.io/myget/spironet-nightly/vpre/SpiroNet.svg?label=myget)](https://www.myget.org/gallery/spironet-nightly) 
 
+[![CodeFactor](https://www.codefactor.io/repository/github/wieslawsoltes/spironet/badge)](https://www.codefactor.io/repository/github/wieslawsoltes/spironet)
 
 The .NET C# port of [libspiro](https://github.com/fontforge/libspiro) - conversion between spiro control points and bezier's
 
