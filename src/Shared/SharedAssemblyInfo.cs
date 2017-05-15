@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 using System.Reflection;
 
 [assembly: AssemblyCompany("Wiesław Šoltés")]
-[assembly: AssemblyCopyright("Copyright © Wiesław Šoltés 2015")]
+[assembly: AssemblyCopyright("Copyright © Wiesław Šoltés 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyVersion("0.6.3")]
 [assembly: AssemblyFileVersion("0.6.3")]
