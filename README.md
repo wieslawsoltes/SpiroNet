@@ -54,7 +54,7 @@ Dependencies are required only for specifuc editor packages.
 
 ## Usage
 
-Provided examples create  geometric paths as output using [Path Markup Syntax](https://msdn.microsoft.com/en-us/library/cc189041(v=vs.95).aspx) for WPF/Silverlight and [Path Data](http://www.w3.org/TR/SVG/paths.html#PathData) for SVG.
+Provided examples create geometric paths as output using [Path Markup Syntax](https://msdn.microsoft.com/en-us/library/cc189041(v=vs.95).aspx) for WPF/Silverlight and [Path Data](http://www.w3.org/TR/SVG/paths.html#PathData) for SVG.
 
 ```C#
 var points = new SpiroControlPoint[4];
