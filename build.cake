@@ -266,7 +266,9 @@ var nuspecNuGetSpiroNetViewModels = new NuGetPackSettings()
     {
         new NuSpecDependency { Id = "SpiroNet", Version = version },
         new NuSpecDependency { Id = "SpiroNet.Editor", Version = version },
-        new NuSpecDependency { Id = "SpiroNet.Json", Version = version }
+        new NuSpecDependency { Id = "SpiroNet.Json", Version = version },
+        // netstandard1.3
+        new NuSpecDependency { Id = "System.IO.FileSystem", TargetFramework = "netstandard1.3", Version = "4.3.0" }
     },
     Files = new []
     {
