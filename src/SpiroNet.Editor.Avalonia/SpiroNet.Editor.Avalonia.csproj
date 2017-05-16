@@ -46,7 +46,7 @@
     <PackageReference Include="System.Reactive.Interfaces" Version="3.0.0" />
     <PackageReference Include="System.Reactive.Linq" Version="3.0.0" />
     <PackageReference Include="System.Reactive.PlatformServices" Version="3.0.0" />
-    <PackageReference Include="System.Reactive.Windows.Threading" Version="3.0.0" />
+    <PackageReference Condition="'$(TargetFramework)' == 'net45'" Include="System.Reactive.Windows.Threading" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SpiroNet.Editor\SpiroNet.Editor.csproj" />
