@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Polly;
 using NuGet;
 
@@ -39,7 +40,6 @@ var AssemblyInfoPath = File("./src/Shared/SharedAssemblyInfo.cs");
 var ReleasePlatform = "Any CPU";
 var ReleaseConfiguration = "Release";
 var MSBuildSolution = "./SpiroNet.sln";
-var XBuildSolution = "./SpiroNet.sln";
 
 ///////////////////////////////////////////////////////////////////////////////
 // PARAMETERS
@@ -112,22 +112,28 @@ var zipTargetWpfDirs = zipRoot.CombineWithFilePath("SpiroNet.Wpf-" + fileZipSuff
 ///////////////////////////////////////////////////////////////////////////////
 
 // Key: Package Id
-// Value is Tuple where Item1: Package Version, Item2: The packages.config file path.
+// Value is Tuple where Item1: Package Version, Item2: The *.csproj/*.props file path.
 var packageVersions = new Dictionary<string, IList<Tuple<string,string>>>();
 
-System.IO.Directory.EnumerateFiles(((DirectoryPath)Directory("./src")).FullPath, "packages.config", SearchOption.AllDirectories).ToList().ForEach(fileName =>
-{
-    var file = new PackageReferenceFile(fileName);
-    foreach (PackageReference packageReference in file.GetPackageReferences())
+System.IO.Directory.EnumerateFiles(((DirectoryPath)Directory("./src")).FullPath, "*.csproj", SearchOption.AllDirectories)
+    .ToList()
+    .ForEach(fileName => {
+    var xdoc = XDocument.Load(fileName);
+    foreach (var reference in xdoc.Descendants().Where(x => x.Name.LocalName == "PackageReference"))
     {
+        var name = reference.Attribute("Include").Value;
+        var versionAttribute = reference.Attribute("Version");
+        var packageVersion = versionAttribute != null 
+            ? versionAttribute.Value 
+            : reference.Elements().First(x=>x.Name.LocalName == "Version").Value;
         IList<Tuple<string, string>> versions;
-        packageVersions.TryGetValue(packageReference.Id, out versions);
+        packageVersions.TryGetValue(name, out versions);
         if (versions == null)
         {
             versions = new List<Tuple<string, string>>();
-            packageVersions[packageReference.Id] = versions;
+            packageVersions[name] = versions;
         }
-        versions.Add(Tuple.Create(packageReference.Version.ToString(), fileName));
+        versions.Add(Tuple.Create(packageVersion, fileName));
     }
 });
 
@@ -168,12 +174,16 @@ var nuspecNuGetSpiroNet = new NuGetPackSettings()
     Symbols = false,
     NoPackageAnalysis = true,
     Description = "The .NET C# port of libspiro - conversion between spiro control points and bezier's.",
-    Copyright = "Copyright 2016",
+    Copyright = "Copyright 2017",
     Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design" },
     Files = new []
     {
-        new NuSpecContent { Source = "src/SpiroNet/bin/" + dirSuffix + "/SpiroNet.dll", Target = "lib/portable-windows8+net45" },
-        new NuSpecContent { Source = "src/SpiroNet/bin/" + dirSuffix + "/SpiroNet.xml", Target = "lib/portable-windows8+net45" }
+        // netstandard1.3
+        new NuSpecContent { Source = "src/SpiroNet/bin/" + dirSuffix + "/netstandard1.3/" + "SpiroNet.dll", Target = "lib/netstandard1.3" },
+        new NuSpecContent { Source = "src/SpiroNet/bin/" + dirSuffix + "/netstandard1.3/" + "SpiroNet.xml", Target = "lib/netstandard1.3" },
+        // net45
+        new NuSpecContent { Source = "src/SpiroNet/bin/" + dirSuffix + "/net45/" + "SpiroNet.dll", Target = "lib/net45" },
+        new NuSpecContent { Source = "src/SpiroNet/bin/" + dirSuffix + "/net45/" + "SpiroNet.xml", Target = "lib/net45" }
     },
     BasePath = Directory("./"),
     OutputDirectory = nugetRoot
@@ -191,7 +201,7 @@ var nuspecNuGetSpiroNetEditor = new NuGetPackSettings()
     Symbols = false,
     NoPackageAnalysis = true,
     Description = "The .NET C# port of libspiro - conversion between spiro control points and bezier's.",
-    Copyright = "Copyright 2016",
+    Copyright = "Copyright 2017",
     Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design" },
     Dependencies = new []
     {
@@ -199,7 +209,10 @@ var nuspecNuGetSpiroNetEditor = new NuGetPackSettings()
     },
     Files = new []
     {
-        new NuSpecContent { Source = "src/SpiroNet.Editor/bin/" + dirSuffix + "/SpiroNet.Editor.dll", Target = "lib/portable-windows8+net45" }
+        // netstandard1.3
+        new NuSpecContent { Source = "src/SpiroNet.Editor/bin/" + dirSuffix + "/netstandard1.3/" + "SpiroNet.Editor.dll", Target = "lib/netstandard1.3" },
+        // net45
+        new NuSpecContent { Source = "src/SpiroNet.Editor/bin/" + dirSuffix + "/net45/" + "SpiroNet.Editor.dll", Target = "lib/net45" }
     },
     BasePath = Directory("./"),
     OutputDirectory = nugetRoot
@@ -217,7 +230,7 @@ var nuspecNuGetSpiroNetJson = new NuGetPackSettings()
     Symbols = false,
     NoPackageAnalysis = true,
     Description = "The .NET C# port of libspiro - conversion between spiro control points and bezier's.",
-    Copyright = "Copyright 2016",
+    Copyright = "Copyright 2017",
     Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design" },
     Dependencies = new []
     {
@@ -226,7 +239,10 @@ var nuspecNuGetSpiroNetJson = new NuGetPackSettings()
     },
     Files = new []
     {
-        new NuSpecContent { Source = "src/SpiroNet.Json/bin/" + dirSuffix + "/SpiroNet.Json.dll", Target = "lib/portable-windows8+net45" }
+        // netstandard1.3
+        new NuSpecContent { Source = "src/SpiroNet.Json/bin/" + dirSuffix + "/netstandard1.3/" + "SpiroNet.Json.dll", Target = "lib/netstandard1.3" },
+        // net45
+        new NuSpecContent { Source = "src/SpiroNet.Json/bin/" + dirSuffix + "/net45/" + "SpiroNet.Json.dll", Target = "lib/net45" }
     },
     BasePath = Directory("./"),
     OutputDirectory = nugetRoot
@@ -244,17 +260,22 @@ var nuspecNuGetSpiroNetViewModels = new NuGetPackSettings()
     Symbols = false,
     NoPackageAnalysis = true,
     Description = "The .NET C# port of libspiro - conversion between spiro control points and bezier's.",
-    Copyright = "Copyright 2016",
+    Copyright = "Copyright 2017",
     Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design" },
     Dependencies = new []
     {
         new NuSpecDependency { Id = "SpiroNet", Version = version },
         new NuSpecDependency { Id = "SpiroNet.Editor", Version = version },
-        new NuSpecDependency { Id = "SpiroNet.Json", Version = version }
+        new NuSpecDependency { Id = "SpiroNet.Json", Version = version },
+        // netstandard1.3
+        new NuSpecDependency { Id = "System.IO.FileSystem", TargetFramework = "netstandard1.3", Version = "4.3.0" }
     },
     Files = new []
     {
-        new NuSpecContent { Source = "src/SpiroNet.ViewModels/bin/" + dirSuffix + "/SpiroNet.ViewModels.dll", Target = "lib/net45" }
+        // netstandard1.3
+        new NuSpecContent { Source = "src/SpiroNet.ViewModels/bin/" + dirSuffix + "/netstandard1.3/" + "SpiroNet.ViewModels.dll", Target = "lib/netstandard1.3" },
+        // net45
+        new NuSpecContent { Source = "src/SpiroNet.ViewModels/bin/" + dirSuffix + "/net45/" + "SpiroNet.ViewModels.dll", Target = "lib/net45" }
     },
     BasePath = Directory("./"),
     OutputDirectory = nugetRoot
@@ -272,7 +293,7 @@ var nuspecNuGetSpiroNetEditorWpf = new NuGetPackSettings()
     Symbols = false,
     NoPackageAnalysis = true,
     Description = "The .NET C# port of libspiro - conversion between spiro control points and bezier's.",
-    Copyright = "Copyright 2016",
+    Copyright = "Copyright 2017",
     Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design", "WPF" },
     Dependencies = new []
     {
@@ -298,7 +319,7 @@ var nuspecNuGetSpiroNetEditorAvalonia = new NuGetPackSettings()
     Symbols = false,
     NoPackageAnalysis = true,
     Description = "The .NET C# port of libspiro - conversion between spiro control points and bezier's.",
-    Copyright = "Copyright 2016",
+    Copyright = "Copyright 2017",
     Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design", "Avalonia" },
     Dependencies = new []
     {
@@ -307,7 +328,10 @@ var nuspecNuGetSpiroNetEditorAvalonia = new NuGetPackSettings()
     },
     Files = new []
     {
-        new NuSpecContent { Source = "src/SpiroNet.Editor.Avalonia/bin/" + dirSuffix + "/SpiroNet.Editor.Avalonia.dll", Target = "lib/net45" }
+        // netstandard1.3
+        new NuSpecContent { Source = "src/SpiroNet.Editor.Avalonia/bin/" + dirSuffix + "/netstandard1.3/" + "SpiroNet.Editor.Avalonia.dll", Target = "lib/netstandard1.3" },
+        // net45
+        new NuSpecContent { Source = "src/SpiroNet.Editor.Avalonia/bin/" + dirSuffix + "/net45/" + "SpiroNet.Editor.Avalonia.dll", Target = "lib/net45" }
     },
     BasePath = Directory("./"),
     OutputDirectory = nugetRoot
@@ -359,7 +383,7 @@ Information("IsMyGetRelease: " + isMyGetRelease);
 Information("IsNuGetRelease: " + isNuGetRelease);
 
 ///////////////////////////////////////////////////////////////////////////////
-// TASKS
+// TASKS: VISUAL STUDIO
 ///////////////////////////////////////////////////////////////////////////////
 
 Task("Clean")
@@ -391,18 +415,9 @@ Task("Restore-NuGet-Packages")
                 toolTimeout+=0.5;
             }})
         .Execute(()=> {
-            if(isRunningOnWindows)
-            {
-                NuGetRestore(MSBuildSolution, new NuGetRestoreSettings {
-                    ToolTimeout = TimeSpan.FromMinutes(toolTimeout)
-                });
-            }
-            else
-            {
-                NuGetRestore(XBuildSolution, new NuGetRestoreSettings {
-                    ToolTimeout = TimeSpan.FromMinutes(toolTimeout)
-                });
-            }
+            NuGetRestore(MSBuildSolution, new NuGetRestoreSettings {
+                ToolTimeout = TimeSpan.FromMinutes(toolTimeout)
+            });
         });
 });
 
@@ -410,22 +425,11 @@ Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() =>
 {
-    if(isRunningOnWindows)
-    {
-        MSBuild(MSBuildSolution, settings => {
-            settings.SetConfiguration(configuration);
-            settings.WithProperty("Platform", "\"" + platform + "\"");
-            settings.SetVerbosity(Verbosity.Minimal);
-        });
-    }
-    else
-    {
-        XBuild(XBuildSolution, settings => {
-            settings.SetConfiguration(configuration);
-            settings.WithProperty("Platform", "\"" + platform + "\"");
-            settings.SetVerbosity(Verbosity.Minimal);
-        });
-    }
+    MSBuild(MSBuildSolution, settings => {
+        settings.SetConfiguration(configuration);
+        settings.WithProperty("Platform", "\"" + platform + "\"");
+        settings.SetVerbosity(Verbosity.Minimal);
+    });
 });
 
 Task("Run-Unit-Tests")
@@ -433,25 +437,16 @@ Task("Run-Unit-Tests")
     .Does(() =>
 {
     string pattern = "./tests/**/bin/" + dirSuffix + "/*.UnitTests.dll";
+    string toolPath = (isPlatformAnyCPU || isPlatformX86) ? 
+        "./tools/xunit.runner.console/tools/xunit.console.x86.exe" :
+        "./tools/xunit.runner.console/tools/xunit.console.exe";
 
-    if (isPlatformAnyCPU || isPlatformX86)
-    {
-        XUnit2(pattern, new XUnit2Settings { 
-            ToolPath = "./tools/xunit.runner.console/tools/xunit.console.x86.exe",
-            OutputDirectory = testResultsDir,
-            XmlReportV1 = true,
-            NoAppDomain = true
-        });
-    }
-    else
-    {
-        XUnit2(pattern, new XUnit2Settings { 
-            ToolPath = "./tools/xunit.runner.console/tools/xunit.console.exe",
-            OutputDirectory = testResultsDir,
-            XmlReportV1 = true,
-            NoAppDomain = true
-        });
-    }
+    XUnit2(pattern, new XUnit2Settings { 
+        ToolPath = toolPath,
+        OutputDirectory = testResultsDir,
+        XmlReportV1 = true,
+        NoAppDomain = true
+    });
 });
 
 Task("Zip-Files")
@@ -461,13 +456,17 @@ Task("Zip-Files")
     Zip(zipSourceAvaloniaDirs, 
         zipTargetAvaloniaDirs, 
         GetFiles(zipSourceAvaloniaDirs.FullPath + "/*.dll") + 
-        GetFiles(zipSourceAvaloniaDirs.FullPath + "/*.exe"));
-
+        GetFiles(zipSourceAvaloniaDirs.FullPath + "/*.exe") + 
+        GetFiles(zipSourceAvaloniaDirs.FullPath + "/*.config") + 
+        GetFiles(zipSourceAvaloniaDirs.FullPath + "/*.so") + 
+        GetFiles(zipSourceAvaloniaDirs.FullPath + "/*.dylib"));
+    
     if (isRunningOnWindows)
     {
         Zip(zipSourceWpfDirs, 
             zipTargetWpfDirs, 
             GetFiles(zipSourceWpfDirs.FullPath + "/*.dll") + 
+            GetFiles(zipSourceWpfDirs.FullPath + "/*.config") + 
             GetFiles(zipSourceWpfDirs.FullPath + "/*.exe"));
     }
 });
@@ -551,6 +550,31 @@ Task("Publish-NuGet")
 });
 
 ///////////////////////////////////////////////////////////////////////////////
+// TASKS: .NET Core
+///////////////////////////////////////////////////////////////////////////////
+
+Task("Restore-NetCore")
+    .IsDependentOn("Clean")
+    .Does(() =>
+{
+    // TODO:
+});
+
+Task("Run-Unit-Tests-NetCore")
+    .IsDependentOn("Clean")
+    .Does(() =>
+{
+    // TODO:
+});
+
+Task("Build-NetCore")
+    .IsDependentOn("Restore-NetCore")
+    .Does(() =>
+{
+    // TODO:
+});
+
+///////////////////////////////////////////////////////////////////////////////
 // TARGETS
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -562,12 +586,15 @@ Task("Default")
   .IsDependentOn("Package");
 
 Task("AppVeyor")
+  .IsDependentOn("Run-Unit-Tests-NetCore")
+  .IsDependentOn("Build-NetCore")
   .IsDependentOn("Zip-Files")
   .IsDependentOn("Publish-MyGet")
   .IsDependentOn("Publish-NuGet");
 
 Task("Travis")
-  .IsDependentOn("Run-Unit-Tests");
+  .IsDependentOn("Run-Unit-Tests-NetCore")
+  .IsDependentOn("Build-NetCore");
 
 ///////////////////////////////////////////////////////////////////////////////
 // EXECUTE

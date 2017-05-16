@@ -14,7 +14,7 @@ The .NET C# port of [libspiro](https://github.com/fontforge/libspiro) - conversi
 
 ## Introduction
 
-For libspiro introduction please see [libspiro project page](https://github.com/fontforge/libspiro). There is also GUI version using libspiro written in C#/WPF for Windows.
+For libspiro introduction please see [libspiro project page](https://github.com/fontforge/libspiro) and [drawing with spiro](http://designwithfontforge.com/en-US/Drawing_With_Spiro.html). There is also GUI version using libspiro written in C#/WPF for Windows.
 
 ## NuGet
 
@@ -30,19 +30,19 @@ You can install the package like this:
 
 ### Available Packages
 
-* SpiroNet - Core libspiro library.
-* SpiroNet.Editor - Core spiro shape editor.
-* SpiroNet.Json - Json support for spiro shape editor.
-* SpiroNet.ViewModels - View models for spiro shape editor controls.
-* SpiroNet.Editor.Avalonia - Avalonia editor view for spiro shape editor.
-* SpiroNet.Editor.Wpf - WPF editor view for spiro shape editor.
+* [SpiroNet](https://www.nuget.org/packages/SpiroNet) - Core libspiro library.
+* [SpiroNet.Editor](https://www.nuget.org/packages/SpiroNet.Editor) - Core spiro shape editor.
+* [SpiroNet.Json](https://www.nuget.org/packages/SpiroNet.Json) - Json support for spiro shape editor.
+* [SpiroNet.ViewModels](https://www.nuget.org/packages/SpiroNet.ViewModels) - View models for spiro shape editor controls.
+* [SpiroNet.Editor.Avalonia](https://www.nuget.org/packages/SpiroNet.Editor.Avalonia) - Avalonia editor view for spiro shape editor.
+* [SpiroNet.Editor.Wpf](https://www.nuget.org/packages/SpiroNet.Editor.Wpf) - WPF editor view for spiro shape editor.
 
 ### Package Dependencies
 
 * Newtonsoft.Json
 * Avalonia
 
-Dependencies are required only for specifuc editor packages.
+Dependencies are required only for specific editor packages.
 
 ### Package Sources
 
