@@ -383,7 +383,7 @@ Information("IsMyGetRelease: " + isMyGetRelease);
 Information("IsNuGetRelease: " + isNuGetRelease);
 
 ///////////////////////////////////////////////////////////////////////////////
-// TASKS
+// TASKS: VISUAL STUDIO
 ///////////////////////////////////////////////////////////////////////////////
 
 Task("Clean")
@@ -550,6 +550,31 @@ Task("Publish-NuGet")
 });
 
 ///////////////////////////////////////////////////////////////////////////////
+// TASKS: .NET Core
+///////////////////////////////////////////////////////////////////////////////
+
+Task("Restore-NetCore")
+    .IsDependentOn("Clean")
+    .Does(() =>
+{
+    // TODO:
+});
+
+Task("Run-Unit-Tests-NetCore")
+    .IsDependentOn("Clean")
+    .Does(() =>
+{
+    // TODO:
+});
+
+Task("Build-NetCore")
+    .IsDependentOn("Restore-NetCore")
+    .Does(() =>
+{
+    // TODO:
+});
+
+///////////////////////////////////////////////////////////////////////////////
 // TARGETS
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -561,12 +586,17 @@ Task("Default")
   .IsDependentOn("Package");
 
 Task("AppVeyor")
+  .IsDependentOn("Run-Unit-Tests-NetCore")
+  .IsDependentOn("Build-NetCore")
+  .IsDependentOn("Publish-NetCore")
+  .IsDependentOn("Zip-Files-NetCore");
   .IsDependentOn("Zip-Files")
   .IsDependentOn("Publish-MyGet")
   .IsDependentOn("Publish-NuGet");
 
 Task("Travis")
-  .IsDependentOn("Run-Unit-Tests");
+  .IsDependentOn("Run-Unit-Tests-NetCore")
+  .IsDependentOn("Build-NetCore");
 
 ///////////////////////////////////////////////////////////////////////////////
 // EXECUTE
