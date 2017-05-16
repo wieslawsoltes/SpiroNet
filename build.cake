@@ -178,9 +178,9 @@ var nuspecNuGetSpiroNet = new NuGetPackSettings()
     Tags = new [] { "Spiro", "LibSpiro", "SpiroNet", "Graphics", "Bezier", "Spline", "Splines", "Curve", "Path", "Geometry", "Editor", "Design" },
     Files = new []
     {
-        // netstandard1.1
-        new NuSpecContent { Source = "src/SpiroNet/bin/" + dirSuffix + "/netstandard1.1/" + "SpiroNet.dll", Target = "lib/netstandard1.1" },
-        new NuSpecContent { Source = "src/SpiroNet/bin/" + dirSuffix + "/netstandard1.1/" + "SpiroNet.xml", Target = "lib/netstandard1.1" },
+        // netstandard1.3
+        new NuSpecContent { Source = "src/SpiroNet/bin/" + dirSuffix + "/netstandard1.3/" + "SpiroNet.dll", Target = "lib/netstandard1.3" },
+        new NuSpecContent { Source = "src/SpiroNet/bin/" + dirSuffix + "/netstandard1.3/" + "SpiroNet.xml", Target = "lib/netstandard1.3" },
         // net45
         new NuSpecContent { Source = "src/SpiroNet/bin/" + dirSuffix + "/net45/" + "SpiroNet.dll", Target = "lib/net45" },
         new NuSpecContent { Source = "src/SpiroNet/bin/" + dirSuffix + "/net45/" + "SpiroNet.xml", Target = "lib/net45" }
@@ -209,8 +209,8 @@ var nuspecNuGetSpiroNetEditor = new NuGetPackSettings()
     },
     Files = new []
     {
-        // netstandard1.1
-        new NuSpecContent { Source = "src/SpiroNet.Editor/bin/" + dirSuffix + "/netstandard1.1/" + "SpiroNet.Editor.dll", Target = "lib/netstandard1.1" },
+        // netstandard1.3
+        new NuSpecContent { Source = "src/SpiroNet.Editor/bin/" + dirSuffix + "/netstandard1.3/" + "SpiroNet.Editor.dll", Target = "lib/netstandard1.3" },
         // net45
         new NuSpecContent { Source = "src/SpiroNet.Editor/bin/" + dirSuffix + "/net45/" + "SpiroNet.Editor.dll", Target = "lib/net45" }
     },
@@ -239,8 +239,8 @@ var nuspecNuGetSpiroNetJson = new NuGetPackSettings()
     },
     Files = new []
     {
-        // netstandard1.1
-        new NuSpecContent { Source = "src/SpiroNet.Json/bin/" + dirSuffix + "/netstandard1.1/" + "SpiroNet.Json.dll", Target = "lib/netstandard1.1" },
+        // netstandard1.3
+        new NuSpecContent { Source = "src/SpiroNet.Json/bin/" + dirSuffix + "/netstandard1.3/" + "SpiroNet.Json.dll", Target = "lib/netstandard1.3" },
         // net45
         new NuSpecContent { Source = "src/SpiroNet.Json/bin/" + dirSuffix + "/net45/" + "SpiroNet.Json.dll", Target = "lib/net45" }
     },
@@ -270,8 +270,8 @@ var nuspecNuGetSpiroNetViewModels = new NuGetPackSettings()
     },
     Files = new []
     {
-        // netstandard1.1
-        new NuSpecContent { Source = "src/SpiroNet.ViewModels/bin/" + dirSuffix + "/netstandard1.1/" + "SpiroNet.ViewModels.dll", Target = "lib/netstandard1.1" },
+        // netstandard1.3
+        new NuSpecContent { Source = "src/SpiroNet.ViewModels/bin/" + dirSuffix + "/netstandard1.3/" + "SpiroNet.ViewModels.dll", Target = "lib/netstandard1.3" },
         // net45
         new NuSpecContent { Source = "src/SpiroNet.ViewModels/bin/" + dirSuffix + "/net45/" + "SpiroNet.ViewModels.dll", Target = "lib/net45" }
     },
@@ -326,8 +326,8 @@ var nuspecNuGetSpiroNetEditorAvalonia = new NuGetPackSettings()
     },
     Files = new []
     {
-        // netstandard1.1
-        new NuSpecContent { Source = "src/SpiroNet.Editor.Avalonia/bin/" + dirSuffix + "/netstandard1.1/" + "SpiroNet.Editor.Avalonia.dll", Target = "lib/netstandard1.1" },
+        // netstandard1.3
+        new NuSpecContent { Source = "src/SpiroNet.Editor.Avalonia/bin/" + dirSuffix + "/netstandard1.3/" + "SpiroNet.Editor.Avalonia.dll", Target = "lib/netstandard1.3" },
         // net45
         new NuSpecContent { Source = "src/SpiroNet.Editor.Avalonia/bin/" + dirSuffix + "/net45/" + "SpiroNet.Editor.Avalonia.dll", Target = "lib/net45" }
     },
