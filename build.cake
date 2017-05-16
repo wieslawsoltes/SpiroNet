@@ -588,8 +588,6 @@ Task("Default")
 Task("AppVeyor")
   .IsDependentOn("Run-Unit-Tests-NetCore")
   .IsDependentOn("Build-NetCore")
-  .IsDependentOn("Publish-NetCore")
-  .IsDependentOn("Zip-Files-NetCore");
   .IsDependentOn("Zip-Files")
   .IsDependentOn("Publish-MyGet")
   .IsDependentOn("Publish-NuGet");
