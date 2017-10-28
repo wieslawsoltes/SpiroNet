@@ -30,10 +30,10 @@
             <Setter Property="FontSize" Value="12"/>
         </Style>
         <Style Selector="ToggleButton:checked /template/ ContentPresenter">
-            <Setter Property="Background" Value="{StyleResource ThemeBackgroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
         </Style>
         <Style Selector="ToggleButton:pressed /template/ ContentPresenter">
-            <Setter Property="Background" Value="{StyleResource ThemeBackgroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
         </Style>
         <Style Selector="CheckBox">
             <Setter Property="FontFamily" Value="Consolas"/>
@@ -87,7 +87,7 @@
                              Margin="4,4,4,4"
                              Grid.Row="1">
                         <TextBox.Text>
-                            <MultiBinding Converter="{Static converters:ShapeToDataConverter.Instance}" FallbackValue="">
+                            <MultiBinding Converter="{x:Static converters:ShapeToDataConverter.Instance}" FallbackValue="">
                                 <Binding ElementName="shapesListBox" Path="SelectedItem" FallbackValue=""/>
                                 <Binding Path="Editor.Data" FallbackValue=""/>
                             </MultiBinding>
@@ -194,21 +194,21 @@
                     <StackPanel>
                         <Expander Header="Tool" IsExpanded="True" Margin="4,2,4,2">
                             <StackPanel>
-                                <RadioButton IsChecked="{Binding Path=Editor.State.Tool, Mode=OneWay, Converter={Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={Static editor:EditorTool.None}}"
+                                <RadioButton IsChecked="{Binding Path=Editor.State.Tool, Mode=OneWay, Converter={x:Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={x:Static editor:EditorTool.None}}"
                                              Command="{Binding ToolCommand}"
                                              CommandParameter="None"
                                              VerticalContentAlignment="Center"
                                              Content="None            n"
                                              Margin="1">
                                 </RadioButton>
-                                <RadioButton IsChecked="{Binding Path=Editor.State.Tool, Mode=OneWay, Converter={Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={Static editor:EditorTool.Guide}}"
+                                <RadioButton IsChecked="{Binding Path=Editor.State.Tool, Mode=OneWay, Converter={x:Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={x:Static editor:EditorTool.Guide}}"
                                              Command="{Binding ToolCommand}"
                                              CommandParameter="Guide"
                                              VerticalContentAlignment="Center"
                                              Content="Guide           g"
                                              Margin="1">
                                 </RadioButton>
-                                <RadioButton IsChecked="{Binding Path=Editor.State.Tool, Mode=OneWay, Converter={Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={Static editor:EditorTool.Spiro}}"
+                                <RadioButton IsChecked="{Binding Path=Editor.State.Tool, Mode=OneWay, Converter={x:Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={x:Static editor:EditorTool.Spiro}}"
                                              Command="{Binding ToolCommand}"
                                              CommandParameter="Spiro"
                                              VerticalContentAlignment="Center"
@@ -237,7 +237,7 @@
                         </Expander>
                         <Expander Header="New/Selected Point" IsExpanded="True" Margin="4,2,4,2">
                             <StackPanel>
-                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={Static spiro:SpiroPointType.Corner}}"
+                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={x:Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={x:Static spiro:SpiroPointType.Corner}}"
                                              Command="{Binding PointTypeCommand}"
                                              CommandParameter="Corner"
                                              VerticalContentAlignment="Center"
@@ -250,7 +250,7 @@
                                         </StackPanel>
                                     </ToolTip.Tip>
                                 </RadioButton>
-                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={Static spiro:SpiroPointType.G4}}"
+                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={x:Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={x:Static spiro:SpiroPointType.G4}}"
                                              Command="{Binding PointTypeCommand}"
                                              CommandParameter="G4"
                                              VerticalContentAlignment="Center"
@@ -263,7 +263,7 @@
                                         </StackPanel>
                                     </ToolTip.Tip>
                                 </RadioButton>
-                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={Static spiro:SpiroPointType.G2}}"
+                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={x:Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={x:Static spiro:SpiroPointType.G2}}"
                                              Command="{Binding PointTypeCommand}"
                                              CommandParameter="G2"
                                              VerticalContentAlignment="Center"
@@ -276,7 +276,7 @@
                                         </StackPanel>
                                     </ToolTip.Tip>
                                 </RadioButton>
-                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={Static spiro:SpiroPointType.Left}}"
+                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={x:Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={x:Static spiro:SpiroPointType.Left}}"
                                              Command="{Binding PointTypeCommand}"
                                              CommandParameter="Left"
                                              VerticalContentAlignment="Center"
@@ -289,7 +289,7 @@
                                         </StackPanel>
                                     </ToolTip.Tip>
                                 </RadioButton>
-                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={Static spiro:SpiroPointType.Right}}"
+                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={x:Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={x:Static spiro:SpiroPointType.Right}}"
                                              Command="{Binding PointTypeCommand}"
                                              CommandParameter="Right"
                                              VerticalContentAlignment="Center"
@@ -303,7 +303,7 @@
                                         </StackPanel>
                                     </ToolTip.Tip>
                                 </RadioButton>
-                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={Static spiro:SpiroPointType.End}}"
+                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={x:Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={x:Static spiro:SpiroPointType.End}}"
                                              Command="{Binding PointTypeCommand}"
                                              CommandParameter="End"
                                              VerticalContentAlignment="Center"
@@ -316,7 +316,7 @@
                                         </StackPanel>
                                     </ToolTip.Tip>
                                 </RadioButton>
-                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={Static spiro:SpiroPointType.OpenContour}}"
+                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={x:Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={x:Static spiro:SpiroPointType.OpenContour}}"
                                              Command="{Binding PointTypeCommand}"
                                              CommandParameter="OpenContour"
                                              VerticalContentAlignment="Center"
@@ -329,7 +329,7 @@
                                         </StackPanel>
                                     </ToolTip.Tip>
                                 </RadioButton>
-                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={Static spiro:SpiroPointType.EndOpenContour}}"
+                                <RadioButton IsChecked="{Binding Path=Editor.State.PointType, Mode=OneWay, Converter={x:Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={x:Static spiro:SpiroPointType.EndOpenContour}}"
                                              Command="{Binding PointTypeCommand}"
                                              CommandParameter="EndOpenContour"
                                              VerticalContentAlignment="Center"

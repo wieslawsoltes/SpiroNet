@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <OutputType>Library</OutputType>
     <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
@@ -37,16 +37,16 @@
     <EmbeddedResource Include="**\*.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.5.0" />
+    <PackageReference Include="Avalonia" Version="0.5.2-build4189-alpha" />
     <PackageReference Include="Serilog" Version="2.4.0" />
     <PackageReference Include="Splat" Version="2.0.0" />
     <PackageReference Include="Sprache" Version="2.1.0" />
-    <PackageReference Include="System.Reactive" Version="3.0.0" />
-    <PackageReference Include="System.Reactive.Core" Version="3.0.0" />
-    <PackageReference Include="System.Reactive.Interfaces" Version="3.0.0" />
-    <PackageReference Include="System.Reactive.Linq" Version="3.0.0" />
-    <PackageReference Include="System.Reactive.PlatformServices" Version="3.0.0" />
-    <PackageReference Condition="'$(TargetFramework)' == 'net45'" Include="System.Reactive.Windows.Threading" Version="3.0.0" />
+    <PackageReference Include="System.Reactive" Version="3.1.1" />
+    <PackageReference Include="System.Reactive.Core" Version="3.1.1" />
+    <PackageReference Include="System.Reactive.Interfaces" Version="3.1.1" />
+    <PackageReference Include="System.Reactive.Linq" Version="3.1.1" />
+    <PackageReference Include="System.Reactive.PlatformServices" Version="3.1.1" />
+    <PackageReference Condition="'$(TargetFramework)' == 'net461'" Include="System.Reactive.Windows.Threading" Version="3.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SpiroNet.Editor\SpiroNet.Editor.csproj" />
