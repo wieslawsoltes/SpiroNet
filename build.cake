@@ -328,10 +328,10 @@ var nuspecNuGetSpiroNetEditorAvalonia = new NuGetPackSettings()
     },
     Files = new []
     {
-        // netstandard1.3
-        new NuSpecContent { Source = "src/SpiroNet.Editor.Avalonia/bin/" + dirSuffix + "/netstandard1.3/" + "SpiroNet.Editor.Avalonia.dll", Target = "lib/netstandard1.3" },
-        // net45
-        new NuSpecContent { Source = "src/SpiroNet.Editor.Avalonia/bin/" + dirSuffix + "/net45/" + "SpiroNet.Editor.Avalonia.dll", Target = "lib/net45" }
+        // netstandard2.0
+        new NuSpecContent { Source = "src/SpiroNet.Editor.Avalonia/bin/" + dirSuffix + "/netstandard2.0/" + "SpiroNet.Editor.Avalonia.dll", Target = "lib/netstandard2.0" },
+        // net461
+        new NuSpecContent { Source = "src/SpiroNet.Editor.Avalonia/bin/" + dirSuffix + "/net461/" + "SpiroNet.Editor.Avalonia.dll", Target = "lib/net461" }
     },
     BasePath = Directory("./"),
     OutputDirectory = nugetRoot
