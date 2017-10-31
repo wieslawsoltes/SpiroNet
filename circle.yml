@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/SpiroNet
+    docker:
+      - image: microsoft/dotnet:sdk
+    environment:
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    steps:
+      - checkout
+      - run: dotnet restore src/SpiroNet
+      - run: dotnet build src/SpiroNet/SpiroNet.csproj -c Release -f netstandard1.3
+    notify:
+      webhooks:
+        - url: https://webhooks.gitter.im/e/3211907a32bb8b42a441
