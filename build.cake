@@ -116,7 +116,7 @@ var zipTargetWpfDirs = zipRoot.CombineWithFilePath("SpiroNet.Wpf-" + fileZipSuff
 // Value is Tuple where Item1: Package Version, Item2: The *.csproj/*.props file path.
 var packageVersions = new Dictionary<string, IList<Tuple<string,string>>>();
 
-System.IO.Directory.EnumerateFiles(((DirectoryPath)Directory("./src")).FullPath, "*.csproj", SearchOption.AllDirectories)
+System.IO.Directory.EnumerateFiles(((DirectoryPath)Directory("./build")).FullPath, "*.props", SearchOption.AllDirectories)
     .ToList()
     .ForEach(fileName => {
     var xdoc = XDocument.Load(fileName);
