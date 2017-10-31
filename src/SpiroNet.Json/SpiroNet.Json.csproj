@@ -29,7 +29,8 @@
     </Compile>
     <Compile Include="**\*.cs" Exclude="obj\**" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
-  </ItemGroup>
+ <Import Project="$(MSBuildThisFileDirectory)..\..\build\Newtonsoft.Json.props" />
+
+
+
 </Project>
