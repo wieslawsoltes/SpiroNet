@@ -12,9 +12,7 @@
     </Compile>
     <Compile Include="**\*.cs" Exclude="obj\**" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Condition="'$(TargetFramework)' == 'netstandard1.3'" Include="System.IO.FileSystem" Version="4.3.0" />
-  </ItemGroup>
+  <Import Project="$(MSBuildThisFileDirectory)..\..\build\System.IO.FileSystem.props" />
   <ItemGroup>
     <ProjectReference Include="..\SpiroNet.Editor\SpiroNet.Editor.csproj" />
     <ProjectReference Include="..\SpiroNet.Json\SpiroNet.Json.csproj" />
