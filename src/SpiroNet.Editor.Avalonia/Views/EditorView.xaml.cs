@@ -33,13 +33,13 @@ namespace SpiroNet.Editor.Avalonia.Views
     public class EditorView : UserControl
     {
         private EditorViewModel _vm;
-        private Canvas canvas;
-        private CheckBox snapModePoint;
-        private CheckBox snapModeMiddle;
-        private CheckBox snapModeNearest;
-        private CheckBox snapModeIntersection;
-        private CheckBox snapModeHorizontal;
-        private CheckBox snapModeVertical;
+        private Canvas _canvas;
+        private CheckBox _snapModePoint;
+        private CheckBox _snapModeMiddle;
+        private CheckBox _snapModeNearest;
+        private CheckBox _snapModeIntersection;
+        private CheckBox _snapModeHorizontal;
+        private CheckBox _snapModeVertical;
 
         public EditorView()
         {
@@ -58,13 +58,13 @@ namespace SpiroNet.Editor.Avalonia.Views
 
         private void FindControls()
         {
-            canvas = this.FindControl<Canvas>("canvas");
-            snapModePoint = this.FindControl<CheckBox>("snapModePoint");
-            snapModeMiddle = this.FindControl<CheckBox>("snapModeMiddle");
-            snapModeNearest = this.FindControl<CheckBox>("snapModeNearest");
-            snapModeIntersection = this.FindControl<CheckBox>("snapModeIntersection");
-            snapModeHorizontal = this.FindControl<CheckBox>("snapModeHorizontal");
-            snapModeVertical = this.FindControl<CheckBox>("snapModeVertical");
+            _canvas = this.FindControl<Canvas>("canvas");
+            _snapModePoint = this.FindControl<CheckBox>("snapModePoint");
+            _snapModeMiddle = this.FindControl<CheckBox>("snapModeMiddle");
+            _snapModeNearest = this.FindControl<CheckBox>("snapModeNearest");
+            _snapModeIntersection = this.FindControl<CheckBox>("snapModeIntersection");
+            _snapModeHorizontal = this.FindControl<CheckBox>("snapModeHorizontal");
+            _snapModeVertical = this.FindControl<CheckBox>("snapModeVertical");
         }
 
         private void InitializeComponent()
@@ -80,7 +80,7 @@ namespace SpiroNet.Editor.Avalonia.Views
             {
                 State = new EditorState(),
                 Measure = new EditorMeasure(),
-                Invalidate = () => canvas.InvalidateVisual(),
+                Invalidate = () => _canvas.InvalidateVisual(),
                 Drawing = SpiroDrawing.Create(600, 600),
                 Data = new Dictionary<SpiroShape, string>(),
                 Knots = new Dictionary<SpiroShape, IList<SpiroKnot>>()
@@ -104,56 +104,56 @@ namespace SpiroNet.Editor.Avalonia.Views
 
         private void InitializeCanvas()
         {
-            canvas.PointerPressed += Canvas_PointerPressed;
-            canvas.PointerReleased += Canvas_PointerReleased;
-            canvas.PointerMoved += Canvas_PointerMoved;
+            _canvas.PointerPressed += Canvas_PointerPressed;
+            _canvas.PointerReleased += Canvas_PointerReleased;
+            _canvas.PointerMoved += Canvas_PointerMoved;
         }
 
         private void InitializeSnapMode()
         {
-            snapModePoint.Click += (sender, e) => UpdateSnapMode();
-            snapModeMiddle.Click += (sender, e) => UpdateSnapMode();
-            snapModeNearest.Click += (sender, e) => UpdateSnapMode();
-            snapModeIntersection.Click += (sender, e) => UpdateSnapMode();
-            snapModeHorizontal.Click += (sender, e) => UpdateSnapMode();
-            snapModeVertical.Click += (sender, e) => UpdateSnapMode();
+            _snapModePoint.Click += (sender, e) => UpdateSnapMode();
+            _snapModeMiddle.Click += (sender, e) => UpdateSnapMode();
+            _snapModeNearest.Click += (sender, e) => UpdateSnapMode();
+            _snapModeIntersection.Click += (sender, e) => UpdateSnapMode();
+            _snapModeHorizontal.Click += (sender, e) => UpdateSnapMode();
+            _snapModeVertical.Click += (sender, e) => UpdateSnapMode();
 
-            snapModePoint.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Point);
-            snapModeMiddle.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Middle);
-            snapModeNearest.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Nearest);
-            snapModeIntersection.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Intersection);
-            snapModeHorizontal.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Horizontal);
-            snapModeVertical.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Vertical);
+            _snapModePoint.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Point);
+            _snapModeMiddle.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Middle);
+            _snapModeNearest.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Nearest);
+            _snapModeIntersection.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Intersection);
+            _snapModeHorizontal.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Horizontal);
+            _snapModeVertical.IsChecked = _vm.Editor.State.SnapMode.HasFlag(GuideSnapMode.Vertical);
         }
 
         private void UpdateSnapMode()
         {
-            if (snapModePoint.IsChecked == true)
+            if (_snapModePoint.IsChecked == true)
                 _vm.Editor.State.SnapMode |= GuideSnapMode.Point;
             else
                 _vm.Editor.State.SnapMode &= ~GuideSnapMode.Point;
 
-            if (snapModeMiddle.IsChecked == true)
+            if (_snapModeMiddle.IsChecked == true)
                 _vm.Editor.State.SnapMode |= GuideSnapMode.Middle;
             else
                 _vm.Editor.State.SnapMode &= ~GuideSnapMode.Middle;
 
-            if (snapModeNearest.IsChecked == true)
+            if (_snapModeNearest.IsChecked == true)
                 _vm.Editor.State.SnapMode |= GuideSnapMode.Nearest;
             else
                 _vm.Editor.State.SnapMode &= ~GuideSnapMode.Nearest;
 
-            if (snapModeIntersection.IsChecked == true)
+            if (_snapModeIntersection.IsChecked == true)
                 _vm.Editor.State.SnapMode |= GuideSnapMode.Intersection;
             else
                 _vm.Editor.State.SnapMode &= ~GuideSnapMode.Intersection;
 
-            if (snapModeHorizontal.IsChecked == true)
+            if (_snapModeHorizontal.IsChecked == true)
                 _vm.Editor.State.SnapMode |= GuideSnapMode.Horizontal;
             else
                 _vm.Editor.State.SnapMode &= ~GuideSnapMode.Horizontal;
 
-            if (snapModeVertical.IsChecked == true)
+            if (_snapModeVertical.IsChecked == true)
                 _vm.Editor.State.SnapMode |= GuideSnapMode.Vertical;
             else
                 _vm.Editor.State.SnapMode &= ~GuideSnapMode.Vertical;
@@ -165,8 +165,8 @@ namespace SpiroNet.Editor.Avalonia.Views
             {
                 case MouseButton.Left:
                     {
-                        canvas.Focus();
-                        var point = e.GetPosition(canvas);
+                        _canvas.Focus();
+                        var point = e.GetPosition(_canvas);
 
                         try
                         {
@@ -181,8 +181,8 @@ namespace SpiroNet.Editor.Avalonia.Views
                     break;
                 case MouseButton.Right:
                     {
-                        canvas.Focus();
-                        var point = e.GetPosition(canvas);
+                        _canvas.Focus();
+                        var point = e.GetPosition(_canvas);
 
                         try
                         {
@@ -197,8 +197,8 @@ namespace SpiroNet.Editor.Avalonia.Views
                     break;
                 case MouseButton.Middle:
                     {
-                        canvas.Focus();
-                        var point = e.GetPosition(canvas);
+                        _canvas.Focus();
+                        var point = e.GetPosition(_canvas);
 
                         try
                         {
@@ -220,7 +220,7 @@ namespace SpiroNet.Editor.Avalonia.Views
             {
                 case MouseButton.Left:
                     {
-                        var point = e.GetPosition(canvas);
+                        var point = e.GetPosition(_canvas);
 
                         try
                         {
@@ -242,8 +242,8 @@ namespace SpiroNet.Editor.Avalonia.Views
 
         private void Canvas_PointerMoved(object sender, PointerEventArgs e)
         {
-            canvas.Focus();
-            var point = e.GetPosition(canvas);
+            _canvas.Focus();
+            var point = e.GetPosition(_canvas);
 
             try
             {
@@ -258,7 +258,7 @@ namespace SpiroNet.Editor.Avalonia.Views
 
         private void EditorView_AttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
-            canvas.Focus();
+            _canvas.Focus();
         }
 
         private void New()
@@ -273,7 +273,7 @@ namespace SpiroNet.Editor.Avalonia.Views
             var dlg = new OpenFileDialog();
             dlg.Filters.Add(new FileDialogFilter() { Name = "Spiro", Extensions = { "spiro" } });
             dlg.Filters.Add(new FileDialogFilter() { Name = "Plate", Extensions = { "plate" } });
-            var result = await dlg.ShowAsync(Window.OpenWindows.FirstOrDefault());
+            var result = await dlg.ShowAsync(Application.Current.Windows.FirstOrDefault());
             if (result != null)
             {
                 try
@@ -304,7 +304,7 @@ namespace SpiroNet.Editor.Avalonia.Views
             dlg.Filters.Add(new FileDialogFilter() { Name = "Plate", Extensions = { "plate" } });
             dlg.InitialFileName = "drawing.spiro";
             dlg.DefaultExtension = "spiro";
-            var result = await dlg.ShowAsync(Window.OpenWindows.FirstOrDefault());
+            var result = await dlg.ShowAsync(Application.Current.Windows.FirstOrDefault());
             if (result != null)
             {
                 try
@@ -335,7 +335,7 @@ namespace SpiroNet.Editor.Avalonia.Views
             dlg.Filters.Add(new FileDialogFilter() { Name = "Ps", Extensions = { "ps" } });
             dlg.InitialFileName = "drawing.svg";
             dlg.DefaultExtension = "svg";
-            var result = await dlg.ShowAsync(Window.OpenWindows.FirstOrDefault());
+            var result = await dlg.ShowAsync(Application.Current.Windows.FirstOrDefault());
             if (result != null)
             {
                 try
