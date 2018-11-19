@@ -3,8 +3,6 @@
 [![Gitter](https://badges.gitter.im/wieslawsoltes/SpiroNet.svg)](https://gitter.im/wieslawsoltes/SpiroNet?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/vq16ocwrjj95ak6t?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/spironet)
-[![Build Status](https://travis-ci.org/wieslawsoltes/SpiroNet.svg?branch=master)](https://travis-ci.org/wieslawsoltes/SpiroNet)
-[![CircleCI](https://circleci.com/gh/wieslawsoltes/SpiroNet/tree/master.svg?style=svg)](https://circleci.com/gh/wieslawsoltes/SpiroNet/tree/master)
 [![Build Status](https://dev.azure.com/wieslawsoltes/SpiroNet/_apis/build/status/wieslawsoltes.SpiroNet)](https://dev.azure.com/wieslawsoltes/SpiroNet/_build/latest?definitionId=1)
 
 [![NuGet](https://img.shields.io/nuget/v/SpiroNet.svg)](https://www.nuget.org/packages/SpiroNet)
