@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2046
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28315.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiroNet", "src\SpiroNet\SpiroNet.csproj", "{B2DEAB02-F231-4AA9-8879-0FD73096C60D}"
 EndProject
@@ -25,6 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{FE0DAB01
 		.nuke = .nuke
 		build.ps1 = build.ps1
 		build.sh = build.sh
+		global.json = global.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{E69A5428-7807-4FA9-AAE5-8FE55AECBFE0}"
@@ -47,6 +48,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{F98068A0
 		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props
 		build\Rx.props = build\Rx.props
 		build\System.IO.FileSystem.props = build\System.IO.FileSystem.props
+		build\XUnit.props = build\XUnit.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C782659E-9532-475B-B746-38FFC9015978}"
@@ -55,6 +57,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C782659E-9
 		README-RaphLevien = README-RaphLevien
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\build\_build.csproj", "{D04F8768-26EC-4EE3-B036-8DABF0DA8C82}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{ED6682CD-E4DD-484E-B048-D3BF427657C1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiroNet.UnitTests", "tests\SpiroNet.UnitTests\SpiroNet.UnitTests.csproj", "{03158CCE-BDC1-4580-BA29-ADF4DABBBF30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,6 +94,14 @@ Global
 		{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D04F8768-26EC-4EE3-B036-8DABF0DA8C82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D04F8768-26EC-4EE3-B036-8DABF0DA8C82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D04F8768-26EC-4EE3-B036-8DABF0DA8C82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D04F8768-26EC-4EE3-B036-8DABF0DA8C82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03158CCE-BDC1-4580-BA29-ADF4DABBBF30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03158CCE-BDC1-4580-BA29-ADF4DABBBF30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03158CCE-BDC1-4580-BA29-ADF4DABBBF30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03158CCE-BDC1-4580-BA29-ADF4DABBBF30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,7 +116,8 @@ Global
 		{E69A5428-7807-4FA9-AAE5-8FE55AECBFE0} = {FE0DAB01-63F2-42B5-9F81-3B85B33E264B}
 		{512C0095-C46D-43D3-8185-AC460A3560EF} = {FE0DAB01-63F2-42B5-9F81-3B85B33E264B}
 		{F98068A0-9210-4A55-86B8-25C8E4B686AF} = {FE0DAB01-63F2-42B5-9F81-3B85B33E264B}
-		{C782659E-9532-475B-B746-38FFC9015978} = {FE0DAB01-63F2-42B5-9F81-3B85B33E264B}
+		{D04F8768-26EC-4EE3-B036-8DABF0DA8C82} = {FE0DAB01-63F2-42B5-9F81-3B85B33E264B}
+		{03158CCE-BDC1-4580-BA29-ADF4DABBBF30} = {ED6682CD-E4DD-484E-B048-D3BF427657C1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B48691C4-67D7-4C5B-B8ED-2C7C56A09D72}
