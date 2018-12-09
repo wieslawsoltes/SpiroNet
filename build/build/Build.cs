@@ -13,7 +13,7 @@ class Build : NukeBuild
 {
     public static int Main() => Execute<Build>(x => x.Compile);
 
-    [Solution("ThemeEditor.sln")]
+    [Solution("SpiroNet.sln")]
     readonly Solution Solution;
 
     [GitRepository]
