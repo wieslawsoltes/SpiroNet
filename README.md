@@ -2,7 +2,6 @@
 
 [![Gitter](https://badges.gitter.im/wieslawsoltes/SpiroNet.svg)](https://gitter.im/wieslawsoltes/SpiroNet?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/vq16ocwrjj95ak6t?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/spironet)
 [![Build Status](https://dev.azure.com/wieslawsoltes/SpiroNet/_apis/build/status/wieslawsoltes.SpiroNet)](https://dev.azure.com/wieslawsoltes/SpiroNet/_build/latest?definitionId=1)
 
 [![NuGet](https://img.shields.io/nuget/v/SpiroNet.svg)](https://www.nuget.org/packages/SpiroNet)
@@ -33,7 +32,6 @@ You can install the package like this:
 * [SpiroNet.Json](https://www.nuget.org/packages/SpiroNet.Json) - Json support for spiro shape editor.
 * [SpiroNet.ViewModels](https://www.nuget.org/packages/SpiroNet.ViewModels) - View models for spiro shape editor controls.
 * [SpiroNet.Editor.Avalonia](https://www.nuget.org/packages/SpiroNet.Editor.Avalonia) - Avalonia editor view for spiro shape editor.
-* [SpiroNet.Editor.Wpf](https://www.nuget.org/packages/SpiroNet.Editor.Wpf) - WPF editor view for spiro shape editor.
 
 ### Package Dependencies
 

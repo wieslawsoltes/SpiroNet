@@ -1,18 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <Description></Description>
+    <PackageTags></PackageTags>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\Base.props" />
+
   <ItemGroup>
-    <Compile Include="..\Shared\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="**\*.cs" Exclude="obj\**" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\SpiroNet\SpiroNet.csproj" />
   </ItemGroup>
+
 </Project>

@@ -1,30 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <Description></Description>
+    <PackageTags></PackageTags>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\Base.props" />
+  <Import Project="..\..\build\Rx.props" />
+  <Import Project="..\..\build\Avalonia.props" />
+
   <ItemGroup>
-    <Compile Include="..\Shared\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="**\*.cs" Exclude="obj\**" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Update="**\*.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <EmbeddedResource Include="**\*.xaml" />
-  </ItemGroup>
-  <Import Project="$(MSBuildThisFileDirectory)..\..\build\Rx.props" />
-  <Import Project="$(MSBuildThisFileDirectory)..\..\build\Avalonia.props" />
+
+  <Import Project="..\..\build\EmbedXaml.props" />
+
   <ItemGroup>
     <ProjectReference Include="..\SpiroNet.Editor\SpiroNet.Editor.csproj" />
     <ProjectReference Include="..\SpiroNet.Json\SpiroNet.Json.csproj" />
     <ProjectReference Include="..\SpiroNet.ViewModels\SpiroNet.ViewModels.csproj" />
     <ProjectReference Include="..\SpiroNet\SpiroNet.csproj" />
   </ItemGroup>
+
 </Project>
