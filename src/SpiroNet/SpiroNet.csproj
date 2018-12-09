@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description></Description>
-    <PackageTags></PackageTags>
+    <Description>The .NET C# port of libspiro - conversion between spiro control points and bezier's.</Description>
+    <PackageTags>Spiro;LibSpiro;SpiroNet;Graphics;Bezier;Spline;Splines;Curve;Path;Geometry;Editor;Design</PackageTags>
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
