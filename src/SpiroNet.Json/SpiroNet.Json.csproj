@@ -1,16 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>The .NET C# port of libspiro - conversion between spiro control points and bezier's.</Description>
+    <PackageTags>Spiro;LibSpiro;SpiroNet;Graphics;Bezier;Spline;Splines;Curve;Path;Geometry;Editor;Design</PackageTags>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\Base.props" />
+
   <ItemGroup>
-    <Compile Include="..\Shared\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="**\*.cs" Exclude="obj\**" />
   </ItemGroup>
- <Import Project="$(MSBuildThisFileDirectory)..\..\build\Newtonsoft.Json.props" />
+
+ <Import Project="..\..\build\Newtonsoft.Json.props" />
+
 </Project>
