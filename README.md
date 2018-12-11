@@ -2,7 +2,7 @@
 
 [![Gitter](https://badges.gitter.im/wieslawsoltes/SpiroNet.svg)](https://gitter.im/wieslawsoltes/SpiroNet?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-[![Build status](https://dev.azure.com/wieslawsoltes/SpiroNet/_apis/build/status/SpiroNet)](https://dev.azure.com/wieslawsoltes/SpiroNet/_build/latest?definitionId=-1)
+[![Build Status](https://dev.azure.com/wieslawsoltes/GitHub/_apis/build/status/Sources/SpiroNet?branchName=master)](https://dev.azure.com/wieslawsoltes/GitHub/_build/latest?definitionId=48?branchName=master)
 
 [![NuGet](https://img.shields.io/nuget/v/SpiroNet.svg)](https://www.nuget.org/packages/SpiroNet)
 [![MyGet](https://img.shields.io/myget/spironet-nightly/vpre/SpiroNet.svg?label=myget)](https://www.myget.org/gallery/spironet-nightly) 
