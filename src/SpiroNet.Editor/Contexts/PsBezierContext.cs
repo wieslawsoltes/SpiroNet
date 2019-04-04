@@ -1,7 +1,7 @@
 ﻿/*
 ppedit - A pattern plate editor for Spiro splines.
 Copyright (C) 2007 Raph Levien
-              2015 converted to C# by Wiesław Šoltés
+              2019 converted to C# by Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
