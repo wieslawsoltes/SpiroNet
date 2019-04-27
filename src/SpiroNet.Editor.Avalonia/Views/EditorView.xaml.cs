@@ -261,14 +261,14 @@ namespace SpiroNet.Editor.Avalonia.Views
             _canvas.Focus();
         }
 
-        private void New()
+        public void New()
         {
             var drawing = SpiroDrawing.Create(600, 600);
 
             _vm.Editor.LoadDrawing(drawing);
         }
 
-        private async void Open()
+        public async void Open()
         {
             var dlg = new OpenFileDialog();
             dlg.Filters.Add(new FileDialogFilter() { Name = "Spiro", Extensions = { "spiro" } });
@@ -297,7 +297,7 @@ namespace SpiroNet.Editor.Avalonia.Views
             }
         }
 
-        private async void SaveAs()
+        public async void SaveAs()
         {
             var dlg = new SaveFileDialog();
             dlg.Filters.Add(new FileDialogFilter() { Name = "Spiro", Extensions = { "spiro" } });
@@ -328,7 +328,7 @@ namespace SpiroNet.Editor.Avalonia.Views
             }
         }
 
-        private async void Export()
+        public async void Export()
         {
             var dlg = new SaveFileDialog();
             dlg.Filters.Add(new FileDialogFilter() { Name = "Svg", Extensions = { "svg" } });
@@ -359,7 +359,7 @@ namespace SpiroNet.Editor.Avalonia.Views
             }
         }
 
-        private void Exit()
+        public void Exit()
         {
             Application.Current.Exit();
         }
