@@ -27,8 +27,6 @@ namespace SpiroNet.Editor.Avalonia.Converters
 {
     public class ShapeToDataConverter : IMultiValueConverter
     {
-        public static ShapeToDataConverter Instance = new ShapeToDataConverter();
-
         public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values == null || values.Count != 2)
