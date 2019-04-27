@@ -52,7 +52,7 @@
             <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
         </Style>
     </UserControl.Styles>
-    <Grid RowDefinitions="Auto,*" ColumnDefinitions="180,*,230">
+    <Grid RowDefinitions="Auto,*" ColumnDefinitions="180,*,250">
         <Menu Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Background="#00FFFFFF">
             <MenuItem Header="_File">
                 <MenuItem Command="{Binding NewCommand}" Header="_New"/>
