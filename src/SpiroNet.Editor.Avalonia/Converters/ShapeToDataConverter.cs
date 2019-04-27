@@ -25,7 +25,7 @@ using Avalonia.Data.Converters;
 
 namespace SpiroNet.Editor.Avalonia.Converters
 {
-    internal class ShapeToDataConverter : IMultiValueConverter
+    public class ShapeToDataConverter : IMultiValueConverter
     {
         public static ShapeToDataConverter Instance = new ShapeToDataConverter();
 
