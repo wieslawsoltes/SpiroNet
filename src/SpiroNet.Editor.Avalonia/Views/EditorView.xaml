@@ -16,18 +16,18 @@
     </UserControl.KeyBindings>
     <UserControl.Styles>
         <Style Selector="TextBlock">
-            <!-- FIXME: <Setter Property="FontFamily" Value="Consolas"/>-->
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
         </Style>
         <Style Selector="TextBox">
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Margin" Value="0"/>
-            <!-- FIXME: <Setter Property="FontFamily" Value="Consolas"/>-->
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
         </Style>
         <Style Selector="Expander">
-            <!-- FIXME: <Setter Property="FontFamily" Value="Consolas"/>-->
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
         </Style>
         <Style Selector="ToggleButton:checked /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
@@ -36,20 +36,20 @@
             <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
         </Style>
         <Style Selector="CheckBox">
-            <!-- FIXME: <Setter Property="FontFamily" Value="Consolas"/>-->
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
         </Style>
         <Style Selector="RadioButton">
-            <!-- FIXME: <Setter Property="FontFamily" Value="Consolas"/>-->
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
         </Style>
         <Style Selector="TabStripItem">
             <Setter Property="Margin" Value="0 0 0 -1"/>
             <Setter Property="Padding" Value="4 0 4 0"/>
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
         </Style>
     </UserControl.Styles>
-    <Grid RowDefinitions="Auto,*" ColumnDefinitions="180,*,200">
+    <Grid RowDefinitions="Auto,*" ColumnDefinitions="180,*,230">
         <Menu Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Background="#00FFFFFF">
             <MenuItem Header="_File">
                 <MenuItem Command="{Binding NewCommand}" Header="_New"/>
