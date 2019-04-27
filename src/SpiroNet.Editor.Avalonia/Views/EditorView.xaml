@@ -14,6 +14,9 @@
         <KeyBinding Command="{Binding ExportCommand}" Gesture="Ctrl+E"/>
         <KeyBinding Command="{Binding ExitCommand}" Gesture="Alt+F4"/>
     </UserControl.KeyBindings>
+    <UserControl.Resources>
+        <converters:ShapeToDataConverter x:Key="ShapeToDataConverter"/>
+    </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock">
             <Setter Property="FontFamily" Value="Consolas"/>
@@ -87,7 +90,7 @@
                              Margin="4,4,4,4"
                              Grid.Row="1">
                         <TextBox.Text>
-                            <MultiBinding Converter="{x:Static converters:ShapeToDataConverter.Instance}" FallbackValue="">
+                            <MultiBinding Converter="{StaticResource ShapeToDataConverter}" FallbackValue="">
                                 <Binding ElementName="shapesListBox" Path="SelectedItem" FallbackValue=""/>
                                 <Binding Path="Editor.Data" FallbackValue=""/>
                             </MultiBinding>
