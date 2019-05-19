@@ -361,7 +361,7 @@ namespace SpiroNet.Editor.Avalonia.Views
 
         public void Exit()
         {
-            Application.Current.Exit();
+            Application.Current.Shutdown();
         }
     }
 }
