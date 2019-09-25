@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 */
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using SpiroNet.ViewModels;
@@ -161,82 +162,71 @@ namespace SpiroNet.Editor.Avalonia.Views
 
         private void Canvas_PointerPressed(object sender, PointerPressedEventArgs e)
         {
-            switch (e.MouseButton)
+            var props = e.GetPointerPoint(_canvas).Properties;
+            if (props.IsLeftButtonPressed)
             {
-                case MouseButton.Left:
-                    {
-                        _canvas.Focus();
-                        var point = e.GetPosition(_canvas);
+                _canvas.Focus();
+                var point = e.GetPosition(_canvas);
 
-                        try
-                        {
-                            _vm.Editor.LeftDown(point.X, point.Y);
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.WriteLine(ex.Message);
-                            Debug.WriteLine(ex.StackTrace);
-                        }
-                    }
-                    break;
-                case MouseButton.Right:
-                    {
-                        _canvas.Focus();
-                        var point = e.GetPosition(_canvas);
-
-                        try
-                        {
-                            _vm.Editor.RightDown(point.X, point.Y);
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.WriteLine(ex.Message);
-                            Debug.WriteLine(ex.StackTrace);
-                        }
-                    }
-                    break;
-                case MouseButton.Middle:
-                    {
-                        _canvas.Focus();
-                        var point = e.GetPosition(_canvas);
-
-                        try
-                        {
-                            _vm.Editor.MiddleDown(point.X, point.Y);
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.WriteLine(ex.Message);
-                            Debug.WriteLine(ex.StackTrace);
-                        }
-                    }
-                    break;
+                try
+                {
+                    _vm.Editor.LeftDown(point.X, point.Y);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
+                }
             }
+            else if (props.IsRightButtonPressed)
+            {
+                _canvas.Focus();
+                var point = e.GetPosition(_canvas);
+
+                try
+                {
+                    _vm.Editor.RightDown(point.X, point.Y);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
+                }
+            }
+            else if (props.IsMiddleButtonPressed)
+            {
+                _canvas.Focus();
+                var point = e.GetPosition(_canvas);
+
+                try
+                {
+                    _vm.Editor.MiddleDown(point.X, point.Y);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
+                }
+            }
+
         }
 
         private void Canvas_PointerReleased(object sender, PointerReleasedEventArgs e)
         {
-            switch (e.MouseButton)
+            var props = e.GetPointerPoint(_canvas).Properties;
+            if (props.IsLeftButtonPressed)
             {
-                case MouseButton.Left:
-                    {
-                        var point = e.GetPosition(_canvas);
+                var point = e.GetPosition(_canvas);
 
-                        try
-                        {
-                            _vm.Editor.LeftUp(point.X, point.Y);
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.WriteLine(ex.Message);
-                            Debug.WriteLine(ex.StackTrace);
-                        }
-                    }
-                    break;
-                case MouseButton.Right:
-                    break;
-                case MouseButton.Middle:
-                    break;
+                try
+                {
+                    _vm.Editor.LeftUp(point.X, point.Y);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
+                }
             }
         }
 
@@ -273,7 +263,7 @@ namespace SpiroNet.Editor.Avalonia.Views
             var dlg = new OpenFileDialog();
             dlg.Filters.Add(new FileDialogFilter() { Name = "Spiro", Extensions = { "spiro" } });
             dlg.Filters.Add(new FileDialogFilter() { Name = "Plate", Extensions = { "plate" } });
-            var result = await dlg.ShowAsync(Application.Current.Windows.FirstOrDefault());
+            var result = await dlg.ShowAsync(GetWindow());
             if (result != null)
             {
                 try
@@ -304,7 +294,7 @@ namespace SpiroNet.Editor.Avalonia.Views
             dlg.Filters.Add(new FileDialogFilter() { Name = "Plate", Extensions = { "plate" } });
             dlg.InitialFileName = "drawing.spiro";
             dlg.DefaultExtension = "spiro";
-            var result = await dlg.ShowAsync(Application.Current.Windows.FirstOrDefault());
+            var result = await dlg.ShowAsync(GetWindow());
             if (result != null)
             {
                 try
@@ -335,7 +325,7 @@ namespace SpiroNet.Editor.Avalonia.Views
             dlg.Filters.Add(new FileDialogFilter() { Name = "Ps", Extensions = { "ps" } });
             dlg.InitialFileName = "drawing.svg";
             dlg.DefaultExtension = "svg";
-            var result = await dlg.ShowAsync(Application.Current.Windows.FirstOrDefault());
+            var result = await dlg.ShowAsync(GetWindow());
             if (result != null)
             {
                 try
@@ -361,7 +351,19 @@ namespace SpiroNet.Editor.Avalonia.Views
 
         public void Exit()
         {
-            Application.Current.Exit();
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            {
+                desktopLifetime.Shutdown();
+            }
+        }
+
+        private Window GetWindow()
+        {
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            {
+                return desktopLifetime.MainWindow;
+            }
+            return null;
         }
     }
 }

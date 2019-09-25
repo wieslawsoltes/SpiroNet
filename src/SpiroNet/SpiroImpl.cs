@@ -240,7 +240,7 @@ namespace SpiroNet
             return 2 * Math.PI * (u - Math.Floor(u + 0.5));
         }
 
-        public static SpiroSegment[] setup_path(SpiroControlPoint[] src, int n)
+        public static SpiroSegment[]? setup_path(SpiroControlPoint[] src, int n)
         {
             int i, ilast, n_seg;
             double dx, dy;
@@ -727,10 +727,10 @@ namespace SpiroNet
             }
         }
 
-        public static SpiroSegment[] run_spiro(SpiroControlPoint[] src, int n)
+        public static SpiroSegment[]? run_spiro(SpiroControlPoint[] src, int n)
         {
             int converged, nseg;
-            SpiroSegment[] s;
+            SpiroSegment[]? s;
 
             if (src == null || n <= 0)
                 return null;

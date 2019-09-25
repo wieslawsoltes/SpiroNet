@@ -103,7 +103,7 @@ namespace SpiroNet
         /// </example>
         public static bool SpiroCPsToBezier0(SpiroControlPoint[] spiros, int n, bool isClosed, IBezierContext bc)
         {
-            SpiroSegment[] s;
+            SpiroSegment[]? s;
 
             if (n <= 0)
                 return false;
@@ -169,7 +169,7 @@ namespace SpiroNet
         /// </example>
         public static bool TaggedSpiroCPsToBezier0(SpiroControlPoint[] spiros, IBezierContext bc)
         {
-            SpiroSegment[] s;
+            SpiroSegment[]? s;
             int n;
 
             n = 0;
