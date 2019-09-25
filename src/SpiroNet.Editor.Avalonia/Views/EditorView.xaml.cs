@@ -213,20 +213,16 @@ namespace SpiroNet.Editor.Avalonia.Views
 
         private void Canvas_PointerReleased(object sender, PointerReleasedEventArgs e)
         {
-            var props = e.GetPointerPoint(_canvas).Properties;
-            if (props.IsLeftButtonPressed)
-            {
-                var point = e.GetPosition(_canvas);
+            var point = e.GetPosition(_canvas);
 
-                try
-                {
-                    _vm.Editor.LeftUp(point.X, point.Y);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.Message);
-                    Debug.WriteLine(ex.StackTrace);
-                }
+            try
+            {
+                _vm.Editor.LeftUp(point.X, point.Y);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
         }
 
