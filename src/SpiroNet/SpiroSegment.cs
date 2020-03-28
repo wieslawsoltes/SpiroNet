@@ -68,5 +68,11 @@ namespace SpiroNet
         /// Unused.
         /// </summary>
         public double l;
+
+        public override string ToString()
+        {
+            return X.ToString() + ", " + Y.ToString() + ", " + Type.ToString() + " (" +
+                seg_th.ToString() + ")";
+        }
     }
 }
