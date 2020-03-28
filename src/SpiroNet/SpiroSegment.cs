@@ -69,6 +69,9 @@ namespace SpiroNet
         /// </summary>
         public double l;
 
+        /// <summary>
+        /// Returns string rendering of object.
+        /// </summary>
         public override string ToString()
         {
             return X.ToString() + ", " + Y.ToString() + ", " + Type.ToString() + " (" +

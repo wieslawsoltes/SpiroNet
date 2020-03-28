@@ -88,7 +88,6 @@ namespace SpiroNet
         /// <param name="spiros">An array of input spiros.</param>
         /// <param name="n">The number of elements in the spiros array.</param>
         /// <param name="isClosed">Whether this describes a closed (True) or open (False) contour.</param>
-        /// <param name="bc">A bézier results output context.</param>
         /// <returns>SpiroSegment array or null on failure.</returns>
         /// <example>
         /// var points = new SpiroControlPoint[4];
@@ -175,7 +174,6 @@ namespace SpiroNet
         /// Closed contours must have an extra cp at the end whose ty is 'z' the x and y values of this extra cp are ignored.
         /// </summary>
         /// <param name="spiros">An array of input spiros.</param>
-        /// <param name="bc">A bézier results output context.</param>
         /// <returns>SpiroSegment array or null on failure.</returns>
         /// <example>
         /// var points = new SpiroControlPoint[5];
