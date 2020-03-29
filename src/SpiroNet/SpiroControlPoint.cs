@@ -41,5 +41,13 @@ namespace SpiroNet
         /// Spiro code point Type.
         /// </summary>
         public SpiroPointType Type;
+
+        /// <summary>
+        /// Returns string rendering of object.
+        /// </summary>
+        public override string ToString()
+        {
+            return X.ToString() + ", " + Y.ToString() + ", " + Type.ToString();
+        }
     }
 }
