@@ -162,7 +162,7 @@ namespace SpiroNet.Editor.Avalonia.Views
 
         private void Canvas_PointerPressed(object sender, PointerPressedEventArgs e)
         {
-            var props = e.GetPointerPoint(_canvas).Properties;
+            var props = e.GetCurrentPoint(_canvas).Properties;
             if (props.IsLeftButtonPressed)
             {
                 _canvas.Focus();

@@ -53,8 +53,8 @@ namespace SpiroNet.Editor.Avalonia.Renderer
             set { SetValue(SpiroEditorProperty, value); }
         }
 
-        public static readonly AvaloniaProperty<SpiroEditor> SpiroEditorProperty =
-            AvaloniaProperty.Register<CanvasRenderer, SpiroEditor>("SpiroEditor");
+        public static readonly StyledProperty<SpiroEditor> SpiroEditorProperty =
+            AvaloniaProperty.Register<CanvasRenderer, SpiroEditor>(nameof(SpiroEditor));
 
         public CanvasRenderer()
         {
