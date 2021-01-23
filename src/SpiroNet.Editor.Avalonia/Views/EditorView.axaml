@@ -5,7 +5,6 @@
              xmlns:renderer="clr-namespace:SpiroNet.Editor.Avalonia.Renderer;assembly=SpiroNet.Editor.Avalonia"
              xmlns:spiro="clr-namespace:SpiroNet;assembly=SpiroNet"
              xmlns:editor="clr-namespace:SpiroNet.Editor;assembly=SpiroNet.Editor"
-             Background="White"
              UseLayoutRounding="True">
     <UserControl.KeyBindings>
         <KeyBinding Command="{Binding NewCommand}" Gesture="Ctrl+N"/>
@@ -19,17 +18,17 @@
     </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock">
-            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontFamily" Value="/Assets/Fonts/CascadiaCode.ttf"/>
             <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
         </Style>
         <Style Selector="TextBox">
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Margin" Value="0"/>
-            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontFamily" Value="/Assets/Fonts/CascadiaCode.ttf"/>
             <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
         </Style>
         <Style Selector="Expander">
-            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontFamily" Value="/Assets/Fonts/CascadiaCode.ttf"/>
             <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
         </Style>
         <Style Selector="ToggleButton:checked /template/ ContentPresenter">
@@ -39,11 +38,11 @@
             <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
         </Style>
         <Style Selector="CheckBox">
-            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontFamily" Value="/Assets/Fonts/CascadiaCode.ttf"/>
             <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
         </Style>
         <Style Selector="RadioButton">
-            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontFamily" Value="/Assets/Fonts/CascadiaCode.ttf"/>
             <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
         </Style>
         <Style Selector="TabStripItem">
@@ -466,7 +465,7 @@
             </TabItem>
             <TabItem Header="Selected">
                 <Grid RowDefinitions="Auto,50*,Auto,50*">
-                    <TextBlock Text="Shapes:" TextAlignment="Left" Foreground="Black" Margin="4,4,4,0" Grid.Row="0"/>
+                    <TextBlock Text="Shapes:" TextAlignment="Left" Margin="4,4,4,0" Grid.Row="0"/>
                     <ListBox Name="selectedShapesListBox"
                              Items="{Binding Editor.State.HitListShapes}"
                              VerticalAlignment="Stretch"
@@ -478,7 +477,7 @@
                             </DataTemplate>
                         </ListBox.DataTemplates>
                     </ListBox>
-                    <TextBlock Text="Points:" TextAlignment="Left" Foreground="Black" Margin="4,4,4,0" Grid.Row="2"/>
+                    <TextBlock Text="Points:" TextAlignment="Left" Margin="4,4,4,0" Grid.Row="2"/>
                     <ListBox Name="selectedPointsListBox"
                              Items="{Binding Editor.State.HitListPoints}"
                              VerticalAlignment="Stretch"
@@ -494,7 +493,7 @@
             </TabItem>
             <TabItem Header="Script">
                 <Grid RowDefinitions="Auto,*,Auto">
-                    <TextBlock Text="Script/plate:" TextAlignment="Left" Foreground="Black" Margin="4,4,4,0" Grid.Row="0"/>
+                    <TextBlock Text="Script/plate:" TextAlignment="Left" Margin="4,4,4,0" Grid.Row="0"/>
                     <TextBox Name="scriptTextBox"
                              AcceptsReturn="True"
                              AcceptsTab="True"

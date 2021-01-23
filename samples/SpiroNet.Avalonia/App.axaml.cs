@@ -42,7 +42,7 @@ namespace SpiroNet.Avalonia
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                          .UsePlatformDetect()
-                         .LogToDebug();
+                         .LogToTrace();
 
         /// <inheritdoc/>
         public override void Initialize()

@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:SpiroNet.Editor.Avalonia.Views;assembly=SpiroNet.Editor.Avalonia"
         Title="SpiroNet.Avalonia" Height="730" Width="1040"
-        Background="White"
+        Background="Black"
+        Foreground="{DynamicResource SystemBaseHighColor}"
         UseLayoutRounding="True">
     <views:EditorView/>
 </Window>
