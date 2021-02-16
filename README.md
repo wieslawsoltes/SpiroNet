@@ -27,21 +27,6 @@ You can install the package like this:
 
 `Install-Package SpiroNet -Pre`
 
-### Available Packages
-
-* [SpiroNet](https://www.nuget.org/packages/SpiroNet) - Core libspiro library.
-* [SpiroNet.Editor](https://www.nuget.org/packages/SpiroNet.Editor) - Core spiro shape editor.
-* [SpiroNet.Json](https://www.nuget.org/packages/SpiroNet.Json) - Json support for spiro shape editor.
-* [SpiroNet.ViewModels](https://www.nuget.org/packages/SpiroNet.ViewModels) - View models for spiro shape editor controls.
-* [SpiroNet.Editor.Avalonia](https://www.nuget.org/packages/SpiroNet.Editor.Avalonia) - Avalonia editor view for spiro shape editor.
-
-### Package Dependencies
-
-* [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json/)
-* [Avalonia](https://www.nuget.org/packages/Avalonia/)
-
-Dependencies are required only for specific editor packages.
-
 ### Package Sources
 
 * https://api.nuget.org/v3/index.json
