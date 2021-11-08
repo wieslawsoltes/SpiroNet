@@ -22,10 +22,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{FE0DAB01-63F2-42B5-9F81-3B85B33E264B}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		.nuke = .nuke
 		build.ps1 = build.ps1
 		build.sh = build.sh
 		global.json = global.json
+		azure-pipelines.yml = azure-pipelines.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{E69A5428-7807-4FA9-AAE5-8FE55AECBFE0}"
