@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Avalonia
+SpiroNet.Editor
 Copyright (C) 2019 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -18,27 +18,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using Avalonia;
+using System;
 
-namespace SpiroNet.Desktop;
+namespace SpiroNet.Editor;
 
-class Program
+[Flags]
+public enum GuideSnapMode
 {
-    /// <summary>
-    /// Program entry point.
-    /// </summary>
-    /// <param name="args">The program arguments.</param>
-    static void Main(string[] args)
-    {
-        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
-    }
-
-    /// <summary>
-    /// Build Avalonia app.
-    /// </summary>
-    /// <returns>The Avalonia app builder.</returns>
-    public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .LogToTrace();
+    None = 0,
+    Point = 1,
+    Middle = 2,
+    Nearest = 4,
+    Intersection = 8,
+    Horizontal = 16,
+    Vertical = 32
 }

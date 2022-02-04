@@ -21,28 +21,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using SpiroNet.Views;
 
-namespace SpiroNet.Avalonia
+namespace SpiroNet;
+
+public class App : Application
 {
-    public class App : Application
+    /// <inheritdoc/>
+    public override void Initialize()
     {
-        /// <inheritdoc/>
-        public override void Initialize()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        AvaloniaXamlLoader.Load(this);
+    }
 
-        public override void OnFrameworkInitializationCompleted()
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
         {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
-            {
-                desktopLifetime.MainWindow = new MainWindow();
-            }
-            else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
-            {
-                singleViewLifetime.MainView = new MainView();
-            }
-            base.OnFrameworkInitializationCompleted();
+            desktopLifetime.MainWindow = new MainWindow();
         }
+        else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
+        {
+            singleViewLifetime.MainView = new MainView();
+        }
+        base.OnFrameworkInitializationCompleted();
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Avalonia
+SpiroNet.Json
 Copyright (C) 2019 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -18,27 +18,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using Avalonia;
+using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Reflection;
 
-namespace SpiroNet.Desktop;
+namespace SpiroNet.Json;
 
-class Program
+internal class ObservableCollectionContractResolver : DefaultContractResolver
 {
-    /// <summary>
-    /// Program entry point.
-    /// </summary>
-    /// <param name="args">The program arguments.</param>
-    static void Main(string[] args)
+    public override JsonContract ResolveContract(Type type)
     {
-        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+        if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IList<>))
+        {
+            return base.ResolveContract(typeof(ObservableCollection<>).MakeGenericType(type.GenericTypeArguments[0]));
+        }
+        else
+        {
+            return base.ResolveContract(type);
+        }
     }
-
-    /// <summary>
-    /// Build Avalonia app.
-    /// </summary>
-    /// <returns>The Avalonia app builder.</returns>
-    public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .LogToTrace();
 }

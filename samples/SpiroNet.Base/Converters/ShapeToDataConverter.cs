@@ -18,27 +18,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using Avalonia;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using Avalonia.Data.Converters;
 
-namespace SpiroNet.Desktop;
+namespace SpiroNet.Editor.Avalonia.Converters;
 
-class Program
+public class ShapeToDataConverter : IMultiValueConverter
 {
-    /// <summary>
-    /// Program entry point.
-    /// </summary>
-    /// <param name="args">The program arguments.</param>
-    static void Main(string[] args)
+    public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
     {
-        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
-    }
+        if (values == null || values.Count != 2)
+            return null;
 
-    /// <summary>
-    /// Build Avalonia app.
-    /// </summary>
-    /// <returns>The Avalonia app builder.</returns>
-    public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .LogToTrace();
+        var shape = values[0] as SpiroShape;
+        var dict = values[1] as IDictionary<SpiroShape, string>;
+        if (shape == null || dict == null)
+            return null;
+
+        string data;
+        if (!dict.TryGetValue(shape, out data))
+            return null;
+
+        return data;
+    }
 }

@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Avalonia
+SpiroNet.Editor
 Copyright (C) 2019 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -18,27 +18,31 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using Avalonia;
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
-namespace SpiroNet.Desktop;
+namespace SpiroNet.Editor;
 
-class Program
+public abstract class ObservableObject : INotifyPropertyChanged
 {
-    /// <summary>
-    /// Program entry point.
-    /// </summary>
-    /// <param name="args">The program arguments.</param>
-    static void Main(string[] args)
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    public void Notify([CallerMemberName] string propertyName = null)
     {
-        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+        var handler = PropertyChanged;
+        if (handler != null)
+        {
+            handler(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
-    /// <summary>
-    /// Build Avalonia app.
-    /// </summary>
-    /// <returns>The Avalonia app builder.</returns>
-    public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .LogToTrace();
+    public void Update<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+    {
+        if (!Equals(field, value))
+        {
+            field = value;
+            Notify(propertyName);
+        }
+    }
 }

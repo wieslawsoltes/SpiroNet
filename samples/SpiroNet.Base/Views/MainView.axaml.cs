@@ -18,27 +18,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
 
-namespace SpiroNet.Desktop;
+namespace SpiroNet.Views;
 
-class Program
+public class MainView : UserControl
 {
-    /// <summary>
-    /// Program entry point.
-    /// </summary>
-    /// <param name="args">The program arguments.</param>
-    static void Main(string[] args)
+    public MainView()
     {
-        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+        InitializeComponent();
     }
 
-    /// <summary>
-    /// Build Avalonia app.
-    /// </summary>
-    /// <returns>The Avalonia app builder.</returns>
-    public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .LogToTrace();
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
 }
+

@@ -20,34 +20,33 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 */
 
-namespace SpiroNet
+namespace SpiroNet;
+
+/// <summary>
+/// User passes an array of spiros control points in this format for Spiro to solve.
+/// </summary>
+public struct SpiroControlPoint
 {
     /// <summary>
-    /// User passes an array of spiros control points in this format for Spiro to solve.
+    /// Spiro code point X location.
     /// </summary>
-    public struct SpiroControlPoint
+    public double X;
+
+    /// <summary>
+    /// Spiro code point Y location.
+    /// </summary>
+    public double Y;
+
+    /// <summary>
+    /// Spiro code point Type.
+    /// </summary>
+    public SpiroPointType Type;
+
+    /// <summary>
+    /// Returns string rendering of object.
+    /// </summary>
+    public override string ToString()
     {
-        /// <summary>
-        /// Spiro code point X location.
-        /// </summary>
-        public double X;
-
-        /// <summary>
-        /// Spiro code point Y location.
-        /// </summary>
-        public double Y;
-
-        /// <summary>
-        /// Spiro code point Type.
-        /// </summary>
-        public SpiroPointType Type;
-
-        /// <summary>
-        /// Returns string rendering of object.
-        /// </summary>
-        public override string ToString()
-        {
-            return X.ToString() + ", " + Y.ToString() + ", " + Type.ToString();
-        }
+        return X.ToString() + ", " + Y.ToString() + ", " + Type.ToString();
     }
 }

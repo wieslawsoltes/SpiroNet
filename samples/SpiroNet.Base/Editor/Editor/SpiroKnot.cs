@@ -1,5 +1,5 @@
 ﻿/*
-SpiroNet.Avalonia
+SpiroNet.Editor
 Copyright (C) 2019 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or
@@ -18,27 +18,36 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
-using Avalonia;
 
-namespace SpiroNet.Desktop;
+namespace SpiroNet.Editor;
 
-class Program
+/// <summary>
+/// Spiro control point knot. 
+/// </summary>
+public struct SpiroKnot
 {
     /// <summary>
-    /// Program entry point.
+    /// The spiros control point knot index.
     /// </summary>
-    /// <param name="args">The program arguments.</param>
-    static void Main(string[] args)
-    {
-        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
-    }
+    public int Index;
 
     /// <summary>
-    /// Build Avalonia app.
+    /// The spiros control point knot theta angle.
     /// </summary>
-    /// <returns>The Avalonia app builder.</returns>
-    public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .LogToTrace();
+    public double Theta;
+
+    /// <summary>
+    /// The spiros control point X location.
+    /// </summary>
+    public double X;
+
+    /// <summary>
+    /// The spiros control point Y location.
+    /// </summary>
+    public double Y;
+
+    /// <summary>
+    /// The spiros control point type.
+    /// </summary>
+    public SpiroPointType Type;
 }

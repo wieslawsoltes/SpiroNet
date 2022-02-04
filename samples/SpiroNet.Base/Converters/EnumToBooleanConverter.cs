@@ -18,27 +18,32 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 */
+using System;
+using System.Globalization;
 using Avalonia;
+using Avalonia.Data.Converters;
 
-namespace SpiroNet.Desktop;
+namespace SpiroNet.Editor.Avalonia.Converters;
 
-class Program
+public class EnumToBooleanConverter : IValueConverter
 {
-    /// <summary>
-    /// Program entry point.
-    /// </summary>
-    /// <param name="args">The program arguments.</param>
-    static void Main(string[] args)
+    public static EnumToBooleanConverter Instance = new EnumToBooleanConverter();
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+        if (value != null)
+        {
+            return value.Equals(parameter);
+        }
+        return AvaloniaProperty.UnsetValue;
     }
 
-    /// <summary>
-    /// Build Avalonia app.
-    /// </summary>
-    /// <returns>The Avalonia app builder.</returns>
-    public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .LogToTrace();
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value != null)
+        {
+            return (bool)value ? parameter : AvaloniaProperty.UnsetValue;
+        }
+        return AvaloniaProperty.UnsetValue;
+    }
 }

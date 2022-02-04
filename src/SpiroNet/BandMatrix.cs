@@ -21,49 +21,48 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 */
 using System;
 
-namespace SpiroNet
+namespace SpiroNet;
+
+/// <summary>
+/// The band matrix.
+/// </summary>
+internal struct BandMatrix
 {
     /// <summary>
-    /// The band matrix.
+    /// The band-diagonal matrix.
+    /// A double's array of size 11.
     /// </summary>
-    internal struct BandMatrix
+    public double[] a;
+
+    /// <summary>
+    /// Lower part of band-diagonal decomposition.
+    /// A double's array of size 5.
+    /// </summary>
+    public double[] al;
+
+    /// <summary>
+    /// Copy band matrix from source band matrix to current instance of band matrix.
+    /// </summary>
+    /// <param name="from">The source band matrix.</param>
+    private void CopyFrom(ref BandMatrix from)
     {
-        /// <summary>
-        /// The band-diagonal matrix.
-        /// A double's array of size 11.
-        /// </summary>
-        public double[] a;
+        Array.Copy(from.a, 0, a, 0, 11);
+        Array.Copy(from.al, 0, al, 0, 5);
+    }
 
-        /// <summary>
-        /// Lower part of band-diagonal decomposition.
-        /// A double's array of size 5.
-        /// </summary>
-        public double[] al;
-
-        /// <summary>
-        /// Copy band matrix from source band matrix to current instance of band matrix.
-        /// </summary>
-        /// <param name="from">The source band matrix.</param>
-        private void CopyFrom(ref BandMatrix from)
+    /// <summary>
+    /// The source band matrix.
+    /// </summary>
+    /// <param name="src">The source band matrix.</param>
+    /// <param name="srcIndex">The source band matrix start element index.</param>
+    /// <param name="dst">The destination band matrix.</param>
+    /// <param name="dstIndex">The destination band matrix start element index.</param>
+    /// <param name="length">Number of elements to copy from source band matrix.</param>
+    public static void Copy(BandMatrix[] src, int srcIndex, BandMatrix[] dst, int dstIndex, int length)
+    {
+        for (int i = 0; i < length; ++i)
         {
-            Array.Copy(from.a, 0, a, 0, 11);
-            Array.Copy(from.al, 0, al, 0, 5);
-        }
-
-        /// <summary>
-        /// The source band matrix.
-        /// </summary>
-        /// <param name="src">The source band matrix.</param>
-        /// <param name="srcIndex">The source band matrix start element index.</param>
-        /// <param name="dst">The destination band matrix.</param>
-        /// <param name="dstIndex">The destination band matrix start element index.</param>
-        /// <param name="length">Number of elements to copy from source band matrix.</param>
-        public static void Copy(BandMatrix[] src, int srcIndex, BandMatrix[] dst, int dstIndex, int length)
-        {
-            for (int i = 0; i < length; ++i)
-            {
-                dst[i + dstIndex].CopyFrom(ref src[i + srcIndex]);
-            }
+            dst[i + dstIndex].CopyFrom(ref src[i + srcIndex]);
         }
     }
 }

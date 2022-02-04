@@ -21,61 +21,60 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 */
 using System;
 
-namespace SpiroNet
+namespace SpiroNet;
+
+/// <summary>
+/// The run_spiro() uses array of information given in the spiro control point structure 
+/// and creates an array in this structure format to use by spiro_to_bpath for building bezier curves.
+/// </summary>
+public struct SpiroSegment
 {
     /// <summary>
-    /// The run_spiro() uses array of information given in the spiro control point structure 
-    /// and creates an array in this structure format to use by spiro_to_bpath for building bezier curves.
+    /// Spiro code point segment_chord startX.
     /// </summary>
-    public struct SpiroSegment
+    public double X;
+
+    /// <summary>
+    /// Spiro code point segment_chord startY.
+    /// </summary>
+    public double Y;
+
+    /// <summary>
+    /// Spiro code point Type.
+    /// </summary>
+    public SpiroPointType Type;
+
+    /// <summary>
+    /// Bend theta between this vector and next vector.
+    /// </summary>
+    public double bend_th;
+
+    /// <summary>
+    /// A double's array of size 4.
+    /// </summary>
+    public double[] ks;
+
+    /// <summary>
+    /// The segment_chord distance from xy to next spiro code point.
+    /// </summary>
+    public double seg_ch;
+
+    /// <summary>
+    /// The segment_theta angle for this spiro code point.
+    /// </summary>
+    public double seg_th;
+
+    /// <summary>
+    /// Unused.
+    /// </summary>
+    public double l;
+
+    /// <summary>
+    /// Returns string rendering of object.
+    /// </summary>
+    public override string ToString()
     {
-        /// <summary>
-        /// Spiro code point segment_chord startX.
-        /// </summary>
-        public double X;
-
-        /// <summary>
-        /// Spiro code point segment_chord startY.
-        /// </summary>
-        public double Y;
-
-        /// <summary>
-        /// Spiro code point Type.
-        /// </summary>
-        public SpiroPointType Type;
-
-        /// <summary>
-        /// Bend theta between this vector and next vector.
-        /// </summary>
-        public double bend_th;
-
-        /// <summary>
-        /// A double's array of size 4.
-        /// </summary>
-        public double[] ks;
-
-        /// <summary>
-        /// The segment_chord distance from xy to next spiro code point.
-        /// </summary>
-        public double seg_ch;
-
-        /// <summary>
-        /// The segment_theta angle for this spiro code point.
-        /// </summary>
-        public double seg_th;
-
-        /// <summary>
-        /// Unused.
-        /// </summary>
-        public double l;
-
-        /// <summary>
-        /// Returns string rendering of object.
-        /// </summary>
-        public override string ToString()
-        {
-            return X.ToString() + ", " + Y.ToString() + ", " + Type.ToString() + " (" +
-                seg_th.ToString() + ")";
-        }
+        return X.ToString() + ", " + Y.ToString() + ", " + Type.ToString() + " (" +
+               seg_th.ToString() + ")";
     }
 }
