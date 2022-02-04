@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiroNet.ViewModels", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{14839D79-4183-4D13-A0C3-6E396D51FA9B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiroNet.Avalonia", "samples\SpiroNet.Avalonia\SpiroNet.Avalonia.csproj", "{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiroNet.Base", "samples\SpiroNet.Base\SpiroNet.Base.csproj", "{B8DB18EB-3BE1-4344-812E-5B3B22D969A3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{945E10EB-994A-4B19-884C-35B203D1991B}"
 EndProject
@@ -49,6 +49,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{F98068A0
 		build\System.IO.FileSystem.props = build\System.IO.FileSystem.props
 		build\XUnit.props = build\XUnit.props
 		build\SourceLink.props = build\SourceLink.props
+		build\Avalonia.Web.Blazor.props = build\Avalonia.Web.Blazor.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C782659E-9532-475B-B746-38FFC9015978}"
@@ -63,6 +64,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{ED6682CD-E4DD-484E-B048-D3BF427657C1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiroNet.UnitTests", "tests\SpiroNet.UnitTests\SpiroNet.UnitTests.csproj", "{03158CCE-BDC1-4580-BA29-ADF4DABBBF30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiroNet.Desktop", "samples\SpiroNet.Desktop\SpiroNet.Desktop.csproj", "{A13E2B90-DED3-4951-8507-D9707D31013C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -102,6 +105,10 @@ Global
 		{03158CCE-BDC1-4580-BA29-ADF4DABBBF30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03158CCE-BDC1-4580-BA29-ADF4DABBBF30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03158CCE-BDC1-4580-BA29-ADF4DABBBF30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A13E2B90-DED3-4951-8507-D9707D31013C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A13E2B90-DED3-4951-8507-D9707D31013C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A13E2B90-DED3-4951-8507-D9707D31013C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A13E2B90-DED3-4951-8507-D9707D31013C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -118,6 +125,7 @@ Global
 		{F98068A0-9210-4A55-86B8-25C8E4B686AF} = {FE0DAB01-63F2-42B5-9F81-3B85B33E264B}
 		{D04F8768-26EC-4EE3-B036-8DABF0DA8C82} = {FE0DAB01-63F2-42B5-9F81-3B85B33E264B}
 		{03158CCE-BDC1-4580-BA29-ADF4DABBBF30} = {ED6682CD-E4DD-484E-B048-D3BF427657C1}
+		{A13E2B90-DED3-4951-8507-D9707D31013C} = {945E10EB-994A-4B19-884C-35B203D1991B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B48691C4-67D7-4C5B-B8ED-2C7C56A09D72}

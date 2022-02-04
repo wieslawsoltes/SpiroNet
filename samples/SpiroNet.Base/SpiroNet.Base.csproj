@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
+    <IsPackable>False</IsPackable>
+    <Nullable>enable</Nullable>
+    <RootNamespace>SpiroNet.Avalonia</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>The .NET C# port of libspiro - conversion between spiro control points and bezier's.</Description>
+    <PackageTags>Spiro;LibSpiro;SpiroNet;Graphics;Bezier;Spline;Splines;Curve;Path;Geometry;Editor;Design;Avalonia</PackageTags>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\Base.props" />
+  <Import Project="..\..\build\ReferenceAssemblies.props" />
+  <Import Project="..\..\build\Avalonia.props" />
+  <Import Project="..\..\build\Avalonia.Desktop.props" />
+  <Import Project="..\..\build\Avalonia.Diagnostics.props" />
+
+  <ItemGroup>
+    <Compile Include="**\*.cs" Exclude="obj\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\SpiroNet.Editor.Avalonia\SpiroNet.Editor.Avalonia.csproj" />
+    <ProjectReference Include="..\..\src\SpiroNet.Editor\SpiroNet.Editor.csproj" />
+    <ProjectReference Include="..\..\src\SpiroNet.Json\SpiroNet.Json.csproj" />
+    <ProjectReference Include="..\..\src\SpiroNet.ViewModels\SpiroNet.ViewModels.csproj" />
+    <ProjectReference Include="..\..\src\SpiroNet\SpiroNet.csproj" />
+  </ItemGroup>
+
+</Project>
