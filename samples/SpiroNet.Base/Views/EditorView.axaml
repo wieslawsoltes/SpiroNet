@@ -73,11 +73,11 @@
                              VerticalAlignment="Stretch"
                              Margin="4,4,4,4"
                              Grid.Row="0">
-                        <ListBox.DataTemplates>
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="Shape"/>
                             </DataTemplate>
-                        </ListBox.DataTemplates>
+                        </ListBox.ItemTemplate>
                     </ListBox>
                     <TextBox Name="dataTextBox"
                              AcceptsReturn="True"
@@ -103,11 +103,11 @@
                              Items="{Binding Editor.Drawing.Guides}"
                              VerticalAlignment="Stretch"
                              Margin="4,4,4,4">
-                        <ListBox.DataTemplates>
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="Guide"/>
                             </DataTemplate>
-                        </ListBox.DataTemplates>
+                        </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
             </TabItem>
@@ -471,11 +471,11 @@
                              VerticalAlignment="Stretch"
                              Margin="4,4,4,4"
                              Grid.Row="1">
-                        <ListBox.DataTemplates>
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="Shape"/>
                             </DataTemplate>
-                        </ListBox.DataTemplates>
+                        </ListBox.ItemTemplate>
                     </ListBox>
                     <TextBlock Text="Points:" TextAlignment="Left" Margin="4,4,4,0" Grid.Row="2"/>
                     <ListBox Name="selectedPointsListBox"
@@ -483,11 +483,11 @@
                              VerticalAlignment="Stretch"
                              Margin="4,4,4,4"
                              Grid.Row="3">
-                        <ListBox.DataTemplates>
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding}"/>
                             </DataTemplate>
-                        </ListBox.DataTemplates>
+                        </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
             </TabItem>
